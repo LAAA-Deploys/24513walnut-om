@@ -94,6 +94,8 @@ async function inspectViewport(browser, width, height, options = {}) {
     });
     const expenseTable = document.querySelector('.expense-table');
     const expenseRow = expenseTable?.querySelector('tr');
+    const rentRoll = document.querySelector('.rent-roll-table');
+    const rentRollRows = rentRoll ? Array.from(rentRoll.querySelectorAll('tbody tr')) : [];
     const images = Array.from(document.images).map(img => ({ src: img.getAttribute('src'), alt: img.getAttribute('alt'), complete: img.complete, naturalWidth: img.naturalWidth }));
     const hashLinks = Array.from(document.querySelectorAll('a[href^="#"]')).map(link => link.getAttribute('href')).filter(href => href !== '#');
     return {
@@ -105,6 +107,12 @@ async function inspectViewport(browser, width, height, options = {}) {
       expenseTable: expenseTable ? {
         overflows: expenseTable.scrollWidth > expenseTable.clientWidth + 1,
         rowLayout: expenseRow ? getComputedStyle(expenseRow).display : null,
+      } : null,
+      rentRoll: rentRoll ? {
+        overflows: rentRoll.scrollWidth > rentRoll.clientWidth + 1,
+        headerVisible: visible(rentRoll.querySelector('thead')),
+        rowCount: rentRollRows.length,
+        distinctRowTops: new Set(rentRollRows.map(row => Math.round(row.getBoundingClientRect().top))).size,
       } : null,
       images,
       compCount: document.querySelectorAll('[data-comp-card]').length,
@@ -149,6 +157,12 @@ async function inspectViewport(browser, width, height, options = {}) {
   if (width <= 620 && result.expenseTable) {
     check(!result.expenseTable.overflows, `${key}: mobile expense table still scrolls horizontally`);
     check(result.expenseTable.rowLayout === 'grid', `${key}: mobile expense rows are not width-constrained`);
+  }
+  check(Boolean(result.rentRoll), `${key}: rent roll missing`);
+  if (width <= 620 && result.rentRoll) {
+    check(!result.rentRoll.overflows, `${key}: mobile rent roll still scrolls horizontally`);
+    check(result.rentRoll.headerVisible, `${key}: mobile rent roll header is hidden`);
+    check(result.rentRoll.rowCount === 3 && result.rentRoll.distinctRowTops === 3, `${key}: mobile rent roll is not one continuous three-row table`);
   }
   check(runtimeErrors.length === 0, `${key}: runtime errors ${runtimeErrors.join('; ')}`);
 

@@ -152,8 +152,8 @@
     },
     {
       "path": "assets/styles.css",
-      "sha256": "05e787a07ee6a4828966c660320f9eee697c2ccbf7c78ffd12b1082b72efb417",
-      "bytes": 32778
+      "sha256": "b537eca0e144a17d88006f5f0aa2b8819e3ccf31171f859e6df3eb6aba117f0d",
+      "bytes": 35040
     },
     {
       "path": "data/site-data.json",
@@ -207,8 +207,8 @@
     },
     {
       "path": "tests/ui-regression.cjs",
-      "sha256": "c91f4a7554c63237d5c4c9b5c96026bb284156ad4cee41b60821790bf6aea8e6",
-      "bytes": 14699
+      "sha256": "6223151ac47ca5558f1eb771b342ea0516374d7c16c6cfe27395791317c43fe0",
+      "bytes": 15622
     }
   ]
 }
