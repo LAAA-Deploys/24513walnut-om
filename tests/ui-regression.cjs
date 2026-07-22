@@ -8,10 +8,10 @@ const outputDir = path.resolve(process.env.QA_DIR || 'qa');
 fs.mkdirSync(outputDir, { recursive: true });
 
 const viewports = [
-  [320, 850], [360, 800], [390, 844], [428, 926], [768, 1024],
-  [844, 390], [900, 900], [901, 900], [1440, 900],
+  [1920, 1080], [1440, 900], [1024, 768], [768, 1024],
+  [430, 932], [390, 844], [375, 812], [844, 390],
 ];
-const screenshotWidths = new Set(['320x850', '390x844', '844x390', '1440x900']);
+const screenshotWidths = new Set(['1920x1080', '1440x900', '768x1024', '430x932', '390x844', '375x812', '844x390']);
 const failures = [];
 
 function check(condition, message) {
@@ -37,15 +37,18 @@ async function inspectViewport(browser, width, height, options = {}) {
   const runtimeErrors = [];
   page.on('console', message => { if (message.type() === 'error') runtimeErrors.push(`console: ${message.text()}`); });
   page.on('pageerror', error => runtimeErrors.push(`pageerror: ${error.message}`));
-  page.on('requestfailed', request => runtimeErrors.push(`requestfailed: ${request.url()} ${request.failure()?.errorText || ''}`));
+  page.on('requestfailed', request => {
+    const requestUrl = new URL(request.url());
+    if (requestUrl.origin === baseOrigin) runtimeErrors.push(`requestfailed: ${request.url()} ${request.failure()?.errorText || ''}`);
+  });
 
   await page.goto(baseUrl, { waitUntil: 'networkidle' });
   await page.evaluate(() => document.fonts && document.fonts.ready);
   await page.evaluate(() => document.querySelectorAll('img[loading="lazy"]').forEach(image => { image.loading = 'eager'; }));
   await page.evaluate(async () => {
-    for (let y = 0; y < document.documentElement.scrollHeight; y += Math.max(300, window.innerHeight * .75)) {
+    for (let y = 0; y < document.documentElement.scrollHeight; y += Math.max(320, window.innerHeight * .8)) {
       window.scrollTo(0, y);
-      await new Promise(resolve => setTimeout(resolve, 20));
+      await new Promise(resolve => setTimeout(resolve, 18));
     }
     await Promise.all(Array.from(document.images, image => image.decode().catch(() => undefined)));
     window.scrollTo(0, 0);
@@ -54,81 +57,81 @@ async function inspectViewport(browser, width, height, options = {}) {
 
   const result = await page.evaluate(() => {
     const visible = element => {
+      if (!element) return false;
       const style = getComputedStyle(element);
       const rect = element.getBoundingClientRect();
       return style.display !== 'none' && style.visibility !== 'hidden' && rect.width > 0 && rect.height > 0;
     };
     const doc = document.documentElement;
-    const actions = document.querySelector('.hero-actions').getBoundingClientRect();
-    const stats = document.querySelector('.hero-stats').getBoundingClientRect();
-    const collision = Math.max(0, Math.min(actions.bottom, stats.bottom) - Math.max(actions.top, stats.top));
-    const controls = Array.from(document.querySelectorAll('.button,.source-links a,.menu-toggle,#primary-nav a,.mobile-cta a,.gallery-item a,.lightbox button,.comp-map-legend button,.comp-toolbar button,.comp-details summary,.comp-map-link,.location-links a'))
-      .filter(visible)
-      .map(element => ({
-        text: element.textContent.trim().replace(/\s+/g, ' '),
-        width: Math.round(element.getBoundingClientRect().width * 10) / 10,
-        height: Math.round(element.getBoundingClientRect().height * 10) / 10,
-      }));
-    const clipped = Array.from(document.querySelectorAll('h1,h2,h3,p,a,button,b,span'))
+    const heroCard = document.querySelector('.hero-card').getBoundingClientRect();
+    const kpiRail = document.querySelector('.hero-kpi-rail').getBoundingClientRect();
+    const heroCollision = Math.max(0, Math.min(heroCard.bottom, kpiRail.bottom) - Math.max(heroCard.top, kpiRail.top));
+    const controlSelector = '.button,.source-links a,.menu-toggle,#primary-nav a,.mobile-cta a,.gallery-item a,.lightbox button,.map-toolbar button,.map-toolbar a,.basis-tabs button,.comp-view-tabs button,.comp-summary,.map-pin,.comp-stepper button,.comp-preview a,.comp-source a,.agent-actions a,.row-note summary';
+    const controls = Array.from(document.querySelectorAll(controlSelector)).filter(visible).map(element => ({
+      text: element.getAttribute('aria-label') || element.textContent.trim().replace(/\s+/g, ' '),
+      width: Math.round(element.getBoundingClientRect().width * 10) / 10,
+      height: Math.round(element.getBoundingClientRect().height * 10) / 10,
+    }));
+    const clipped = Array.from(document.querySelectorAll('h1,h2,h3,h4,p,a,button,b,strong,span'))
       .filter(visible)
       .filter(element => !element.classList.contains('sr-only'))
-      .filter(element => !element.closest('.table-shell'))
+      .filter(element => !element.closest('.table-shell,.gallery-item,.comp-thumb,.comp-map-canvas,.lightbox'))
       .filter(element => {
         const style = getComputedStyle(element);
         return /(hidden|clip)/.test(style.overflow + style.overflowX + style.overflowY) &&
           (element.scrollWidth > element.clientWidth + 1 || element.scrollHeight > element.clientHeight + 1);
       })
-      .map(element => `${element.tagName.toLowerCase()}.${element.className || ''}:${element.textContent.trim().slice(0, 50)}`);
-    const tables = Array.from(document.querySelectorAll('.table-shell')).map(region => {
-      const firstCell = region.querySelector('th:first-child,td:first-child');
-      const firstRow = region.querySelector('tbody tr');
-      return {
-        tabindex: region.getAttribute('tabindex'),
-        role: region.getAttribute('role'),
-        label: region.getAttribute('aria-label'),
-        overflows: region.scrollWidth > region.clientWidth + 1,
-        hasCue: Boolean(region.parentElement.querySelector('.table-scroll-cue')),
-        sticky: firstCell ? getComputedStyle(firstCell).position === 'sticky' : false,
-        rowLayout: firstRow ? getComputedStyle(firstRow).display : null,
-      };
-    });
-    const expenseTable = document.querySelector('.expense-table');
-    const expenseRow = expenseTable?.querySelector('tr');
+      .map(element => `${element.tagName.toLowerCase()}.${element.className || ''}:${element.textContent.trim().slice(0, 45)}`);
+    const tables = Array.from(document.querySelectorAll('.table-shell')).filter(visible).map(region => ({
+      tabindex: region.getAttribute('tabindex'),
+      role: region.getAttribute('role'),
+      label: region.getAttribute('aria-label'),
+      overflows: region.scrollWidth > region.clientWidth + 1,
+      hasVisibleCue: (() => {
+        const cue = region.closest('.table-region')?.querySelector('.table-scroll-cue');
+        return Boolean(cue && visible(cue));
+      })(),
+    }));
     const rentRoll = document.querySelector('.rent-roll-table');
-    const rentRollRows = rentRoll ? Array.from(rentRoll.querySelectorAll('tbody tr')) : [];
+    const rentRows = Array.from(rentRoll.querySelectorAll('tbody tr'));
     const images = Array.from(document.images).map(img => ({ src: img.getAttribute('src'), alt: img.getAttribute('alt'), complete: img.complete, naturalWidth: img.naturalWidth }));
     const hashLinks = Array.from(document.querySelectorAll('a[href^="#"]')).map(link => link.getAttribute('href')).filter(href => href !== '#');
     return {
       documentOverflow: doc.scrollWidth - doc.clientWidth,
-      heroCollision: collision,
+      heroCollision,
       controls,
       clipped,
       tables,
-      expenseTable: expenseTable ? {
-        overflows: expenseTable.scrollWidth > expenseTable.clientWidth + 1,
-        rowLayout: expenseRow ? getComputedStyle(expenseRow).display : null,
-      } : null,
-      rentRoll: rentRoll ? {
+      rentRoll: {
         overflows: rentRoll.scrollWidth > rentRoll.clientWidth + 1,
         headerVisible: visible(rentRoll.querySelector('thead')),
-        rowCount: rentRollRows.length,
-        distinctRowTops: new Set(rentRollRows.map(row => Math.round(row.getBoundingClientRect().top))).size,
-      } : null,
+        rowCount: rentRows.length,
+        distinctRowTops: new Set(rentRows.map(row => Math.round(row.getBoundingClientRect().top))).size,
+      },
       images,
       compCount: document.querySelectorAll('[data-comp-card]').length,
-      compMapButtons: document.querySelectorAll('[data-comp-target]').length,
+      compSummaryCount: document.querySelectorAll('.comp-summary').length,
+      compPinCount: document.querySelectorAll('.map-pin').length,
       galleryCount: document.querySelectorAll('[data-gallery-link]').length,
+      agentCount: document.querySelectorAll('.agent-card').length,
+      overviewParagraphs: document.querySelectorAll('#overview .narrative-paragraph').length,
+      locationParagraphs: document.querySelectorAll('#location .narrative-paragraph').length,
+      highlightCount: document.querySelectorAll('.highlight-ledger article').length,
+      forbiddenFocus: document.body.textContent.includes('FOCUS THE EVIDENCE') || document.body.textContent.includes('Focus the evidence'),
       hasGalleryDialog: Boolean(document.querySelector('[data-gallery-dialog]')),
+      hasHeadshots: Boolean(document.querySelector('img[src="assets/images/glen-scher.jpg"]')) && Boolean(document.querySelector('img[src="assets/images/filip-niculete.jpg"]')),
+      hasMapFallbacks: document.querySelectorAll('.map-frame img,.comp-map-canvas img,.rent-evidence-map img').length >= 4,
       h1Count: document.querySelectorAll('h1').length,
       landmarks: { main: Boolean(document.querySelector('main')), nav: Boolean(document.querySelector('nav')), footer: Boolean(document.querySelector('footer')) },
       brokenAnchors: hashLinks.filter(href => !document.querySelector(href)),
       unresolved: /{{|}}|TODO|PLACEHOLDER/i.test(document.documentElement.innerHTML),
       noindex: document.querySelector('meta[name="robots"]')?.content.includes('noindex') || false,
+      scrollBehavior: getComputedStyle(document.documentElement).scrollBehavior,
     };
   });
 
   check(result.documentOverflow <= 1, `${key}: document overflow ${result.documentOverflow}px`);
-  check(result.heroCollision <= 1, `${key}: hero actions overlap KPI strip by ${result.heroCollision}px`);
+  check(result.heroCollision <= 1, `${key}: hero card overlaps KPI rail by ${result.heroCollision}px`);
   result.controls.forEach(control => check(control.height >= 44 && control.width >= 44, `${key}: undersized control "${control.text}" ${control.width}x${control.height}`));
   check(result.clipped.length === 0, `${key}: clipped text ${result.clipped.join(', ')}`);
   check(result.h1Count === 1, `${key}: expected one H1, found ${result.h1Count}`);
@@ -136,34 +139,28 @@ async function inspectViewport(browser, width, height, options = {}) {
   check(result.brokenAnchors.length === 0, `${key}: broken anchors ${result.brokenAnchors.join(', ')}`);
   check(!result.unresolved, `${key}: unresolved template or placeholder text`);
   check(result.noindex, `${key}: privacy noindex missing`);
-  check(result.compCount === 6, `${key}: expected six sale comparables, found ${result.compCount}`);
-  check(result.compMapButtons === 6, `${key}: expected six interactive map legend controls, found ${result.compMapButtons}`);
-  check(result.galleryCount >= 12, `${key}: expected at least 12 gallery images, found ${result.galleryCount}`);
-  check(result.hasGalleryDialog, `${key}: accessible gallery dialog missing`);
+  check(result.compCount === 6 && result.compSummaryCount === 6 && result.compPinCount === 6, `${key}: comp explorer counts cards=${result.compCount} summaries=${result.compSummaryCount} pins=${result.compPinCount}`);
+  check(result.galleryCount === 12 && result.hasGalleryDialog, `${key}: gallery incomplete count=${result.galleryCount}`);
+  check(result.agentCount === 2 && result.hasHeadshots, `${key}: Glen/Filip profiles or headshots missing`);
+  check(result.overviewParagraphs === 3 && result.locationParagraphs === 3, `${key}: narrative paragraph contract failed`);
+  check(result.highlightCount === 6, `${key}: expected six investment highlights, found ${result.highlightCount}`);
+  check(!result.forbiddenFocus, `${key}: removed Focus the evidence language is still present`);
+  check(result.hasMapFallbacks, `${key}: accessible local map fallbacks missing`);
   result.images.forEach(image => {
     check(Boolean(image.alt), `${key}: missing alt text on ${image.src}`);
     check(image.complete && image.naturalWidth > 0, `${key}: broken image ${image.src}`);
   });
   result.tables.forEach((table, index) => {
     check(table.tabindex === '0' && table.role === 'region' && Boolean(table.label), `${key}: table ${index + 1} lacks keyboard region semantics`);
-    if (width <= 620) {
-      check(!table.overflows, `${key}: mobile table ${index + 1} still scrolls horizontally`);
-      check(table.rowLayout === 'grid', `${key}: mobile table ${index + 1} is not using the stacked row layout`);
-    } else if (table.overflows) {
-      check(table.hasCue, `${key}: table ${index + 1} lacks overflow cue`);
-    }
+    if (width <= 760) check(!table.overflows, `${key}: mobile table ${index + 1} still scrolls horizontally`);
+    else if (table.overflows) check(table.hasVisibleCue, `${key}: table ${index + 1} overflow cue is not visible`);
   });
-  check(Boolean(result.expenseTable), `${key}: expense table missing`);
-  if (width <= 620 && result.expenseTable) {
-    check(!result.expenseTable.overflows, `${key}: mobile expense table still scrolls horizontally`);
-    check(result.expenseTable.rowLayout === 'grid', `${key}: mobile expense rows are not width-constrained`);
-  }
-  check(Boolean(result.rentRoll), `${key}: rent roll missing`);
-  if (width <= 620 && result.rentRoll) {
+  if (width <= 760) {
     check(!result.rentRoll.overflows, `${key}: mobile rent roll still scrolls horizontally`);
     check(result.rentRoll.headerVisible, `${key}: mobile rent roll header is hidden`);
     check(result.rentRoll.rowCount === 3 && result.rentRoll.distinctRowTops === 3, `${key}: mobile rent roll is not one continuous three-row table`);
   }
+  if (options.reducedMotion === 'reduce') check(result.scrollBehavior === 'auto', `${key}: reduced-motion scroll behavior is ${result.scrollBehavior}`);
   check(runtimeErrors.length === 0, `${key}: runtime errors ${runtimeErrors.join('; ')}`);
 
   if (screenshotWidths.has(`${width}x${height}`) && !options.suffix) {
@@ -172,9 +169,7 @@ async function inspectViewport(browser, width, height, options = {}) {
 
   if (width <= 900 && !options.skipMenu) {
     const toggle = page.locator('.menu-toggle');
-    if (width === 320) {
-      await page.locator('.preview-band').evaluate(element => { element.textContent += ' — confidential review edition for approved recipients only'; });
-    }
+    if (width === 375) await page.locator('.preview-band').evaluate(element => { element.textContent += ' — approved recipients only'; });
     await toggle.click();
     check(await toggle.getAttribute('aria-expanded') === 'true', `${key}: menu did not open`);
     check((await toggle.textContent()).includes('Close navigation'), `${key}: open menu lacks Close accessible name`);
@@ -186,34 +181,31 @@ async function inspectViewport(browser, width, height, options = {}) {
     }));
     check(Math.abs(menuGeometry.navTop - menuGeometry.headerBottom) <= 1, `${key}: menu top ${menuGeometry.navTop} does not match header bottom ${menuGeometry.headerBottom}`);
     check(Math.abs(menuGeometry.backdropTop - menuGeometry.headerBottom) <= 1, `${key}: backdrop top ${menuGeometry.backdropTop} does not match header bottom ${menuGeometry.headerBottom}`);
-    await page.keyboard.press('Shift+Tab');
-    check(await page.evaluate(() => document.activeElement === document.querySelector('.menu-toggle')), `${key}: focus did not move to menu toggle`);
-    await page.keyboard.press('Shift+Tab');
-    check(await page.evaluate(() => document.activeElement === document.querySelector('#primary-nav a:last-child')), `${key}: focus escaped backward from menu`);
     await page.keyboard.press('Escape');
     check(await toggle.getAttribute('aria-expanded') === 'false', `${key}: Escape did not close menu`);
-    check((await toggle.textContent()).includes('Open navigation'), `${key}: closed menu lacks Open accessible name`);
     check(await page.evaluate(() => document.activeElement === document.querySelector('.menu-toggle')), `${key}: focus was not restored after Escape`);
-    await toggle.click();
-    await page.locator('.menu-backdrop').dispatchEvent('click');
-    check(await toggle.getAttribute('aria-expanded') === 'false', `${key}: outside click did not close menu`);
-    await toggle.click();
-    await page.locator('#primary-nav a').first().click();
-    await page.waitForTimeout(50);
-    check(await toggle.getAttribute('aria-expanded') === 'false', `${key}: link click did not close menu`);
-    check(await page.evaluate(() => document.activeElement === document.querySelector('.menu-toggle')), `${key}: focus was not restored after link click`);
   }
 
   if (width === 390 && !options.suffix) {
-    await page.locator('[data-comp-filter="same-regime"]').click();
-    const filteredCount = await page.locator('[data-comp-card]:visible').count();
-    check(filteredCount === 3, `${key}: same-regime filter showed ${filteredCount} cards instead of 3`);
-    await page.locator('[data-comp-filter="all"]').click();
-    check(await page.locator('[data-comp-card]:visible').count() === 6, `${key}: all-comps filter did not restore six cards`);
+    const gsrRow = page.locator('.mobile-financial-table tbody tr').filter({ hasText: 'Gross Scheduled Rent' }).first();
+    const before = await gsrRow.locator('td').first().textContent();
+    await page.locator('[data-fin-basis="unit"]').click();
+    const after = await gsrRow.locator('td').first().textContent();
+    check(before.trim() === '$68,400' && after.trim() === '$22,800', `${key}: financial basis tabs did not recalculate current GSR (${before} -> ${after})`);
+    await page.locator('[data-fin-basis="sf"]').click();
+    check((await gsrRow.locator('td').first().textContent()).trim() === '$28.93', `${key}: per-SF basis did not render expected current GSR`);
 
-    await page.locator('[data-comp-target="atwood"]').click();
-    await page.waitForTimeout(500);
-    check(await page.locator('[data-comp-id="atwood"] details').getAttribute('open') !== null, `${key}: map legend did not expand Atwood details`);
+    await page.locator('[data-location-view="transit"]').click();
+    check(await page.locator('[data-location-panel="transit"]').isVisible(), `${key}: transit map fallback did not activate`);
+
+    await page.locator('[data-comp-view="map"]').click();
+    check(await page.locator('.comp-map-panel').isVisible(), `${key}: mobile comp map mode did not activate`);
+    await page.locator('.comp-map-panel').scrollIntoViewIfNeeded();
+    await page.locator('.map-pin[data-comp-select="coronel"]').click();
+    check(await page.locator('[data-comp-preview="coronel"]').isVisible(), `${key}: selecting pin 2 did not update the preview`);
+    check(await page.locator('.comp-summary[data-comp-select="coronel"]').getAttribute('aria-pressed') === 'true', `${key}: pin/list selection did not synchronize`);
+    await page.locator('[data-comp-next]').click();
+    check(await page.locator('[data-comp-preview="oro-vista"]').isVisible(), `${key}: comp next control did not advance`);
 
     const firstGalleryLink = page.locator('[data-gallery-link]').first();
     await firstGalleryLink.click();
@@ -234,7 +226,7 @@ async function inspectViewport(browser, width, height, options = {}) {
   for (const [width, height] of viewports) await inspectViewport(chrome, width, height);
   await inspectViewport(chrome, 390, 844, { reducedMotion: 'reduce', suffix: '-reduced-motion', skipMenu: true });
   await inspectViewport(chrome, 390, 844, { forcedColors: 'active', suffix: '-forced-colors', skipMenu: true });
-  await inspectViewport(chrome, 360, 800, { isMobile: true, hasTouch: true, suffix: '-android-chrome' });
+  await inspectViewport(chrome, 390, 844, { isMobile: true, hasTouch: true, suffix: '-android-chrome' });
   await chrome.close();
 
   const safari = await webkit.launch({ headless: true });

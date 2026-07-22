@@ -21,10 +21,37 @@
     "parking": "Garage and on-site parking; buyer to verify count and configuration",
     "flood_zone": "Zone X"
   },
+  "investment_overview": [
+    "The LAAA Team of Marcus & Millichap is proud to present 24513–24519 Walnut Street, a three-unit residential investment in Old Town Newhall. The 9,379-square-foot site contains a duplex and detached rear house totaling 2,364 square feet, with two 2-bedroom/1-bath units and one 1-bedroom/1-bath unit.",
+    "Reported in-place rents total $5,700 per month. At $1,095,000, the offering reflects a 4.02% current cap rate and 16.01x current GRM. Broker pro forma rents of $6,950 per month produce $59,023 of NOI, a 5.39% cap rate, and 13.13x GRM, before financing and without a vacancy assumption.",
+    "The property offers an occupied small-residential income profile with measurable rent upside and a walkable, transit-oriented setting. Its COR zoning, alley access, and lot configuration may merit independent ADU or redevelopment study; no entitlement is represented. Buyers should verify leases, permitted unit configuration, utility obligations, physical condition, and all development assumptions."
+  ],
+  "location_overview": [
+    "Walnut Street sits at the edge of Old Town Newhall’s Main Street district, where the City identifies restaurants, shopping, arts, and entertainment, including The MAIN performance venue and the Old Town Newhall Library. Hart Park’s museum and grounds also anchor the nearby civic and recreation network.",
+    "Newhall Metrolink Station is approximately 0.26 mile from the property and serves the Antelope Valley Line, with 324 parking spaces listed by Metrolink. Interstate 5 and State Route 14 provide regional freeway access; buyers should confirm trip times for their own commuting patterns.",
+    "Santa Clarita’s 2024 population estimate was 229,159. Census data reports median household income of $123,062, median gross rent of $2,544, and a 34.1-minute mean commute for 2020–2024. College of the Canyons reports 40,987 annual enrollment, adding a major education and employment anchor in the valley."
+  ],
+  "investment_highlights": [
+    {"headline": "Three Income-Producing Residences", "detail": "An occupied duplex and detached rear home provide three rent streams on one 9,379-square-foot lot, subject to lease and legal-status verification."},
+    {"headline": "Defined Rent Upside", "detail": "Current rents total $5,700 per month; broker-selected pro forma rents total $6,950 and remain below the surveyed two-bedroom median."},
+    {"headline": "Transparent Buyer Underwriting", "detail": "The offering shows each expense line, current and pro forma NOI, and source limitations without adding an unapproved vacancy or financing assumption."},
+    {"headline": "Old Town Newhall Access", "detail": "Newhall Metrolink Station is approximately 0.26 mile away, with Main Street dining, arts, library, and civic amenities nearby."},
+    {"headline": "Comparable Evidence In Context", "detail": "Six verified sales are organized by analytical role, condition, rent rules, and physical similarity—not reduced to a single price-per-foot headline."},
+    {"headline": "Optionality, Not Entitlement", "detail": "COR zoning, alley access, and site configuration support further study, while the OM clearly makes no ADU or redevelopment representation."}
+  ],
+  "location_sources": [
+    {"label": "City of Santa Clarita — Old Town Newhall", "url": "https://santaclarita.gov/blog/2025/03/20/discover-old-town-newhall/"},
+    {"label": "The MAIN", "url": "https://santaclarita.gov/arts-and-culture/events/the-main/"},
+    {"label": "Old Town Newhall Library", "url": "https://www.santaclaritalibrary.com/osoc/about/"},
+    {"label": "William S. Hart Park", "url": "https://hartpark.santaclarita.gov/"},
+    {"label": "Metrolink — Newhall Station", "url": "https://metrolinktrains.com/rider-info/general-info/stations/newhall/"},
+    {"label": "U.S. Census QuickFacts — Santa Clarita", "url": "https://www.census.gov/quickfacts/fact/table/santaclaritacitycalifornia/HSG860224"},
+    {"label": "College of the Canyons", "url": "https://www.canyons.edu/about/"}
+  ],
   "units": [
-    {"label": "Duplex Unit A", "type": "2BR / 1BA", "current_rent": 1800, "market_rent": 2400, "status": "Occupied"},
-    {"label": "Duplex Unit B", "type": "2BR / 1BA", "current_rent": 1800, "market_rent": 2400, "status": "Occupied"},
-    {"label": "Rear House", "type": "1BR / 1BA", "current_rent": 2100, "market_rent": 2150, "status": "Occupied"}
+    {"label": "Duplex Unit A", "type": "2BR / 1BA", "unit_sf": 728, "current_rent": 1800, "market_rent": 2400, "status": "Occupied"},
+    {"label": "Duplex Unit B", "type": "2BR / 1BA", "unit_sf": 728, "current_rent": 1800, "market_rent": 2400, "status": "Occupied"},
+    {"label": "Rear House", "type": "1BR / 1BA", "unit_sf": 908, "current_rent": 2100, "market_rent": 2150, "status": "Occupied"}
   ],
   "expenses": [
     {"label": "Property taxes", "current": 15363, "pro_forma": 15363, "basis": "Estimated reassessment at 1.403% of offering price"},
@@ -41,6 +68,8 @@
       "units": "3", "bed_bath": "5 BR / 4 BA", "sf": 2810, "lot_sf": 7487, "year_built": "1954 + newer ADU",
       "ppu": 383333, "ppsf": 409, "grm": "11.98x current", "cap": "5.86% current", "dom": "26", "sp_lp": "97.9%",
       "role": "Upper benchmark", "verdict": "Subject inferior overall",
+      "distance": "1.3 miles straight-line", "rent_rules": "Same rent rules as subject — Santa Clarita; AB 1482 only",
+      "source": "TheMLS closed-sale report; U.S. Census geocoder for straight-line distance",
       "occupancy": "Two units occupied; the 1,500 SF townhome was offered vacant.",
       "condition": "Fully renovated 1954 core, newer detached ADU, new electrical panel, in-unit laundry, pool and spa.",
       "note": "The closest Newhall sale and the finished version of this product. Its $1.15M result is a ceiling-side anchor, not a direct condition match.",
@@ -55,6 +84,8 @@
       "units": "3", "bed_bath": "8 BR / 6 BA", "sf": 3106, "lot_sf": 5000, "year_built": "1964",
       "ppu": 363333, "ppsf": 351, "grm": "14.49x current", "cap": "4.68% current", "dom": "131", "sp_lp": "99.5% adjusted / 91.2% original",
       "role": "Anchor benchmark", "verdict": "Comparable overall",
+      "distance": "8.3 miles straight-line", "rent_rules": "Same rent rules as subject — San Fernando; AB 1482 only",
+      "source": "TheMLS closed-sale report; U.S. Census geocoder for straight-line distance",
       "occupancy": "All three large family units were occupied at below-market rents.",
       "condition": "One unit renovated; copper repipe, tankless water heater, in-unit laundry and ten parking spaces.",
       "note": "The best regulatory match. Its larger two-bath units and stronger improvements offset Walnut's larger lot, better location and ADU optionality.",
@@ -69,6 +100,8 @@
       "units": "3", "bed_bath": "6 BR / 3 BA", "sf": 2858, "lot_sf": 5961, "year_built": "1964",
       "ppu": 358333, "ppsf": 376, "grm": "18.59x current", "cap": "3.26% current", "dom": "6", "sp_lp": "107.6%",
       "role": "Mid-ring benchmark", "verdict": "Comparable overall",
+      "distance": "14.9 miles straight-line", "rent_rules": "City of Los Angeles RSO",
+      "source": "TheMLS closed-sale report; U.S. Census geocoder for straight-line distance",
       "occupancy": "Fully occupied with stable tenants and materially suppressed rents.",
       "condition": "Pride-of-ownership exterior with new roofs on both buildings; interiors were not shown before offer acceptance.",
       "note": "A fast, competitive sale with nearly identical three-unit scale. Walnut trades better location, regulation and land for Oro Vista's stronger presentation.",
@@ -83,6 +116,8 @@
       "units": "3", "bed_bath": "5 BR / 3 BA", "sf": 2656, "lot_sf": 11048, "year_built": "1920 / 1948 / 1950",
       "ppu": 350000, "ppsf": 395, "grm": "28.00x current", "cap": "1.76% current", "dom": "51", "sp_lp": "95.5% adjusted / 87.9% original",
       "role": "Closest physical analog", "verdict": "Subject superior overall",
+      "distance": "16.6 miles straight-line", "rent_rules": "City of Los Angeles RSO",
+      "source": "TheMLS closed-sale report; U.S. Census geocoder for straight-line distance",
       "occupancy": "All three detached homes were occupied at rents equal to 43% of the listing's projected market level.",
       "condition": "Original-condition detached cottages with floor or wall heat, no air conditioning, separate utility meters and a two-car garage.",
       "note": "The closest physical analog: three detached vintage homes on a large flat lot. Its sale arc shows buyers priced the real estate and future rent recovery, not current yield.",
@@ -97,6 +132,8 @@
       "units": "4 actual / 3 legal", "bed_bath": "5 BR / 4 BA", "sf": 2981, "lot_sf": 8406, "year_built": "1945 MLS / 1928 public record",
       "ppu": 224750, "ppu_note": "$299,667 per legal unit", "ppsf": 302, "grm": "11.19x current", "cap": "6.45% current", "dom": "75", "sp_lp": "100.0%",
       "role": "Current-cycle floor", "verdict": "Subject superior overall",
+      "distance": "10.5 miles straight-line", "rent_rules": "Los Angeles County RSTPO",
+      "source": "TheMLS closed-sale report; U.S. Census geocoder for straight-line distance",
       "occupancy": "Four occupied dwellings with post-renovation rents near market; one studio was non-conforming.",
       "condition": "Approximately $300,000 of reported improvements, including kitchens, baths, balconies and upgraded electrical panels.",
       "note": "Useful floor evidence, but not a clean triplex comparison. Canyon location, fire exposure, county rent controls and the non-conforming fourth unit weigh on the print.",
@@ -111,6 +148,8 @@
       "units": "3", "bed_bath": "3 BR / 3 BA", "sf": 1560, "sf_note": "MLS reports 1,590 SF", "lot_sf": 6142, "year_built": "1934",
       "ppu": 253333, "ppsf": 487, "grm": "10.56x projected", "cap": "7.14% projected", "dom": "9", "sp_lp": "101.4%",
       "role": "Absolute-price floor", "verdict": "Subject superior overall",
+      "distance": "8.2 miles straight-line", "rent_rules": "Same rent rules as subject — San Fernando; AB 1482 only",
+      "source": "TheMLS closed-sale report; U.S. Census geocoder for straight-line distance",
       "occupancy": "Delivered completely vacant; income metrics use projected rents rather than achieved leases.",
       "condition": "Original-condition fixer with no listed heating, cooling or laundry and three separate water meters.",
       "note": "The ring's floor sale. Its tiny building inflates price per square foot, so the useful evidence is absolute price and price per unit—not the $487/SF headline.",

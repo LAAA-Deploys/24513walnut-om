@@ -1,9 +1,9 @@
 (function () {
   'use strict';
 
-  var button = document.querySelector('.menu-toggle');
+  var menuButton = document.querySelector('.menu-toggle');
   var nav = document.querySelector('#primary-nav');
-  var label = button ? button.querySelector('.menu-label') : null;
+  var menuLabel = menuButton ? menuButton.querySelector('.menu-label') : null;
   var backdrop = document.querySelector('.menu-backdrop');
   var header = document.querySelector('.site-header');
   var pageRegions = [document.querySelector('main'), document.querySelector('footer'), document.querySelector('.mobile-cta')].filter(Boolean);
@@ -11,10 +11,8 @@
 
   function syncMenuTop() {
     if (!header) return;
-    var rect = header.getBoundingClientRect();
-    var bottom = Math.max(0, Math.round(rect.bottom));
+    var bottom = Math.max(0, Math.round(header.getBoundingClientRect().bottom));
     document.documentElement.style.setProperty('--menu-top', bottom + 'px');
-    document.documentElement.style.setProperty('--menu-offset', Math.round(rect.height) + 'px');
   }
 
   function setBackgroundInert(inert) {
@@ -26,23 +24,23 @@
   }
 
   function closeMenu(restoreFocus) {
-    if (!button || !nav) return;
+    if (!menuButton || !nav) return;
     menuOpen = false;
-    button.setAttribute('aria-expanded', 'false');
-    if (label) label.textContent = 'Open navigation';
+    menuButton.setAttribute('aria-expanded', 'false');
+    if (menuLabel) menuLabel.textContent = 'Open navigation';
     nav.classList.remove('open');
     document.body.classList.remove('menu-open');
     setBackgroundInert(false);
     if (backdrop) backdrop.hidden = true;
-    if (restoreFocus) button.focus();
+    if (restoreFocus) menuButton.focus();
   }
 
   function openMenu() {
-    if (!button || !nav) return;
+    if (!menuButton || !nav) return;
     syncMenuTop();
     menuOpen = true;
-    button.setAttribute('aria-expanded', 'true');
-    if (label) label.textContent = 'Close navigation';
+    menuButton.setAttribute('aria-expanded', 'true');
+    if (menuLabel) menuLabel.textContent = 'Close navigation';
     nav.classList.add('open');
     document.body.classList.add('menu-open');
     setBackgroundInert(true);
@@ -51,25 +49,15 @@
     if (firstLink) firstLink.focus();
   }
 
-  if (button && nav) {
-    button.addEventListener('click', function () {
-      if (menuOpen) closeMenu(true);
-      else openMenu();
-    });
-
+  if (menuButton && nav) {
+    menuButton.addEventListener('click', function () { menuOpen ? closeMenu(true) : openMenu(); });
     nav.querySelectorAll('a').forEach(function (link) {
       link.addEventListener('click', function () {
         closeMenu(false);
-        window.requestAnimationFrame(function () { button.focus(); });
+        window.requestAnimationFrame(function () { menuButton.focus(); });
       });
     });
-
-    if (backdrop) {
-      backdrop.addEventListener('click', function () {
-        closeMenu(true);
-      });
-    }
-
+    if (backdrop) backdrop.addEventListener('click', function () { closeMenu(true); });
     document.addEventListener('keydown', function (event) {
       if (!menuOpen) return;
       if (event.key === 'Escape') {
@@ -78,7 +66,7 @@
         return;
       }
       if (event.key !== 'Tab') return;
-      var focusable = [button].concat(Array.from(nav.querySelectorAll('a')));
+      var focusable = [menuButton].concat(Array.from(nav.querySelectorAll('a')));
       var first = focusable[0];
       var last = focusable[focusable.length - 1];
       if (event.shiftKey && document.activeElement === first) {
@@ -89,13 +77,9 @@
         first.focus();
       }
     });
-
     document.addEventListener('pointerdown', function (event) {
-      if (menuOpen && !nav.contains(event.target) && !button.contains(event.target) && event.target !== backdrop) {
-        closeMenu(true);
-      }
+      if (menuOpen && !nav.contains(event.target) && !menuButton.contains(event.target) && event.target !== backdrop) closeMenu(true);
     });
-
     window.addEventListener('resize', function () {
       syncMenuTop();
       if (window.innerWidth > 900 && menuOpen) closeMenu(false);
@@ -110,7 +94,8 @@
       var atEnd = region.scrollLeft + region.clientWidth >= region.scrollWidth - 2;
       region.classList.toggle('has-overflow', overflow);
       region.classList.toggle('at-end', overflow && atEnd);
-      var cue = region.parentElement ? region.parentElement.querySelector('.table-scroll-cue') : null;
+      var wrapper = region.closest('.table-region');
+      var cue = wrapper ? wrapper.querySelector('.table-scroll-cue') : null;
       if (cue) cue.hidden = !overflow;
     }
     region.addEventListener('scroll', updateOverflowState, { passive: true });
@@ -123,6 +108,7 @@
   var galleryImage = galleryDialog ? galleryDialog.querySelector('[data-gallery-image]') : null;
   var galleryCaption = galleryDialog ? galleryDialog.querySelector('[data-gallery-caption]') : null;
   var galleryIndex = 0;
+  var galleryTouchStart = null;
 
   function showGalleryImage(index) {
     if (!galleryLinks.length || !galleryImage || !galleryCaption) return;
@@ -147,57 +133,108 @@
     galleryDialog.querySelector('[data-gallery-close]').addEventListener('click', function () { galleryDialog.close(); });
     galleryDialog.querySelector('[data-gallery-previous]').addEventListener('click', function () { showGalleryImage(galleryIndex - 1); });
     galleryDialog.querySelector('[data-gallery-next]').addEventListener('click', function () { showGalleryImage(galleryIndex + 1); });
-    galleryDialog.addEventListener('click', function (event) {
-      if (event.target === galleryDialog) galleryDialog.close();
-    });
+    galleryDialog.addEventListener('click', function (event) { if (event.target === galleryDialog) galleryDialog.close(); });
     galleryDialog.addEventListener('keydown', function (event) {
       if (event.key === 'ArrowLeft') { event.preventDefault(); showGalleryImage(galleryIndex - 1); }
       if (event.key === 'ArrowRight') { event.preventDefault(); showGalleryImage(galleryIndex + 1); }
     });
+    galleryDialog.addEventListener('touchstart', function (event) { galleryTouchStart = event.changedTouches[0].clientX; }, { passive: true });
+    galleryDialog.addEventListener('touchend', function (event) {
+      if (galleryTouchStart === null) return;
+      var delta = event.changedTouches[0].clientX - galleryTouchStart;
+      if (Math.abs(delta) > 45) showGalleryImage(galleryIndex + (delta < 0 ? 1 : -1));
+      galleryTouchStart = null;
+    }, { passive: true });
     galleryDialog.addEventListener('close', function () { document.body.classList.remove('lightbox-open'); });
   }
 
-  var compCards = Array.from(document.querySelectorAll('[data-comp-card]'));
-  var compFilters = Array.from(document.querySelectorAll('[data-comp-filter]'));
-  var compStatus = document.querySelector('[data-comp-status]');
+  var locationButtons = Array.from(document.querySelectorAll('[data-location-view]'));
+  var locationPanels = Array.from(document.querySelectorAll('[data-location-panel]'));
+  locationButtons.forEach(function (button) {
+    button.addEventListener('click', function () {
+      var view = button.dataset.locationView;
+      locationButtons.forEach(function (candidate) {
+        var active = candidate === button;
+        candidate.classList.toggle('active', active);
+        candidate.setAttribute('aria-pressed', String(active));
+      });
+      locationPanels.forEach(function (panel) { panel.hidden = panel.dataset.locationPanel !== view; });
+    });
+  });
 
-  function filterComps(filter) {
-    var visibleCount = 0;
-    compCards.forEach(function (card) {
-      var visible = filter === 'all' || card.dataset.compTags.split(/\s+/).includes(filter);
-      card.hidden = !visible;
-      card.classList.remove('is-highlighted');
-      if (visible) visibleCount += 1;
+  var financialButtons = Array.from(document.querySelectorAll('[data-fin-basis]'));
+  var financialValues = Array.from(document.querySelectorAll('[data-fin-value]'));
+  financialButtons.forEach(function (button) {
+    button.addEventListener('click', function () {
+      var basis = button.dataset.finBasis;
+      financialButtons.forEach(function (candidate) {
+        var active = candidate === button;
+        candidate.classList.toggle('active', active);
+        candidate.setAttribute('aria-pressed', String(active));
+      });
+      financialValues.forEach(function (cell) { cell.textContent = cell.dataset[basis] || '—'; });
     });
-    compFilters.forEach(function (button) {
-      var active = button.dataset.compFilter === filter;
-      button.classList.toggle('active', active);
-      button.setAttribute('aria-pressed', String(active));
+  });
+
+  var compIds = Array.from(document.querySelectorAll('.comp-summary[data-comp-select]')).map(function (button) { return button.dataset.compSelect; });
+  var compSelectors = Array.from(document.querySelectorAll('[data-comp-select]'));
+  var compPreviews = Array.from(document.querySelectorAll('[data-comp-preview]'));
+  var compPosition = document.querySelector('[data-comp-position]');
+  var compExplorer = document.querySelector('.comp-explorer');
+  var selectedCompIndex = 0;
+  var compTouchStart = null;
+
+  function selectComp(id, focusOrigin) {
+    var index = compIds.indexOf(id);
+    if (index < 0) return;
+    selectedCompIndex = index;
+    compSelectors.forEach(function (control) {
+      var selected = control.dataset.compSelect === id;
+      control.classList.toggle('is-selected', selected);
+      if (control.hasAttribute('aria-pressed')) control.setAttribute('aria-pressed', String(selected));
     });
-    if (compStatus) compStatus.textContent = 'Showing ' + visibleCount + ' of ' + compCards.length + ' sale comparables.';
+    compPreviews.forEach(function (preview) { preview.hidden = preview.dataset.compPreview !== id; });
+    if (compPosition) compPosition.textContent = (index + 1) + ' of ' + compIds.length;
+    if (focusOrigin === 'pin') {
+      var summary = document.querySelector('.comp-summary[data-comp-select="' + id + '"]');
+      if (summary) summary.setAttribute('aria-current', 'true');
+    }
+    document.querySelectorAll('.comp-summary[aria-current]').forEach(function (summary) {
+      if (summary.dataset.compSelect !== id) summary.removeAttribute('aria-current');
+    });
   }
 
-  compFilters.forEach(function (filterButton) {
-    filterButton.addEventListener('click', function () { filterComps(filterButton.dataset.compFilter); });
+  compSelectors.forEach(function (control) {
+    control.addEventListener('click', function () { selectComp(control.dataset.compSelect, control.classList.contains('map-pin') ? 'pin' : 'list'); });
   });
+  var previousComp = document.querySelector('[data-comp-previous]');
+  var nextComp = document.querySelector('[data-comp-next]');
+  if (previousComp) previousComp.addEventListener('click', function () { selectComp(compIds[(selectedCompIndex - 1 + compIds.length) % compIds.length]); });
+  if (nextComp) nextComp.addEventListener('click', function () { selectComp(compIds[(selectedCompIndex + 1) % compIds.length]); });
 
-  document.querySelectorAll('[data-comp-target]').forEach(function (targetButton) {
-    targetButton.addEventListener('click', function () {
-      filterComps('all');
-      var card = document.querySelector('[data-comp-id="' + targetButton.dataset.compTarget + '"]');
-      if (!card) return;
-      card.classList.add('is-highlighted');
-      var details = card.querySelector('details');
-      if (details) details.open = true;
-      card.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      window.setTimeout(function () {
-        var summary = card.querySelector('summary');
-        if (summary) summary.focus({ preventScroll: true });
-      }, 450);
+  var compMapPanel = document.querySelector('.comp-map-panel');
+  if (compMapPanel) {
+    compMapPanel.addEventListener('touchstart', function (event) { compTouchStart = event.changedTouches[0].clientX; }, { passive: true });
+    compMapPanel.addEventListener('touchend', function (event) {
+      if (compTouchStart === null) return;
+      var delta = event.changedTouches[0].clientX - compTouchStart;
+      if (Math.abs(delta) > 55) selectComp(compIds[(selectedCompIndex + (delta < 0 ? 1 : -1) + compIds.length) % compIds.length]);
+      compTouchStart = null;
+    }, { passive: true });
+  }
+
+  var compViewButtons = Array.from(document.querySelectorAll('[data-comp-view]'));
+  compViewButtons.forEach(function (button) {
+    button.addEventListener('click', function () {
+      var view = button.dataset.compView;
+      compViewButtons.forEach(function (candidate) {
+        var active = candidate === button;
+        candidate.classList.toggle('active', active);
+        candidate.setAttribute('aria-pressed', String(active));
+      });
+      if (compExplorer) compExplorer.dataset.mobileView = view;
     });
   });
-
-  window.addEventListener('scroll', function () {
-    if (header) header.classList.toggle('compact', window.scrollY > 32);
-  }, { passive: true });
+  if (compExplorer) compExplorer.dataset.mobileView = 'list';
+  if (compIds.length) selectComp(compIds[0]);
 })();

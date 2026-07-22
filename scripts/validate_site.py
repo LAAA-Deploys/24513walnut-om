@@ -113,13 +113,17 @@ for key, value in expected.items():
 required_strings = [
     "$1,095,000", "$68,400", "$83,400", "$44,023", "$59,023",
     "4.02%", "5.39%", "16.01x", "13.13x", "CA 01962976", "CA 01905352",
-    "noindex, nofollow, noarchive"
+    "noindex, nofollow, noarchive", "Financing assumptions forthcoming.",
+    "The LAAA Team of Marcus &amp; Millichap is proud to present", "Same rent rules"
 ]
 for value in required_strings:
     if value not in HTML:
         errors.append(f"Missing required rendered value: {value}")
 
-for stale in ["$1,249,000", "3.99%", "30 trains", "Why the LAAA Team", "expected sale", "price reduction"]:
+for stale in [
+    "$1,249,000", "3.99%", "30 trains", "Why the LAAA Team", "expected sale", "price reduction",
+    "Focus the evidence", "Same rent regime", "Main Street sample", "Fourth Street", "Chestnut Street",
+]:
     if stale.lower() in HTML.lower():
         errors.append(f"Stale or seller-facing phrase present: {stale}")
 
@@ -127,13 +131,39 @@ for image in DATA["gallery"]:
     if not (ROOT / image["src"]).exists():
         errors.append(f"Missing image: {image['src']}")
 
+expected_unit_areas = [728, 728, 908]
+actual_unit_areas = [unit.get("unit_sf") for unit in DATA["units"]]
+if actual_unit_areas != expected_unit_areas:
+    errors.append(f"Unit areas: expected {expected_unit_areas}, got {actual_unit_areas}")
+for unit in DATA["units"]:
+    current_psf = f"${unit['current_rent'] / unit['unit_sf']:.2f}"
+    proforma_psf = f"${unit['market_rent'] / unit['unit_sf']:.2f}"
+    if current_psf not in HTML or proforma_psf not in HTML:
+        errors.append(f"Missing calculated rent/SF for {unit['label']}: {current_psf} / {proforma_psf}")
+
+for narrative in ["investment_overview", "location_overview"]:
+    paragraphs = DATA.get(narrative, [])
+    if len(paragraphs) != 3:
+        errors.append(f"{narrative} must contain exactly three paragraphs")
+    if any(len(paragraph.split()) > 80 for paragraph in paragraphs):
+        errors.append(f"{narrative} contains a paragraph over 80 words")
+    if sum(len(paragraph.split()) for paragraph in paragraphs) > 240:
+        errors.append(f"{narrative} exceeds 240 words")
+if not DATA.get("investment_overview", [""])[0].startswith("The LAAA Team of Marcus & Millichap is proud to present"):
+    errors.append("Investment Overview opening is not canonical")
+if len(DATA.get("investment_highlights", [])) not in {5, 6}:
+    errors.append("Investment highlights must contain five or six items")
+for item in DATA.get("investment_highlights", []):
+    if len(item.get("headline", "").split()) > 8 or len(item.get("detail", "").split()) > 40:
+        errors.append(f"Investment highlight exceeds word limit: {item.get('headline')}")
+
 if len(DATA["sale_comps"]) != 6:
     errors.append(f"Expected six sale comparables, got {len(DATA['sale_comps'])}")
 comp_ids = [comp.get("id") for comp in DATA["sale_comps"]]
 if len(set(comp_ids)) != len(comp_ids):
     errors.append("Sale comparable IDs must be unique")
 for comp in DATA["sale_comps"]:
-    for required in ["id", "map_label", "image", "map_url", "verdict", "occupancy", "condition", "strengths", "cautions"]:
+    for required in ["id", "map_label", "image", "map_url", "verdict", "occupancy", "condition", "strengths", "cautions", "distance", "rent_rules", "source"]:
         if not comp.get(required):
             errors.append(f"Sale comparable {comp.get('address', '(unknown)')} lacks {required}")
     if comp.get("image") and not (ROOT / comp["image"]).exists():
@@ -147,6 +177,21 @@ for required_comp in [
 ]:
     if required_comp not in HTML:
         errors.append(f"Missing rendered sale comparable: {required_comp}")
+
+for contact in DATA.get("contacts", []):
+    if not (ROOT / contact.get("image", "")).exists():
+        errors.append(f"Missing listing-agent headshot: {contact.get('name')}")
+    for value in [contact.get("name"), contact.get("title"), contact.get("phone"), contact.get("email"), contact.get("license")]:
+        if value and value not in HTML:
+            errors.append(f"Missing rendered contact value: {value}")
+
+for required_markup in [
+    "data-fin-basis=\"total\"", "data-fin-basis=\"unit\"", "data-fin-basis=\"sf\"",
+    "data-comp-view=\"list\"", "data-comp-view=\"map\"", "data-location-view=\"district\"",
+    "table-scroll-cue", "assets/images/glen-scher.jpg", "assets/images/filip-niculete.jpg",
+]:
+    if required_markup not in HTML:
+        errors.append(f"Missing required responsive feature: {required_markup}")
 
 if re.search(r'''(?:src|poster)=["']https?://''', HTML, re.I) or re.search(r"url\(\s*[\"']?https?://", HTML, re.I):
     errors.append("Runtime assets must remain local; external URLs may be links only")
