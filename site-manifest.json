@@ -152,8 +152,8 @@
     },
     {
       "path": "assets/styles.css",
-      "sha256": "c0f03d443b373f5e26a5715c245c1c2e8940f5cdf5d4e3b3fe9e9c594f0157b5",
-      "bytes": 30409
+      "sha256": "05e787a07ee6a4828966c660320f9eee697c2ccbf7c78ffd12b1082b72efb417",
+      "bytes": 32778
     },
     {
       "path": "data/site-data.json",
@@ -162,8 +162,8 @@
     },
     {
       "path": "index.html",
-      "sha256": "8335026bb5a133ac4355a691bc7270e210761c4cb04d99084d90d82efd10a762",
-      "bytes": 44117
+      "sha256": "275ba84d1bb61ad3f6bd0c4a50bf02147eb07af9c45ddd80486a5968abb31498",
+      "bytes": 44855
     },
     {
       "path": "package-lock.json",
@@ -187,8 +187,8 @@
     },
     {
       "path": "scripts/build_site.py",
-      "sha256": "712efbed136a04bce8d55c175463dfec13247b5913286dc4dd83ee05c1795b7f",
-      "bytes": 9245
+      "sha256": "40593db393dfeab4901bad6baa86d0e028adf13f4db481f3bbc51a14cb8dac51",
+      "bytes": 9550
     },
     {
       "path": "scripts/serve_local.py",
@@ -202,13 +202,13 @@
     },
     {
       "path": "src/index.template",
-      "sha256": "4098aab0539aaa8f24f5ba2b5d0fac82a557e0e8428439c980c1689cc880545b",
-      "bytes": 18585
+      "sha256": "b4d888c7af4865f35c93cdc63125ba19811ff5b62bda713eaaacc1954bd2a917",
+      "bytes": 18216
     },
     {
       "path": "tests/ui-regression.cjs",
-      "sha256": "a70ffa8478db8c47c504912045c828b322a51a64db91883dc1d9ca909dc90a24",
-      "bytes": 13772
+      "sha256": "c91f4a7554c63237d5c4c9b5c96026bb284156ad4cee41b60821790bf6aea8e6",
+      "bytes": 14699
     }
   ]
 }

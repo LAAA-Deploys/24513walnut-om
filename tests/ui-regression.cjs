@@ -81,6 +81,7 @@ async function inspectViewport(browser, width, height, options = {}) {
       .map(element => `${element.tagName.toLowerCase()}.${element.className || ''}:${element.textContent.trim().slice(0, 50)}`);
     const tables = Array.from(document.querySelectorAll('.table-shell')).map(region => {
       const firstCell = region.querySelector('th:first-child,td:first-child');
+      const firstRow = region.querySelector('tbody tr');
       return {
         tabindex: region.getAttribute('tabindex'),
         role: region.getAttribute('role'),
@@ -88,8 +89,11 @@ async function inspectViewport(browser, width, height, options = {}) {
         overflows: region.scrollWidth > region.clientWidth + 1,
         hasCue: Boolean(region.parentElement.querySelector('.table-scroll-cue')),
         sticky: firstCell ? getComputedStyle(firstCell).position === 'sticky' : false,
+        rowLayout: firstRow ? getComputedStyle(firstRow).display : null,
       };
     });
+    const expenseTable = document.querySelector('.expense-table');
+    const expenseRow = expenseTable?.querySelector('tr');
     const images = Array.from(document.images).map(img => ({ src: img.getAttribute('src'), alt: img.getAttribute('alt'), complete: img.complete, naturalWidth: img.naturalWidth }));
     const hashLinks = Array.from(document.querySelectorAll('a[href^="#"]')).map(link => link.getAttribute('href')).filter(href => href !== '#');
     return {
@@ -98,6 +102,10 @@ async function inspectViewport(browser, width, height, options = {}) {
       controls,
       clipped,
       tables,
+      expenseTable: expenseTable ? {
+        overflows: expenseTable.scrollWidth > expenseTable.clientWidth + 1,
+        rowLayout: expenseRow ? getComputedStyle(expenseRow).display : null,
+      } : null,
       images,
       compCount: document.querySelectorAll('[data-comp-card]').length,
       compMapButtons: document.querySelectorAll('[data-comp-target]').length,
@@ -130,11 +138,18 @@ async function inspectViewport(browser, width, height, options = {}) {
   });
   result.tables.forEach((table, index) => {
     check(table.tabindex === '0' && table.role === 'region' && Boolean(table.label), `${key}: table ${index + 1} lacks keyboard region semantics`);
-    if (table.overflows) {
+    if (width <= 620) {
+      check(!table.overflows, `${key}: mobile table ${index + 1} still scrolls horizontally`);
+      check(table.rowLayout === 'grid', `${key}: mobile table ${index + 1} is not using the stacked row layout`);
+    } else if (table.overflows) {
       check(table.hasCue, `${key}: table ${index + 1} lacks overflow cue`);
-      if (width <= 620) check(table.sticky, `${key}: table ${index + 1} lacks sticky identifying column`);
     }
   });
+  check(Boolean(result.expenseTable), `${key}: expense table missing`);
+  if (width <= 620 && result.expenseTable) {
+    check(!result.expenseTable.overflows, `${key}: mobile expense table still scrolls horizontally`);
+    check(result.expenseTable.rowLayout === 'grid', `${key}: mobile expense rows are not width-constrained`);
+  }
   check(runtimeErrors.length === 0, `${key}: runtime errors ${runtimeErrors.join('; ')}`);
 
   if (screenshotWidths.has(`${width}x${height}`) && !options.suffix) {

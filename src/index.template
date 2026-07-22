@@ -76,9 +76,8 @@
     <section class="section financial-section" id="financials">
       <div class="container section-heading light"><div><p class="eyebrow">Operating profile</p><h2>Current income with a conservative path to stabilization.</h2></div><p>Current rents were reported to the broker and remain subject to lease verification. No seller T-12 was available; expenses below are broker estimates using the LAAA residential 2–4-unit basis.</p></div>
       <div class="container table-region">
-        <p class="table-scroll-cue" data-laaa-scroll-cue id="rent-roll-cue">Swipe or use arrow keys to view all columns <span aria-hidden="true">→</span></p>
-        <div class="table-shell" data-laaa-scroll-region tabindex="0" role="region" aria-label="Rent roll table. Scroll horizontally for additional columns." aria-describedby="rent-roll-cue">
-          <table><caption>Rent roll</caption><thead><tr><th>Residence</th><th>Unit type</th><th>Current rent</th><th>Pro Forma rent</th><th>Status</th></tr></thead><tbody>{{UNIT_ROWS}}</tbody><tfoot><tr><td colspan="2">Monthly total</td><td>$5,700</td><td>$6,950</td><td></td></tr></tfoot></table>
+        <div class="table-shell" data-laaa-scroll-region tabindex="0" role="region" aria-label="Rent roll table">
+          <table class="rent-roll-table"><caption>Rent roll</caption><thead><tr><th>Residence</th><th>Unit type</th><th>Current rent</th><th>Pro Forma rent</th><th>Status</th></tr></thead><tbody>{{UNIT_ROWS}}</tbody><tfoot><tr><td colspan="2">Monthly total</td><td data-label="Current rent">$5,700</td><td data-label="Pro Forma rent">$6,950</td><td></td></tr></tfoot></table>
         </div>
       </div>
       <div class="container financial-grid">
@@ -110,7 +109,7 @@
         <p class="sr-only" data-comp-status aria-live="polite">Showing all six sale comparables.</p>
       </div>
       <div class="container comp-grid">{{COMP_CARDS}}</div>
-      <div class="container rent-panel"><div class="rent-copy"><p class="eyebrow">Rent evidence</p><h2>Pro Forma rents are positioned below survey medians.</h2><p>The survey includes newer Old Town product and is not a lease comp set. The selected 1-bedroom rent is modestly above the survey’s 25th percentile, while the selected 2-bedroom rents are below it; both remain below their respective medians.</p></div><div class="table-region"><p class="table-scroll-cue" data-laaa-scroll-cue id="rent-evidence-cue">Swipe or use arrow keys to view all columns <span aria-hidden="true">→</span></p><div class="table-shell compact" data-laaa-scroll-region tabindex="0" role="region" aria-label="Rent evidence table. Scroll horizontally for additional columns." aria-describedby="rent-evidence-cue"><table><thead><tr><th>Evidence</th><th>Median</th><th>25th percentile</th><th>Selected</th><th>Interpretation</th></tr></thead><tbody>{{RENT_ROWS}}</tbody></table></div></div></div>
+      <div class="container rent-panel"><div class="rent-copy"><p class="eyebrow">Rent evidence</p><h2>Pro Forma rents are positioned below survey medians.</h2><p>The survey includes newer Old Town product and is not a lease comp set. The selected 1-bedroom rent is modestly above the survey’s 25th percentile, while the selected 2-bedroom rents are below it; both remain below their respective medians.</p></div><div class="table-region"><div class="table-shell compact" data-laaa-scroll-region tabindex="0" role="region" aria-label="Rent evidence table"><table class="rent-evidence-table"><thead><tr><th>Evidence</th><th>Median</th><th>25th percentile</th><th>Selected</th><th>Interpretation</th></tr></thead><tbody>{{RENT_ROWS}}</tbody></table></div></div></div>
     </section>
 
     <section class="section location-section" id="location">

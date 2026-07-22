@@ -22,11 +22,11 @@ def unit_rows() -> str:
     for unit in DATA["units"]:
         rows.append(
             "<tr>"
-            f"<td><strong>{html.escape(unit['label'])}</strong></td>"
-            f"<td>{html.escape(unit['type'])}</td>"
-            f"<td>{money(unit['current_rent'])}</td>"
-            f"<td>{money(unit['market_rent'])}</td>"
-            f"<td><span class='status-pill'>{html.escape(unit['status'])}</span></td>"
+            f"<td data-label='Residence'><strong>{html.escape(unit['label'])}</strong></td>"
+            f"<td data-label='Unit type'>{html.escape(unit['type'])}</td>"
+            f"<td data-label='Current rent'>{money(unit['current_rent'])}</td>"
+            f"<td data-label='Pro Forma rent'>{money(unit['market_rent'])}</td>"
+            f"<td data-label='Status'><span class='status-pill'>{html.escape(unit['status'])}</span></td>"
             "</tr>"
         )
     return "".join(rows)
@@ -37,9 +37,9 @@ def expense_rows() -> str:
     for expense in DATA["expenses"]:
         rows.append(
             "<tr>"
-            f"<td>{html.escape(expense['label'])}<small>{html.escape(expense['basis'])}</small></td>"
-            f"<td>{money(expense['current'])}</td>"
-            f"<td>{money(expense['pro_forma'])}</td>"
+            f"<td data-label='Expense'>{html.escape(expense['label'])}<small>{html.escape(expense['basis'])}</small></td>"
+            f"<td data-label='Year 1'>{money(expense['current'])}</td>"
+            f"<td data-label='Pro Forma'>{money(expense['pro_forma'])}</td>"
             "</tr>"
         )
     return "".join(rows)
@@ -112,9 +112,9 @@ def rent_rows() -> str:
         selected = money(item["selected"]) if item["selected"] is not None else "Cross-check"
         rows.append(
             "<tr>"
-            f"<td><strong>{html.escape(item['segment'])}</strong><small>{html.escape(item['sample'])}</small></td>"
-            f"<td>{median}</td><td>{p25}</td><td>{selected}</td>"
-            f"<td>{html.escape(item['note'])}</td>"
+            f"<td data-label='Evidence'><strong>{html.escape(item['segment'])}</strong><small>{html.escape(item['sample'])}</small></td>"
+            f"<td data-label='Median'>{median}</td><td data-label='25th percentile'>{p25}</td><td data-label='Selected'>{selected}</td>"
+            f"<td data-label='Interpretation'>{html.escape(item['note'])}</td>"
             "</tr>"
         )
     return "".join(rows)
