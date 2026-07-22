@@ -121,21 +121,6 @@
       "bytes": 27
     },
     {
-      "path": "scripts/__pycache__/build_site.cpython-313.pyc",
-      "sha256": "b1e45876ea177e68a8b12346284df2987ff10f40a5e483a7e0d8b54b42430af5",
-      "bytes": 9798
-    },
-    {
-      "path": "scripts/__pycache__/serve_local.cpython-313.pyc",
-      "sha256": "e10cb7425cac69dbcdca329a9419945a333eb4e9d7a35ee8389af34257c89fe0",
-      "bytes": 1171
-    },
-    {
-      "path": "scripts/__pycache__/validate_site.cpython-313.pyc",
-      "sha256": "e5f46e27721de8fb590f2f53f14c640329ad51c0bef7c648f389d744c0e07767",
-      "bytes": 5494
-    },
-    {
       "path": "scripts/build_site.py",
       "sha256": "bfb9d504aa61f760f8e7a1488db08846a7772fe041d79f66e884a4b13eb65bfb",
       "bytes": 5853
@@ -147,8 +132,8 @@
     },
     {
       "path": "scripts/validate_site.py",
-      "sha256": "84ce1b2ec86aeb0afd06c89ff8d5b5da31a1d44b293c1f2db89e469dec97fe4d",
-      "bytes": 3307
+      "sha256": "f5bb26af1c41934ac80dcfa5b87064d45e491ebb7aeb2c13973a1975f083f1e0",
+      "bytes": 3386
     },
     {
       "path": "src/index.template.html",

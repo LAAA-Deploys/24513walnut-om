@@ -79,7 +79,13 @@ for forbidden in ["voicemail", "human review packet", "internal evaluation memo"
 
 files = []
 for path in sorted(ROOT.rglob("*")):
-    if not path.is_file() or ".git" in path.parts or "qa" in path.parts or path.name == "site-manifest.json":
+    if (
+        not path.is_file()
+        or ".git" in path.parts
+        or "qa" in path.parts
+        or "__pycache__" in path.parts
+        or path.name == "site-manifest.json"
+    ):
         continue
     digest = hashlib.sha256(path.read_bytes()).hexdigest()
     files.append({"path": path.relative_to(ROOT).as_posix(), "sha256": digest, "bytes": path.stat().st_size})
