@@ -207,8 +207,8 @@
     },
     {
       "path": "tests/ui-regression.cjs",
-      "sha256": "4432edc48744198a3c9ac1ee732da49b5f3208e08295496a3f4cc2f1a1101425",
-      "bytes": 13204
+      "sha256": "a70ffa8478db8c47c504912045c828b322a51a64db91883dc1d9ca909dc90a24",
+      "bytes": 13772
     }
   ]
 }

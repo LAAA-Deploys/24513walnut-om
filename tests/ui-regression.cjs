@@ -3,6 +3,7 @@ const path = require('path');
 const { chromium, webkit } = require('playwright');
 
 const baseUrl = process.env.SITE_URL || 'http://127.0.0.1:8766/';
+const baseOrigin = new URL(baseUrl).origin;
 const outputDir = path.resolve(process.env.QA_DIR || 'qa');
 fs.mkdirSync(outputDir, { recursive: true });
 
@@ -26,6 +27,12 @@ async function inspectViewport(browser, width, height, options = {}) {
     isMobile: Boolean(options.isMobile),
     hasTouch: Boolean(options.hasTouch),
   });
+  await context.route('**/*', async route => {
+    const requestUrl = route.request().url();
+    const url = new URL(requestUrl);
+    if (/^https?:$/.test(url.protocol) && url.origin !== baseOrigin) await route.abort('blockedbyclient');
+    else await route.continue();
+  });
   const page = await context.newPage();
   const runtimeErrors = [];
   page.on('console', message => { if (message.type() === 'error') runtimeErrors.push(`console: ${message.text()}`); });
@@ -34,6 +41,7 @@ async function inspectViewport(browser, width, height, options = {}) {
 
   await page.goto(baseUrl, { waitUntil: 'networkidle' });
   await page.evaluate(() => document.fonts && document.fonts.ready);
+  await page.evaluate(() => document.querySelectorAll('img[loading="lazy"]').forEach(image => { image.loading = 'eager'; }));
   await page.evaluate(async () => {
     for (let y = 0; y < document.documentElement.scrollHeight; y += Math.max(300, window.innerHeight * .75)) {
       window.scrollTo(0, y);
@@ -42,6 +50,7 @@ async function inspectViewport(browser, width, height, options = {}) {
     await Promise.all(Array.from(document.images, image => image.decode().catch(() => undefined)));
     window.scrollTo(0, 0);
   });
+  await page.waitForFunction(() => Array.from(document.images).every(image => image.complete && image.naturalWidth > 0));
 
   const result = await page.evaluate(() => {
     const visible = element => {
