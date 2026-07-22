@@ -5,8 +5,17 @@
   var nav = document.querySelector('#primary-nav');
   var label = button ? button.querySelector('.menu-label') : null;
   var backdrop = document.querySelector('.menu-backdrop');
+  var header = document.querySelector('.site-header');
   var pageRegions = [document.querySelector('main'), document.querySelector('footer'), document.querySelector('.mobile-cta')].filter(Boolean);
   var menuOpen = false;
+
+  function syncMenuTop() {
+    if (!header) return;
+    var rect = header.getBoundingClientRect();
+    var bottom = Math.max(0, Math.round(rect.bottom));
+    document.documentElement.style.setProperty('--menu-top', bottom + 'px');
+    document.documentElement.style.setProperty('--menu-offset', Math.round(rect.height) + 'px');
+  }
 
   function setBackgroundInert(inert) {
     pageRegions.forEach(function (region) {
@@ -30,6 +39,7 @@
 
   function openMenu() {
     if (!button || !nav) return;
+    syncMenuTop();
     menuOpen = true;
     button.setAttribute('aria-expanded', 'true');
     if (label) label.textContent = 'Close navigation';
@@ -87,8 +97,11 @@
     });
 
     window.addEventListener('resize', function () {
+      syncMenuTop();
       if (window.innerWidth > 900 && menuOpen) closeMenu(false);
     }, { passive: true });
+    window.addEventListener('scroll', syncMenuTop, { passive: true });
+    syncMenuTop();
   }
 
   document.querySelectorAll('.table-shell').forEach(function (region) {
@@ -105,7 +118,6 @@
     updateOverflowState();
   });
 
-  var header = document.querySelector('.site-header');
   window.addEventListener('scroll', function () {
     if (header) header.classList.toggle('compact', window.scrollY > 32);
   }, { passive: true });

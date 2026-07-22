@@ -126,10 +126,20 @@ async function inspectViewport(browser, width, height, options = {}) {
 
   if (width <= 900 && !options.skipMenu) {
     const toggle = page.locator('.menu-toggle');
+    if (width === 320) {
+      await page.locator('.preview-band').evaluate(element => { element.textContent += ' — confidential review edition for approved recipients only'; });
+    }
     await toggle.click();
     check(await toggle.getAttribute('aria-expanded') === 'true', `${key}: menu did not open`);
     check((await toggle.textContent()).includes('Close navigation'), `${key}: open menu lacks Close accessible name`);
     check(await page.evaluate(() => document.activeElement === document.querySelector('#primary-nav a')), `${key}: first menu link was not focused`);
+    const menuGeometry = await page.evaluate(() => ({
+      headerBottom: document.querySelector('.site-header').getBoundingClientRect().bottom,
+      navTop: document.querySelector('#primary-nav').getBoundingClientRect().top,
+      backdropTop: document.querySelector('.menu-backdrop').getBoundingClientRect().top,
+    }));
+    check(Math.abs(menuGeometry.navTop - menuGeometry.headerBottom) <= 1, `${key}: menu top ${menuGeometry.navTop} does not match header bottom ${menuGeometry.headerBottom}`);
+    check(Math.abs(menuGeometry.backdropTop - menuGeometry.headerBottom) <= 1, `${key}: backdrop top ${menuGeometry.backdropTop} does not match header bottom ${menuGeometry.headerBottom}`);
     await page.keyboard.press('Shift+Tab');
     check(await page.evaluate(() => document.activeElement === document.querySelector('.menu-toggle')), `${key}: focus did not move to menu toggle`);
     await page.keyboard.press('Shift+Tab');

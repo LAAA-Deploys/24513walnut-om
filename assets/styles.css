@@ -12,6 +12,8 @@
   --max: 1180px;
   --serif: Georgia, 'Times New Roman', serif;
   --sans: Inter, Arial, Helvetica, sans-serif;
+  --menu-top: 93px;
+  --menu-offset: 64px;
 }
 
 * { box-sizing: border-box; }
@@ -41,7 +43,7 @@ button, a { touch-action: manipulation; }
 .menu-toggle[aria-expanded="true"] span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
 .menu-toggle[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
 .menu-toggle[aria-expanded="true"] span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
-.menu-backdrop { position: fixed; inset: 93px 0 0; z-index: 48; background: rgba(5,18,30,.5); }
+.menu-backdrop { position: fixed; inset: var(--menu-top) 0 0; z-index: 48; background: rgba(5,18,30,.5); }
 .container { width: min(calc(100% - 44px), var(--max)); margin: 0 auto; }
 
 .hero { position: relative; min-height: 760px; height: calc(100vh - 103px); max-height: 920px; color: white; display: grid; align-items: end; overflow: hidden; }
@@ -190,11 +192,11 @@ footer { background: #081a2a; color: #c2ccd3; padding: 50px 0 100px; font-size: 
   .wordmark .brand-slot img { width: 112px; }
   .site-descriptor { display: none; }
   .menu-toggle { display: block; position: relative; z-index: 4; }
-  #primary-nav { display: none; position: fixed; z-index: 49; inset: 93px 0 auto; max-height: calc(100svh - 93px); overflow-y: auto; background: var(--paper); padding: 22px; box-shadow: 0 18px 30px rgba(0,0,0,.13); flex-direction: column; gap: 0; }
+  #primary-nav { display: none; position: fixed; z-index: 49; inset: var(--menu-offset) 0 auto; max-height: calc(100svh - var(--menu-top)); overflow-y: auto; background: var(--paper); padding: 22px; box-shadow: 0 18px 30px rgba(0,0,0,.13); flex-direction: column; gap: 0; }
   #primary-nav.open { display: flex; }
   #primary-nav a { min-height: 48px; display: flex; align-items: center; border-bottom: 1px solid var(--line); }
   body.menu-open { overflow: hidden; }
-  .hero { height: auto; min-height: calc(100svh - 93px); max-height: none; display: flex; flex-direction: column; justify-content: flex-end; padding-top: clamp(120px,24svh,220px); }
+  .hero { height: auto; min-height: calc(100svh - 64px); max-height: none; display: flex; flex-direction: column; justify-content: flex-end; padding-top: clamp(120px,24svh,220px); }
   .hero-content { flex: 0 0 auto; padding: 32px 0 28px; }
   .hero-scrim { background: linear-gradient(0deg,rgba(6,23,38,.94),rgba(6,23,38,.16) 90%); }
   .hero-stats { position: relative; left: auto; bottom: auto; transform: none; flex: 0 0 auto; margin: 0 auto; grid-template-columns: repeat(2,1fr); }

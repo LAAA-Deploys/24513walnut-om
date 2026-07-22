@@ -12,6 +12,7 @@ DATA = json.loads((ROOT / "data" / "site-data.json").read_text(encoding="utf-8")
 HTML = (ROOT / "index.html").read_text(encoding="utf-8")
 
 errors: list[str] = []
+IGNORED_PARTS = {".git", "qa", "node_modules", "__pycache__"}
 
 APPROVED_LOGOS = {
     "assets/brand/LAAA_Team_Blue.png": {
@@ -73,7 +74,7 @@ for slot in re.findall(r'<span[^>]*data-laaa-brand-slot="[^"]+"[^>]*>.*?</span>'
         errors.append("Brand slot contains styled text instead of an approved image")
 
 for candidate in ROOT.rglob("*"):
-    if not candidate.is_file() or ".git" in candidate.parts:
+    if not candidate.is_file() or any(part in IGNORED_PARTS for part in candidate.parts):
         continue
     relative = candidate.relative_to(ROOT).as_posix()
     if re.search(r"(?:laaa|logo|brand)", candidate.name, re.I) and candidate.suffix.lower() in {".png", ".jpg", ".jpeg", ".svg", ".webp", ".gif"}:
@@ -150,9 +151,7 @@ files = []
 for path in sorted(ROOT.rglob("*")):
     if (
         not path.is_file()
-        or ".git" in path.parts
-        or "qa" in path.parts
-        or "__pycache__" in path.parts
+        or any(part in IGNORED_PARTS for part in path.parts)
         or path.name == "site-manifest.json"
     ):
         continue
