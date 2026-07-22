@@ -57,7 +57,7 @@ def comp_cards() -> str:
             "<div class='comp-stats'>"
             f"<span><b>{money(comp['ppu'])}</b> / unit</span>"
             f"<span><b>{money(comp['ppsf'])}</b> / SF</span>"
-            f"<span><b>{comp['grm']:.2f}x</b> GRM</span>"
+            f"<span><b>{comp['units']}</b> units</span>"
             "</div>"
             f"<p>{html.escape(comp['note'])}</p>"
             "</article>"
@@ -154,4 +154,3 @@ if "{{" in output or "}}" in output:
 
 (ROOT / "index.html").write_text(output, encoding="utf-8", newline="\n")
 print(f"Built {ROOT / 'index.html'}")
-

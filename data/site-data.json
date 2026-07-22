@@ -35,10 +35,10 @@
     {"label": "Landscaping / pest", "current": 750, "pro_forma": 750, "basis": "Broker benchmark estimate"}
   ],
   "sale_comps": [
-    {"address": "25252 Atwood Avenue", "city": "Newhall", "close_date": "2026-05-15", "price": 1150000, "units": 3, "sf": 2810, "ppu": 383333, "ppsf": 409, "grm": 11.98, "cap": 5.86, "role": "Upper benchmark", "note": "Renovated multi-building property with newer ADU and pool; materially superior condition."},
-    {"address": "1237 Coronel Street", "city": "San Fernando", "close_date": "2024-08-27", "price": 1090000, "units": 3, "sf": 3106, "ppu": 363333, "ppsf": 351, "grm": 14.49, "cap": 4.68, "role": "Income benchmark", "note": "Larger triplex with stable tenancy; normalized yield shown on the same residential basis."},
-    {"address": "10427 Oro Vista Avenue", "city": "Sunland", "close_date": "2025-07-01", "price": 1075000, "units": 3, "sf": 2858, "ppu": 358333, "ppsf": 376, "grm": 18.59, "cap": 3.26, "role": "Occupied benchmark", "note": "Pride-of-ownership triplex with stable tenants and lower in-place rents."},
-    {"address": "10030 Pinewood Avenue", "city": "Tujunga", "close_date": "2024-12-06", "price": 1050000, "units": 3, "sf": 2656, "ppu": 350000, "ppsf": 395, "grm": 28.0, "cap": 1.76, "role": "Physical analog", "note": "Three detached homes on a larger lot; deeply suppressed rents make reported yield non-comparable."}
+    {"address": "25252 Atwood Avenue", "city": "Newhall", "close_date": "2026-05-15", "price": 1150000, "units": 3, "sf": 2810, "ppu": 383333, "ppsf": 409, "role": "Upper benchmark", "note": "Renovated multi-building property with newer ADU and pool; materially superior condition."},
+    {"address": "1237 Coronel Street", "city": "San Fernando", "close_date": "2024-08-27", "price": 1090000, "units": 3, "sf": 3106, "ppu": 363333, "ppsf": 351, "role": "Income benchmark", "note": "Larger triplex with stable tenancy; useful as a price-per-unit and price-per-square-foot benchmark."},
+    {"address": "10427 Oro Vista Avenue", "city": "Sunland", "close_date": "2025-07-01", "price": 1075000, "units": 3, "sf": 2858, "ppu": 358333, "ppsf": 376, "role": "Occupied benchmark", "note": "Pride-of-ownership triplex with stable tenants and lower in-place rents."},
+    {"address": "10030 Pinewood Avenue", "city": "Tujunga", "close_date": "2024-12-06", "price": 1050000, "units": 3, "sf": 2656, "ppu": 350000, "ppsf": 395, "role": "Physical analog", "note": "Three detached homes on a larger lot; current income was not used as a yield benchmark."}
   ],
   "rent_evidence": [
     {"segment": "1BR apartments", "sample": "15 observations / 2-mile radius", "median": 2210, "percentile_25": 2093, "selected": 2150, "note": "Selected near the lower quartile for the detached rear house; condition and lease terms require verification."},
@@ -60,4 +60,3 @@
     {"src": "assets/images/walnut-corridor.jpg", "alt": "Aerial view looking along Walnut Street through Old Town Newhall", "caption": "Walnut Street corridor · archived listing photography"}
   ]
 }
-
