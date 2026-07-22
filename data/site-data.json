@@ -1,0 +1,62 @@
+{
+  "meta": {
+    "title": "24513 Walnut Street | Offering Memorandum",
+    "description": "A three-unit residential investment opportunity in Old Town Newhall, California.",
+    "as_of": "2026-07-21",
+    "status": "Confidential Offering Memorandum",
+    "offering_price": 1095000
+  },
+  "property": {
+    "address": "24513–24519 Walnut Street",
+    "city_state_zip": "Newhall, CA 91321",
+    "apn": "2831-005-003",
+    "units": 3,
+    "bedrooms": 5,
+    "bathrooms": 3,
+    "building_sf": 2364,
+    "lot_sf": 9379,
+    "year_built": "1926 / 1954",
+    "zoning": "Old Town Newhall Specific Plan — Corridor (COR)",
+    "occupancy": "100%",
+    "parking": "Garage and on-site parking; buyer to verify count and configuration",
+    "flood_zone": "Zone X"
+  },
+  "units": [
+    {"label": "Duplex Unit A", "type": "2BR / 1BA", "current_rent": 1800, "market_rent": 2400, "status": "Occupied"},
+    {"label": "Duplex Unit B", "type": "2BR / 1BA", "current_rent": 1800, "market_rent": 2400, "status": "Occupied"},
+    {"label": "Rear House", "type": "1BR / 1BA", "current_rent": 2100, "market_rent": 2150, "status": "Occupied"}
+  ],
+  "expenses": [
+    {"label": "Property taxes", "current": 15363, "pro_forma": 15363, "basis": "Estimated reassessment at 1.403% of offering price"},
+    {"label": "Insurance", "current": 2964, "pro_forma": 2964, "basis": "Broker benchmark estimate"},
+    {"label": "Water / sewer", "current": 2000, "pro_forma": 2000, "basis": "Broker estimate; responsibility to be verified"},
+    {"label": "Trash", "current": 1050, "pro_forma": 1050, "basis": "Broker estimate; responsibility to be verified"},
+    {"label": "Repairs & maintenance", "current": 2250, "pro_forma": 2250, "basis": "$750 per unit benchmark"},
+    {"label": "Landscaping / pest", "current": 750, "pro_forma": 750, "basis": "Broker benchmark estimate"}
+  ],
+  "sale_comps": [
+    {"address": "25252 Atwood Avenue", "city": "Newhall", "close_date": "2026-05-15", "price": 1150000, "units": 3, "sf": 2810, "ppu": 383333, "ppsf": 409, "role": "Upper benchmark", "note": "Renovated multi-building property with newer ADU and pool; materially superior condition."},
+    {"address": "1237 Coronel Street", "city": "San Fernando", "close_date": "2024-08-27", "price": 1090000, "units": 3, "sf": 3106, "ppu": 363333, "ppsf": 351, "role": "Income benchmark", "note": "Larger triplex with stable tenancy; useful as a price-per-unit and price-per-square-foot benchmark."},
+    {"address": "10427 Oro Vista Avenue", "city": "Sunland", "close_date": "2025-07-01", "price": 1075000, "units": 3, "sf": 2858, "ppu": 358333, "ppsf": 376, "role": "Occupied benchmark", "note": "Pride-of-ownership triplex with stable tenants and lower in-place rents."},
+    {"address": "10030 Pinewood Avenue", "city": "Tujunga", "close_date": "2024-12-06", "price": 1050000, "units": 3, "sf": 2656, "ppu": 350000, "ppsf": 395, "role": "Physical analog", "note": "Three detached homes on a larger lot; current income was not used as a yield benchmark."}
+  ],
+  "rent_evidence": [
+    {"segment": "1BR apartments", "sample": "15 observations / 2-mile radius", "median": 2210, "percentile_25": 2093, "selected": 2150, "note": "Selected near the lower quartile for the detached rear house; condition and lease terms require verification."},
+    {"segment": "2BR apartments", "sample": "20 observations / 1-mile radius", "median": 3295, "percentile_25": 2493, "selected": 2400, "note": "Selected below the lower quartile to reflect vintage and current condition."},
+    {"segment": "Atwood achieved rents", "sample": "Closed 2026 triplex", "median": null, "percentile_25": null, "selected": null, "note": "Achieved rents of $2,175 to $3,450 support the direction of the pro forma but reflect superior condition."}
+  ],
+  "contacts": [
+    {"name": "Glen Scher", "title": "Senior Managing Director Investments", "phone": "(818) 212-2808", "email": "Glen.Scher@marcusmillichap.com", "license": "CA 01962976", "image": "assets/images/glen-scher.jpg"},
+    {"name": "Filip Niculete", "title": "Senior Managing Director Investments", "phone": "(818) 212-2748", "email": "Filip.Niculete@marcusmillichap.com", "license": "CA 01905352", "image": "assets/images/filip-niculete.jpg"}
+  ],
+  "gallery": [
+    {"src": "assets/images/hero-front-aerial.jpg", "alt": "Aerial view of the Walnut Street frontage and existing residential improvements", "caption": "Walnut Street frontage · archived listing photography"},
+    {"src": "assets/images/site-oblique.jpg", "alt": "Oblique aerial view of the property and surrounding Old Town Newhall blocks", "caption": "Old Town Newhall context · archived listing photography"},
+    {"src": "assets/images/site-topdown.jpg", "alt": "Top-down aerial view of the lot and building arrangement", "caption": "Site configuration · archived listing photography"},
+    {"src": "assets/images/front-driveway.jpg", "alt": "Street-level view of the front duplex and driveway", "caption": "Front duplex and driveway · archived listing photography"},
+    {"src": "assets/images/rear-house.jpg", "alt": "Rear one-bedroom residence viewed from the alley", "caption": "Detached rear residence · archived listing photography"},
+    {"src": "assets/images/rear-buildings-aerial.jpg", "alt": "Aerial view of the rear structures and alley access", "caption": "Rear improvements and alley access · archived listing photography"},
+    {"src": "assets/images/rear-yard.jpg", "alt": "Existing landscaped yard area between the residential improvements", "caption": "Private outdoor area · archived listing photography"},
+    {"src": "assets/images/walnut-corridor.jpg", "alt": "Aerial view looking along Walnut Street through Old Town Newhall", "caption": "Walnut Street corridor · archived listing photography"}
+  ]
+}

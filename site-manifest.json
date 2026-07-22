@@ -1,0 +1,144 @@
+{
+  "files": [
+    {
+      "path": ".gitignore",
+      "sha256": "dbb53c15a3bef0ad78316ecd564c9915f3719d3fdbe341855181c679f1663c2f",
+      "bytes": 40
+    },
+    {
+      "path": ".nojekyll",
+      "sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "bytes": 1
+    },
+    {
+      "path": "assets/images/filip-niculete.jpg",
+      "sha256": "38c17514422a349e48c08787fa319fb0104d8e0239f2e5fea29f218505dd7d2a",
+      "bytes": 13322
+    },
+    {
+      "path": "assets/images/front-driveway.jpg",
+      "sha256": "6ae82663fd8d55c6ca84e0cdc73ec093c8ccbe70b1ddd19b2fbfe6d9f7876061",
+      "bytes": 122526
+    },
+    {
+      "path": "assets/images/glen-scher.jpg",
+      "sha256": "161ff006d49a8297d84cae4434e1b641fd1f82a374afc25d74ee4b1cd19b0ab3",
+      "bytes": 13557
+    },
+    {
+      "path": "assets/images/hero-front-aerial.jpg",
+      "sha256": "6a267c145cb9eab9ff90b7c93ec5745c7609f8a271ba1abd5ece5682e67f13d4",
+      "bytes": 189575
+    },
+    {
+      "path": "assets/images/map-newhall.jpg",
+      "sha256": "b6548180e93452bc431ab242d2947f4a836134ebf125cdd46a429fd4a307d101",
+      "bytes": 104642
+    },
+    {
+      "path": "assets/images/map-transit.jpg",
+      "sha256": "f7344f6d27c726a8309d0db33b7134ddbc05dac2d3f8d6e8583776fd7635bf25",
+      "bytes": 99519
+    },
+    {
+      "path": "assets/images/rear-buildings-aerial.jpg",
+      "sha256": "a15664660bba39232df228d5807d0c9303bc1541e9743251fef0f1135753652c",
+      "bytes": 107995
+    },
+    {
+      "path": "assets/images/rear-house.jpg",
+      "sha256": "13dead3286c42f6f26d936e840a113d817bca069dfa9f38742e883b5a3ff208c",
+      "bytes": 234052
+    },
+    {
+      "path": "assets/images/rear-residence.jpg",
+      "sha256": "c33bb453d83dba35bbe45b6494fec40e6dbae75256487bdf04dc29d887b5a280",
+      "bytes": 140787
+    },
+    {
+      "path": "assets/images/rear-yard.jpg",
+      "sha256": "951260924019e321dd51fe73d088346444595e4e5cc3916d59f8d23e2808769a",
+      "bytes": 135221
+    },
+    {
+      "path": "assets/images/site-aerial-tree-canopy.jpg",
+      "sha256": "58c61360d3dc9ddbeacea6bf3412aaa1df11d24ece491d709850fa0161749809",
+      "bytes": 143583
+    },
+    {
+      "path": "assets/images/site-oblique.jpg",
+      "sha256": "4366e016d7a79508c9d2df3bd004e980fbe20688a94560bb7c4974e688945f43",
+      "bytes": 180702
+    },
+    {
+      "path": "assets/images/site-topdown.jpg",
+      "sha256": "518bc2ed8861d5e8f84020c18fe0fbf2b308780341c573466beadef780706e1c",
+      "bytes": 170626
+    },
+    {
+      "path": "assets/images/walnut-corridor.jpg",
+      "sha256": "d20ed6f2796e1b044a765bda5c196d24c20e6ea42285e3e1fde2f9c7a8d2630a",
+      "bytes": 103031
+    },
+    {
+      "path": "assets/images/walnut-street-view.jpg",
+      "sha256": "cf93492abe16cc35c91ac420456a4eeae55b96570424ade5454da141310a6043",
+      "bytes": 111466
+    },
+    {
+      "path": "assets/images/yard-context.jpg",
+      "sha256": "a5a78a3aaf0c2391fc4753c0bae3940b3118e298974d0e3827bfb029a8a76fef",
+      "bytes": 125062
+    },
+    {
+      "path": "assets/site.js",
+      "sha256": "451d8bc5b02d09adeb596fcfb40bd978bd9bf1e878014a83c9a91b25f700949a",
+      "bytes": 963
+    },
+    {
+      "path": "assets/styles.css",
+      "sha256": "4fa8a0914734869e0fc63323bd75e84a57c800cec1b66cb77608b51d6a72583f",
+      "bytes": 15185
+    },
+    {
+      "path": "data/site-data.json",
+      "sha256": "500f105c16aa2ea31a428b8e3d48d8166c77911983a3a7157cdf4e63b03be54b",
+      "bytes": 5787
+    },
+    {
+      "path": "index.html",
+      "sha256": "9e25570fc95880c48805f253be84d09372dbe95121d92af0ccaf42f69f470a43",
+      "bytes": 19684
+    },
+    {
+      "path": "README.md",
+      "sha256": "5ab9f6536e437d786f0c75633598255c299b6322b0f96267c6ffb0ecef53b2f3",
+      "bytes": 453
+    },
+    {
+      "path": "robots.txt",
+      "sha256": "32403248dc764535c87140955fc9451f9ebc9702f3e298d1c24fe84e558a53a9",
+      "bytes": 27
+    },
+    {
+      "path": "scripts/build_site.py",
+      "sha256": "bfb9d504aa61f760f8e7a1488db08846a7772fe041d79f66e884a4b13eb65bfb",
+      "bytes": 5853
+    },
+    {
+      "path": "scripts/serve_local.py",
+      "sha256": "4346fdd24503ca38854584ae197ec1c25341ea11506e0e6b2d4dfe951e02f029",
+      "bytes": 494
+    },
+    {
+      "path": "scripts/validate_site.py",
+      "sha256": "f5bb26af1c41934ac80dcfa5b87064d45e491ebb7aeb2c13973a1975f083f1e0",
+      "bytes": 3386
+    },
+    {
+      "path": "src/index.template.html",
+      "sha256": "c23e15a56fb6b5d4ad6e97d79ff09787449233d88ea29033121351aefdc41587",
+      "bytes": 13505
+    }
+  ]
+}
