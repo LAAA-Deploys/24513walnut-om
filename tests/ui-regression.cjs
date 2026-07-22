@@ -53,7 +53,7 @@ async function inspectViewport(browser, width, height, options = {}) {
     const actions = document.querySelector('.hero-actions').getBoundingClientRect();
     const stats = document.querySelector('.hero-stats').getBoundingClientRect();
     const collision = Math.max(0, Math.min(actions.bottom, stats.bottom) - Math.max(actions.top, stats.top));
-    const controls = Array.from(document.querySelectorAll('.button,.source-links a,.menu-toggle,#primary-nav a,.mobile-cta a'))
+    const controls = Array.from(document.querySelectorAll('.button,.source-links a,.menu-toggle,#primary-nav a,.mobile-cta a,.gallery-item a,.lightbox button,.comp-map-legend button,.comp-toolbar button,.comp-details summary,.comp-map-link,.location-links a'))
       .filter(visible)
       .map(element => ({
         text: element.textContent.trim().replace(/\s+/g, ' '),
@@ -90,6 +90,10 @@ async function inspectViewport(browser, width, height, options = {}) {
       clipped,
       tables,
       images,
+      compCount: document.querySelectorAll('[data-comp-card]').length,
+      compMapButtons: document.querySelectorAll('[data-comp-target]').length,
+      galleryCount: document.querySelectorAll('[data-gallery-link]').length,
+      hasGalleryDialog: Boolean(document.querySelector('[data-gallery-dialog]')),
       h1Count: document.querySelectorAll('h1').length,
       landmarks: { main: Boolean(document.querySelector('main')), nav: Boolean(document.querySelector('nav')), footer: Boolean(document.querySelector('footer')) },
       brokenAnchors: hashLinks.filter(href => !document.querySelector(href)),
@@ -107,6 +111,10 @@ async function inspectViewport(browser, width, height, options = {}) {
   check(result.brokenAnchors.length === 0, `${key}: broken anchors ${result.brokenAnchors.join(', ')}`);
   check(!result.unresolved, `${key}: unresolved template or placeholder text`);
   check(result.noindex, `${key}: privacy noindex missing`);
+  check(result.compCount === 6, `${key}: expected six sale comparables, found ${result.compCount}`);
+  check(result.compMapButtons === 6, `${key}: expected six interactive map legend controls, found ${result.compMapButtons}`);
+  check(result.galleryCount >= 12, `${key}: expected at least 12 gallery images, found ${result.galleryCount}`);
+  check(result.hasGalleryDialog, `${key}: accessible gallery dialog missing`);
   result.images.forEach(image => {
     check(Boolean(image.alt), `${key}: missing alt text on ${image.src}`);
     check(image.complete && image.naturalWidth > 0, `${key}: broken image ${image.src}`);
@@ -156,6 +164,28 @@ async function inspectViewport(browser, width, height, options = {}) {
     await page.waitForTimeout(50);
     check(await toggle.getAttribute('aria-expanded') === 'false', `${key}: link click did not close menu`);
     check(await page.evaluate(() => document.activeElement === document.querySelector('.menu-toggle')), `${key}: focus was not restored after link click`);
+  }
+
+  if (width === 390 && !options.suffix) {
+    await page.locator('[data-comp-filter="same-regime"]').click();
+    const filteredCount = await page.locator('[data-comp-card]:visible').count();
+    check(filteredCount === 3, `${key}: same-regime filter showed ${filteredCount} cards instead of 3`);
+    await page.locator('[data-comp-filter="all"]').click();
+    check(await page.locator('[data-comp-card]:visible').count() === 6, `${key}: all-comps filter did not restore six cards`);
+
+    await page.locator('[data-comp-target="atwood"]').click();
+    await page.waitForTimeout(500);
+    check(await page.locator('[data-comp-id="atwood"] details').getAttribute('open') !== null, `${key}: map legend did not expand Atwood details`);
+
+    const firstGalleryLink = page.locator('[data-gallery-link]').first();
+    await firstGalleryLink.click();
+    check(await page.locator('[data-gallery-dialog]').getAttribute('open') !== null, `${key}: gallery dialog did not open`);
+    const firstGallerySource = await page.locator('[data-gallery-image]').getAttribute('src');
+    await page.locator('[data-gallery-next]').click();
+    const secondGallerySource = await page.locator('[data-gallery-image]').getAttribute('src');
+    check(firstGallerySource !== secondGallerySource, `${key}: gallery next control did not change the image`);
+    await page.keyboard.press('Escape');
+    check(await page.locator('[data-gallery-dialog]').getAttribute('open') === null, `${key}: Escape did not close gallery dialog`);
   }
 
   await context.close();

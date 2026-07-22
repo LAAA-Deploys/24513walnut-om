@@ -10,8 +10,8 @@
   <meta property="og:description" content="{{DESCRIPTION}}">
   <meta property="og:type" content="website">
   <meta property="og:image" content="assets/images/hero-front-aerial.jpg">
-  <link rel="stylesheet" href="assets/styles.css?v=20260722-1">
-  <script defer src="assets/site.js?v=20260722-1"></script>
+  <link rel="stylesheet" href="assets/styles.css?v=20260722-2">
+  <script defer src="assets/site.js?v=20260722-2"></script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to offering details</a>
@@ -62,8 +62,15 @@
       <div class="container fact-grid">
         <div><span>APN</span><b>2831-005-003</b></div><div><span>Unit mix</span><b>2 × 2BR + 1 × 1BR</b></div><div><span>Bathrooms</span><b>3 total</b></div><div><span>Year built</span><b>1926 / 1954</b></div><div><span>Zoning</span><b>OTNSP — COR</b></div><div><span>Flood</span><b>Zone X</b></div>
       </div>
+      <div class="container gallery-intro"><p><b>12-image property gallery</b><span>Tap any image to open the full-screen viewer.</span></p></div>
       <div class="container gallery" aria-label="Property photo gallery">{{GALLERY_ITEMS}}</div>
       <p class="container media-note">Property images are archived listing photography. Aerial parcel lines, where shown, are illustrative and not a survey.</p>
+      <dialog class="lightbox" data-gallery-dialog aria-label="Property image viewer">
+        <button class="lightbox-close" type="button" data-gallery-close aria-label="Close image viewer">×</button>
+        <button class="lightbox-nav previous" type="button" data-gallery-previous aria-label="Previous image">‹</button>
+        <figure><img data-gallery-image src="assets/images/hero-front-aerial.jpg" alt="Aerial view of the Walnut Street frontage and existing residential improvements"><figcaption data-gallery-caption>Walnut Street frontage · archived listing photography</figcaption></figure>
+        <button class="lightbox-nav next" type="button" data-gallery-next aria-label="Next image">›</button>
+      </dialog>
     </section>
 
     <section class="section financial-section" id="financials">
@@ -87,13 +94,31 @@
     </section>
 
     <section class="section market-section" id="comps">
-      <div class="container section-heading"><div><p class="eyebrow">Sale evidence</p><h2>A thin market, anchored by four instructive trades.</h2></div><p>No single comparable duplicates the subject. The most useful evidence comes from reading physical similarity, occupancy, condition and income together—not from a single average.</p></div>
+      <div class="container section-heading"><div><p class="eyebrow">Sale evidence</p><h2>Six verified trades, each with a distinct job in the valuation.</h2></div><p>No single comparable duplicates the subject. Use the filters, map and expandable profiles to see how condition, unit mix, regulation, occupancy and location affect each sale.</p></div>
+      <div class="container comp-explorer" aria-labelledby="comp-map-title">
+        <div class="comp-map-copy"><p class="eyebrow">Sale comp map</p><h3 id="comp-map-title">One local ceiling, five North Valley benchmarks.</h3><p>The subject and Atwood sit together in Newhall. The remaining sales form a regulatory and physical comparison ring through San Fernando, Sylmar, Sunland and Tujunga.</p><div class="comp-map-legend">{{COMP_MAP_LEGEND}}</div></div>
+        <figure class="comp-map"><img src="assets/images/map-sale-comps.jpg" alt="Regional map showing the Walnut subject and six numbered sale comparables"><figcaption>Google map data · numbered pins correspond to the profiles below · locations are address-resolved, not parcel surveys</figcaption></figure>
+      </div>
+      <div class="container comp-toolbar" aria-label="Filter sale comparables">
+        <span>Focus the evidence</span>
+        <div role="group" aria-label="Comparable filters">
+          <button type="button" class="active" data-comp-filter="all" aria-pressed="true">All six</button>
+          <button type="button" data-comp-filter="same-regime" aria-pressed="false">Same rent regime</button>
+          <button type="button" data-comp-filter="physical" aria-pressed="false">Closest physical analog</button>
+          <button type="button" data-comp-filter="floor" aria-pressed="false">Floor evidence</button>
+        </div>
+        <p class="sr-only" data-comp-status aria-live="polite">Showing all six sale comparables.</p>
+      </div>
       <div class="container comp-grid">{{COMP_CARDS}}</div>
       <div class="container rent-panel"><div class="rent-copy"><p class="eyebrow">Rent evidence</p><h2>Pro Forma rents are positioned below survey medians.</h2><p>The survey includes newer Old Town product and is not a lease comp set. The selected 1-bedroom rent is modestly above the survey’s 25th percentile, while the selected 2-bedroom rents are below it; both remain below their respective medians.</p></div><div class="table-region"><p class="table-scroll-cue" data-laaa-scroll-cue id="rent-evidence-cue">Swipe or use arrow keys to view all columns <span aria-hidden="true">→</span></p><div class="table-shell compact" data-laaa-scroll-region tabindex="0" role="region" aria-label="Rent evidence table. Scroll horizontally for additional columns." aria-describedby="rent-evidence-cue"><table><thead><tr><th>Evidence</th><th>Median</th><th>25th percentile</th><th>Selected</th><th>Interpretation</th></tr></thead><tbody>{{RENT_ROWS}}</tbody></table></div></div></div>
     </section>
 
     <section class="section location-section" id="location">
-      <div class="container location-grid"><div class="location-copy"><p class="eyebrow">Old Town Newhall</p><h2>Daily needs, Main Street and regional rail are close at hand.</h2><p>The property sits near Old Town Newhall’s restaurant, arts and service core and approximately one-quarter mile from Newhall Metrolink Station. Current published schedules show 24 weekday trains stopping at Newhall.</p><ul><li>Walkable Old Town retail and dining environment</li><li>Convenient access to Lyons Avenue and Interstate 5</li><li>Newhall Metrolink Station on the Antelope Valley Line</li><li>Established residential demand within the Santa Clarita Valley</li></ul></div><figure><img src="assets/images/map-newhall.jpg" alt="Map showing the property in Old Town Newhall"><figcaption>Location context · illustrative map</figcaption></figure></div>
+      <div class="container location-grid"><div class="location-copy"><p class="eyebrow">Old Town Newhall</p><h2>Daily needs, Main Street and regional rail are close at hand.</h2><p>The property sits near Old Town Newhall’s restaurant, arts and service core and approximately one-quarter mile from Newhall Metrolink Station on the Antelope Valley Line.</p><ul><li>Walkable Old Town retail and dining environment</li><li>Convenient access to Lyons Avenue and Interstate 5</li><li>Newhall Metrolink Station approximately 0.26 mile away</li><li>Established residential demand within the Santa Clarita Valley</li></ul><a class="button map-button" href="https://www.google.com/maps/search/?api=1&query=24513%20Walnut%20Street%2C%20Newhall%2C%20CA%2091321&query_place_id=ChIJNzPctWGGwoAR-jc8Y6-l4Fo" target="_blank" rel="noopener">Explore the subject in Google Maps</a></div><figure><img src="assets/images/map-newhall.jpg" alt="Local map showing 24513 Walnut Street, 25252 Atwood Boulevard and the team's 24966 Walnut Street sale"><figcaption>Immediate Newhall context · Google map data</figcaption></figure></div>
+      <div class="container location-maps">
+        <figure><img src="assets/images/map-transit.jpg" alt="Map showing the subject property and Newhall Metrolink station"><figcaption>Transit proximity · the circle is illustrative and not a legal boundary</figcaption></figure>
+        <div><p class="eyebrow">Three location lenses</p><h3>Read the site at the block, district and regional-comp scale.</h3><p>The immediate map connects Walnut to Atwood and the team’s nearby 24966 Walnut sale. The transit map shows the station relationship. The sale-comp map above explains how the six pricing benchmarks spread through the North Valley.</p><div class="location-links"><a href="#comps">Return to the sale-comp map</a><a href="https://www.google.com/maps/dir/?api=1&destination=24513%20Walnut%20Street%2C%20Newhall%2C%20CA%2091321&destination_place_id=ChIJNzPctWGGwoAR-jc8Y6-l4Fo" target="_blank" rel="noopener">Get directions in Google Maps <span aria-hidden="true">↗</span></a></div></div>
+      </div>
       <div class="container value-add"><div><p class="eyebrow">Value-add highlight</p><h2>Investigate ADU and longer-term site potential.</h2></div><div><p>The 2025 Old Town Newhall Specific Plan applies Corridor zoning with a baseline maximum of three stories and 35 feet. Stacked residential in COR is generally tied to a vertical mixed-use commercial-building form. The site’s proximity to an existing rail station may also affect minimum-parking treatment under AB 2097.</p><p>No additional unit count, building area or entitlement is represented as approved. Buyers should confirm legal-nonconforming status, ADU eligibility, parking, setbacks, alley dedication and any development path directly with the City of Santa Clarita and qualified counsel.</p><div class="source-links"><a href="https://filecenter.santa-clarita.com/Planning/OldTownNewhallSpecificPlanUpdate/2025%20OTNSP%20FINAL.pdf" target="_blank" rel="noopener">2025 Old Town Newhall Specific Plan</a><a href="https://www.hcd.ca.gov/sites/default/files/docs/planning-and-community/min-parking-requirements-ab-2097.pdf" target="_blank" rel="noopener">HCD AB 2097 fact sheet</a><a href="https://scag.ca.gov/housing" target="_blank" rel="noopener">SCAG SB 79 map and guidance</a></div></div></div>
     </section>
 

@@ -127,6 +127,30 @@ for image in DATA["gallery"]:
     if not (ROOT / image["src"]).exists():
         errors.append(f"Missing image: {image['src']}")
 
+if len(DATA["sale_comps"]) != 6:
+    errors.append(f"Expected six sale comparables, got {len(DATA['sale_comps'])}")
+comp_ids = [comp.get("id") for comp in DATA["sale_comps"]]
+if len(set(comp_ids)) != len(comp_ids):
+    errors.append("Sale comparable IDs must be unique")
+for comp in DATA["sale_comps"]:
+    for required in ["id", "map_label", "image", "map_url", "verdict", "occupancy", "condition", "strengths", "cautions"]:
+        if not comp.get(required):
+            errors.append(f"Sale comparable {comp.get('address', '(unknown)')} lacks {required}")
+    if comp.get("image") and not (ROOT / comp["image"]).exists():
+        errors.append(f"Missing sale comparable image: {comp['image']}")
+
+if not (ROOT / "assets" / "images" / "map-sale-comps.jpg").exists():
+    errors.append("Missing locally committed sale-comparable map")
+for required_comp in [
+    "25252 Atwood Blvd", "1237 Coronel Street", "10427 Oro Vista Avenue",
+    "10030 Pinewood Avenue", "11344 Santol Drive", "216 Harding Avenue",
+]:
+    if required_comp not in HTML:
+        errors.append(f"Missing rendered sale comparable: {required_comp}")
+
+if re.search(r'''(?:src|poster)=["']https?://''', HTML, re.I) or re.search(r"url\(\s*[\"']?https?://", HTML, re.I):
+    errors.append("Runtime assets must remain local; external URLs may be links only")
+
 if not re.search(r'<main\b', HTML):
     errors.append("Missing main landmark")
 if HTML.count("<h1") != 1:

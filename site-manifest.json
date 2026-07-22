@@ -31,6 +31,36 @@
       "bytes": 28342
     },
     {
+      "path": "assets/images/comps/atwood.jpg",
+      "sha256": "9a83cdfe7def42cdb7fe65abe5993cf062bd15608f7b52bd3d097f795a208ebf",
+      "bytes": 112436
+    },
+    {
+      "path": "assets/images/comps/coronel.jpg",
+      "sha256": "53602da9d4f25dc83c9ba6de0b53b1a38275e70f2656b0c614cb916fcc7c31e3",
+      "bytes": 75073
+    },
+    {
+      "path": "assets/images/comps/harding.jpg",
+      "sha256": "ca78035a9db10b2622bd074b81a626aae32672ebaf5d5511404ab7ed9a528d4f",
+      "bytes": 174407
+    },
+    {
+      "path": "assets/images/comps/oro-vista.jpg",
+      "sha256": "572ab2304626322744776cd0bdd9cb6bf57d0b41ea701d7504c948421a7ce473",
+      "bytes": 114635
+    },
+    {
+      "path": "assets/images/comps/pinewood.jpg",
+      "sha256": "52d180801ca59dd41561a1546fa9c0d23ca1def2abd4ba01eff164c5b7633665",
+      "bytes": 118969
+    },
+    {
+      "path": "assets/images/comps/santol.jpg",
+      "sha256": "0b46cc5af38e71ddfcc1323abba7077023dbb81aec7d4f6d80a8d29ab86517c0",
+      "bytes": 344568
+    },
+    {
       "path": "assets/images/filip-niculete.jpg",
       "sha256": "38c17514422a349e48c08787fa319fb0104d8e0239f2e5fea29f218505dd7d2a",
       "bytes": 13322
@@ -54,6 +84,11 @@
       "path": "assets/images/map-newhall.jpg",
       "sha256": "b6548180e93452bc431ab242d2947f4a836134ebf125cdd46a429fd4a307d101",
       "bytes": 104642
+    },
+    {
+      "path": "assets/images/map-sale-comps.jpg",
+      "sha256": "4ea6d1151885eae1ead0279d3be7991f08c1e8caceeb4e733ffc41d546de7865",
+      "bytes": 181980
     },
     {
       "path": "assets/images/map-transit.jpg",
@@ -112,23 +147,23 @@
     },
     {
       "path": "assets/site.js",
-      "sha256": "c8271dfa0e0a60f2980d0c06863228229b68494a91689ff15cd21edf1816e8da",
-      "bytes": 4392
+      "sha256": "339509942ed68d67db5c6f8d477ae7d2d169a6b1ecd7a83dd9b20de334bf455a",
+      "bytes": 8284
     },
     {
       "path": "assets/styles.css",
-      "sha256": "63c972a2f9f91713e435693fd89fb739cfbf642688791049bbbe5ea0cd7ed660",
-      "bytes": 21899
+      "sha256": "c0f03d443b373f5e26a5715c245c1c2e8940f5cdf5d4e3b3fe9e9c594f0157b5",
+      "bytes": 30409
     },
     {
       "path": "data/site-data.json",
-      "sha256": "500f105c16aa2ea31a428b8e3d48d8166c77911983a3a7157cdf4e63b03be54b",
-      "bytes": 5787
+      "sha256": "d6ed6f6ace863a567a77f0875a37426242d30b6eceee0f2f90c15ede397a9e53",
+      "bytes": 14614
     },
     {
       "path": "index.html",
-      "sha256": "adfcae40177e0b89806827bcaec3869ecaea447712f2d4a9cbcec3aecca33102",
-      "bytes": 21078
+      "sha256": "8335026bb5a133ac4355a691bc7270e210761c4cb04d99084d90d82efd10a762",
+      "bytes": 44117
     },
     {
       "path": "package-lock.json",
@@ -142,8 +177,8 @@
     },
     {
       "path": "README.md",
-      "sha256": "42bf3a1763a1b3c3a5836f29970a7ebba333ef64ff4c7c3aeb26d66ea140b7cc",
-      "bytes": 1096
+      "sha256": "f0a7c76e8425d71502747ca72f832a1b096bdfb3f2fac4ec93d6bc87c8b96e2d",
+      "bytes": 1567
     },
     {
       "path": "robots.txt",
@@ -152,8 +187,8 @@
     },
     {
       "path": "scripts/build_site.py",
-      "sha256": "d96268278ea6f6439aeda19f39812840db70cbaeefabf0f8cd786a450565bff4",
-      "bytes": 5848
+      "sha256": "712efbed136a04bce8d55c175463dfec13247b5913286dc4dd83ee05c1795b7f",
+      "bytes": 9245
     },
     {
       "path": "scripts/serve_local.py",
@@ -162,18 +197,18 @@
     },
     {
       "path": "scripts/validate_site.py",
-      "sha256": "f0876391e08f5cede4404a9ddd2f4b8d62e6aebebd01dc35b82016d66f4288ab",
-      "bytes": 6233
+      "sha256": "d261410351c134c561e7341c0477a1c68dbb9766ab945be39c5f8ce79714b6d0",
+      "bytes": 7556
     },
     {
       "path": "src/index.template",
-      "sha256": "88fd14b60192a88ee71bf9461ac830bfe460e7491291976fd97dc2fb9d2bdf4a",
-      "bytes": 14899
+      "sha256": "4098aab0539aaa8f24f5ba2b5d0fac82a557e0e8428439c980c1689cc880545b",
+      "bytes": 18585
     },
     {
       "path": "tests/ui-regression.cjs",
-      "sha256": "35c58f2aab62807043cd714f1796a8cd2befb4cefe2c2eaf8c3ed962d57a2c34",
-      "bytes": 10839
+      "sha256": "4432edc48744198a3c9ac1ee732da49b5f3208e08295496a3f4cc2f1a1101425",
+      "bytes": 13204
     }
   ]
 }

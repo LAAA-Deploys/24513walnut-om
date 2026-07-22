@@ -35,10 +35,90 @@
     {"label": "Landscaping / pest", "current": 750, "pro_forma": 750, "basis": "Broker benchmark estimate"}
   ],
   "sale_comps": [
-    {"address": "25252 Atwood Avenue", "city": "Newhall", "close_date": "2026-05-15", "price": 1150000, "units": 3, "sf": 2810, "ppu": 383333, "ppsf": 409, "role": "Upper benchmark", "note": "Renovated multi-building property with newer ADU and pool; materially superior condition."},
-    {"address": "1237 Coronel Street", "city": "San Fernando", "close_date": "2024-08-27", "price": 1090000, "units": 3, "sf": 3106, "ppu": 363333, "ppsf": 351, "role": "Income benchmark", "note": "Larger triplex with stable tenancy; useful as a price-per-unit and price-per-square-foot benchmark."},
-    {"address": "10427 Oro Vista Avenue", "city": "Sunland", "close_date": "2025-07-01", "price": 1075000, "units": 3, "sf": 2858, "ppu": 358333, "ppsf": 376, "role": "Occupied benchmark", "note": "Pride-of-ownership triplex with stable tenants and lower in-place rents."},
-    {"address": "10030 Pinewood Avenue", "city": "Tujunga", "close_date": "2024-12-06", "price": 1050000, "units": 3, "sf": 2656, "ppu": 350000, "ppsf": 395, "role": "Physical analog", "note": "Three detached homes on a larger lot; current income was not used as a yield benchmark."}
+    {
+      "id": "atwood", "map_label": "1", "tags": ["newhall", "same-regime", "upper"],
+      "address": "25252 Atwood Blvd", "city": "Newhall, CA 91321", "close_date": "2026-05-15", "price": 1150000,
+      "units": "3", "bed_bath": "5 BR / 4 BA", "sf": 2810, "lot_sf": 7487, "year_built": "1954 + newer ADU",
+      "ppu": 383333, "ppsf": 409, "grm": "11.98x current", "cap": "5.86% current", "dom": "26", "sp_lp": "97.9%",
+      "role": "Upper benchmark", "verdict": "Subject inferior overall",
+      "occupancy": "Two units occupied; the 1,500 SF townhome was offered vacant.",
+      "condition": "Fully renovated 1954 core, newer detached ADU, new electrical panel, in-unit laundry, pool and spa.",
+      "note": "The closest Newhall sale and the finished version of this product. Its $1.15M result is a ceiling-side anchor, not a direct condition match.",
+      "strengths": ["Same city, zip and three-unit scale", "$8,000 monthly scheduled income at sale", "Renovated units plus newly built ADU"],
+      "cautions": ["Superior condition and amenities", "First listing attempt failed near $1.225M", "Parking and exact zoning were not fully documented"],
+      "image": "assets/images/comps/atwood.jpg", "image_alt": "Front residence at the sold triplex at 25252 Atwood Boulevard", "image_credit": "MLS photography",
+      "map_url": "https://www.google.com/maps/search/?api=1&query=25252%20Atwood%20Blvd%2C%20Newhall%2C%20CA%2091321&query_place_id=ChIJ2wt3K5WGwoARhKj4M_X5iQI"
+    },
+    {
+      "id": "coronel", "map_label": "2", "tags": ["same-regime", "anchor"],
+      "address": "1237 Coronel Street", "city": "San Fernando, CA 91340", "close_date": "2024-08-27", "price": 1090000,
+      "units": "3", "bed_bath": "8 BR / 6 BA", "sf": 3106, "lot_sf": 5000, "year_built": "1964",
+      "ppu": 363333, "ppsf": 351, "grm": "14.49x current", "cap": "4.68% current", "dom": "131", "sp_lp": "99.5% adjusted / 91.2% original",
+      "role": "Anchor benchmark", "verdict": "Comparable overall",
+      "occupancy": "All three large family units were occupied at below-market rents.",
+      "condition": "One unit renovated; copper repipe, tankless water heater, in-unit laundry and ten parking spaces.",
+      "note": "The best regulatory match. Its larger two-bath units and stronger improvements offset Walnut's larger lot, better location and ADU optionality.",
+      "strengths": ["Same AB 1482-only rent regime", "Large 3BR and 2BR family units", "Institutional 75% financing supports the sale"],
+      "cautions": ["Required a $100,000 price cut", "Only one of three units was renovated", "Per-unit comparison is distorted by much larger units"],
+      "image": "assets/images/comps/coronel.jpg", "image_alt": "Exterior of the sold triplex at 1237 Coronel Street", "image_credit": "MLS photography",
+      "map_url": "https://www.google.com/maps/search/?api=1&query=1237%20Coronel%20Street%2C%20San%20Fernando%2C%20CA%2091340&query_place_id=ChIJrVShBzaQwoAR8vOrJRSsjpU"
+    },
+    {
+      "id": "oro-vista", "map_label": "3", "tags": ["anchor", "occupied"],
+      "address": "10427 Oro Vista Avenue", "city": "Sunland, CA 91040", "close_date": "2025-07-01", "price": 1075000,
+      "units": "3", "bed_bath": "6 BR / 3 BA", "sf": 2858, "lot_sf": 5961, "year_built": "1964",
+      "ppu": 358333, "ppsf": 376, "grm": "18.59x current", "cap": "3.26% current", "dom": "6", "sp_lp": "107.6%",
+      "role": "Mid-ring benchmark", "verdict": "Comparable overall",
+      "occupancy": "Fully occupied with stable tenants and materially suppressed rents.",
+      "condition": "Pride-of-ownership exterior with new roofs on both buildings; interiors were not shown before offer acceptance.",
+      "note": "A fast, competitive sale with nearly identical three-unit scale. Walnut trades better location, regulation and land for Oro Vista's stronger presentation.",
+      "strengths": ["Six-day competitive sale", "Three 2BR units", "New roofs on both buildings"],
+      "cautions": ["LA City RSO restricts rent recovery", "One rent was 48% below projection", "Seller concessions were reported but not quantified"],
+      "image": "assets/images/comps/oro-vista.jpg", "image_alt": "Exterior of the sold triplex at 10427 Oro Vista Avenue", "image_credit": "MLS photography",
+      "map_url": "https://www.google.com/maps/search/?api=1&query=10427%20Oro%20Vista%20Avenue%2C%20Sunland%2C%20CA%2091040&query_place_id=ChIJH76XRlmTwoARBPOhjM1qqwE"
+    },
+    {
+      "id": "pinewood", "map_label": "4", "tags": ["physical", "occupied"],
+      "address": "10030 Pinewood Avenue", "city": "Tujunga, CA 91042", "close_date": "2024-12-06", "price": 1050000,
+      "units": "3", "bed_bath": "5 BR / 3 BA", "sf": 2656, "lot_sf": 11048, "year_built": "1920 / 1948 / 1950",
+      "ppu": 350000, "ppsf": 395, "grm": "28.00x current", "cap": "1.76% current", "dom": "51", "sp_lp": "95.5% adjusted / 87.9% original",
+      "role": "Closest physical analog", "verdict": "Subject superior overall",
+      "occupancy": "All three detached homes were occupied at rents equal to 43% of the listing's projected market level.",
+      "condition": "Original-condition detached cottages with floor or wall heat, no air conditioning, separate utility meters and a two-car garage.",
+      "note": "The closest physical analog: three detached vintage homes on a large flat lot. Its sale arc shows buyers priced the real estate and future rent recovery, not current yield.",
+      "strengths": ["Three detached residences", "Large flat lot and eight parking spaces", "Tenants reportedly paid all utilities"],
+      "cautions": ["LA City RSO and extreme rent suppression", "Original systems and no air conditioning", "Needed $145,000 off the original ask"],
+      "image": "assets/images/comps/pinewood.jpg", "image_alt": "Aerial view of the three-home property sold at 10030 Pinewood Avenue", "image_credit": "MLS photography",
+      "map_url": "https://www.google.com/maps/search/?api=1&query=10030%20Pinewood%20Avenue%2C%20Tujunga%2C%20CA%2091042&query_place_id=ChIJUReoO0XrwoAREr9897i6xyI"
+    },
+    {
+      "id": "santol", "map_label": "5", "tags": ["floor", "occupied"],
+      "address": "11344 Santol Drive", "city": "Sylmar, CA 91342", "close_date": "2025-12-17", "price": 899000,
+      "units": "4 actual / 3 legal", "bed_bath": "5 BR / 4 BA", "sf": 2981, "lot_sf": 8406, "year_built": "1945 MLS / 1928 public record",
+      "ppu": 224750, "ppu_note": "$299,667 per legal unit", "ppsf": 302, "grm": "11.19x current", "cap": "6.45% current", "dom": "75", "sp_lp": "100.0%",
+      "role": "Current-cycle floor", "verdict": "Subject superior overall",
+      "occupancy": "Four occupied dwellings with post-renovation rents near market; one studio was non-conforming.",
+      "condition": "Approximately $300,000 of reported improvements, including kitchens, baths, balconies and upgraded electrical panels.",
+      "note": "Useful floor evidence, but not a clean triplex comparison. Canyon location, fire exposure, county rent controls and the non-conforming fourth unit weigh on the print.",
+      "strengths": ["Most recent lower-bracket sale", "Renovated and near-market income", "Full-price closing"],
+      "cautions": ["Four actual units but only three legal", "Undisclosed seller concessions", "Canyon access, fire exposure and RSTPO regulation"],
+      "image": "assets/images/comps/santol.jpg", "image_alt": "Hillside exterior of the sold income property at 11344 Santol Drive", "image_credit": "MLS photography",
+      "map_url": "https://www.google.com/maps/search/?api=1&query=11344%20Santol%20Drive%2C%20Sylmar%2C%20CA%2091342&query_place_id=ChIJTWbPazuSwoAR-CrDswhfBhI"
+    },
+    {
+      "id": "harding", "map_label": "6", "tags": ["same-regime", "floor"],
+      "address": "216 Harding Avenue", "city": "San Fernando, CA 91340", "close_date": "2025-01-15", "price": 760000,
+      "units": "3", "bed_bath": "3 BR / 3 BA", "sf": 1560, "sf_note": "MLS reports 1,590 SF", "lot_sf": 6142, "year_built": "1934",
+      "ppu": 253333, "ppsf": 487, "grm": "10.56x projected", "cap": "7.14% projected", "dom": "9", "sp_lp": "101.4%",
+      "role": "Absolute-price floor", "verdict": "Subject superior overall",
+      "occupancy": "Delivered completely vacant; income metrics use projected rents rather than achieved leases.",
+      "condition": "Original-condition fixer with no listed heating, cooling or laundry and three separate water meters.",
+      "note": "The ring's floor sale. Its tiny building inflates price per square foot, so the useful evidence is absolute price and price per unit—not the $487/SF headline.",
+      "strengths": ["Same AB 1482-only rent regime", "Vacant delivery and fast nine-day sale", "Clean standard sale with no concessions"],
+      "cautions": ["Small 1,560 SF denominator distorts $/SF", "Projected rather than achieved income", "Worst physical condition in the set"],
+      "image": "assets/images/comps/harding.jpg", "image_alt": "Exterior of the sold fixer triplex at 216 Harding Avenue", "image_credit": "MLS photography",
+      "map_url": "https://www.google.com/maps/search/?api=1&query=216%20Harding%20Avenue%2C%20San%20Fernando%2C%20CA%2091340&query_place_id=ChIJJ0vgwTSQwoARBPN4GxyzPIs"
+    }
   ],
   "rent_evidence": [
     {"segment": "1BR apartments", "sample": "15 observations / 2-mile radius", "median": 2210, "percentile_25": 2093, "selected": 2150, "note": "Selected near the lower quartile for the detached rear house; condition and lease terms require verification."},
@@ -57,6 +137,10 @@
     {"src": "assets/images/rear-house.jpg", "alt": "Rear one-bedroom residence viewed from the alley", "caption": "Detached rear residence · archived listing photography"},
     {"src": "assets/images/rear-buildings-aerial.jpg", "alt": "Aerial view of the rear structures and alley access", "caption": "Rear improvements and alley access · archived listing photography"},
     {"src": "assets/images/rear-yard.jpg", "alt": "Existing landscaped yard area between the residential improvements", "caption": "Private outdoor area · archived listing photography"},
-    {"src": "assets/images/walnut-corridor.jpg", "alt": "Aerial view looking along Walnut Street through Old Town Newhall", "caption": "Walnut Street corridor · archived listing photography"}
+    {"src": "assets/images/walnut-corridor.jpg", "alt": "Aerial view looking along Walnut Street through Old Town Newhall", "caption": "Walnut Street corridor · archived listing photography"},
+    {"src": "assets/images/site-aerial-tree-canopy.jpg", "alt": "Aerial frontage view showing the property's mature tree canopy", "caption": "Frontage and mature canopy · archived listing photography"},
+    {"src": "assets/images/rear-residence.jpg", "alt": "Rear residence and private outdoor area", "caption": "Rear residence and yard · archived listing photography"},
+    {"src": "assets/images/walnut-street-view.jpg", "alt": "Street-level view across Walnut Street toward the front duplex", "caption": "Walnut Street approach · archived listing photography"},
+    {"src": "assets/images/yard-context.jpg", "alt": "Landscaped outdoor area beside the residential improvements", "caption": "Outdoor-area context · archived listing photography"}
   ]
 }

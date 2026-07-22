@@ -118,6 +118,85 @@
     updateOverflowState();
   });
 
+  var galleryLinks = Array.from(document.querySelectorAll('[data-gallery-link]'));
+  var galleryDialog = document.querySelector('[data-gallery-dialog]');
+  var galleryImage = galleryDialog ? galleryDialog.querySelector('[data-gallery-image]') : null;
+  var galleryCaption = galleryDialog ? galleryDialog.querySelector('[data-gallery-caption]') : null;
+  var galleryIndex = 0;
+
+  function showGalleryImage(index) {
+    if (!galleryLinks.length || !galleryImage || !galleryCaption) return;
+    galleryIndex = (index + galleryLinks.length) % galleryLinks.length;
+    var link = galleryLinks[galleryIndex];
+    var source = link.querySelector('img');
+    var caption = link.querySelector('figcaption');
+    galleryImage.src = link.getAttribute('href');
+    galleryImage.alt = source ? source.alt : '';
+    galleryCaption.textContent = caption ? caption.childNodes[0].textContent.trim() : '';
+  }
+
+  if (galleryDialog && typeof galleryDialog.showModal === 'function') {
+    galleryLinks.forEach(function (link, index) {
+      link.addEventListener('click', function (event) {
+        event.preventDefault();
+        showGalleryImage(index);
+        galleryDialog.showModal();
+        document.body.classList.add('lightbox-open');
+      });
+    });
+    galleryDialog.querySelector('[data-gallery-close]').addEventListener('click', function () { galleryDialog.close(); });
+    galleryDialog.querySelector('[data-gallery-previous]').addEventListener('click', function () { showGalleryImage(galleryIndex - 1); });
+    galleryDialog.querySelector('[data-gallery-next]').addEventListener('click', function () { showGalleryImage(galleryIndex + 1); });
+    galleryDialog.addEventListener('click', function (event) {
+      if (event.target === galleryDialog) galleryDialog.close();
+    });
+    galleryDialog.addEventListener('keydown', function (event) {
+      if (event.key === 'ArrowLeft') { event.preventDefault(); showGalleryImage(galleryIndex - 1); }
+      if (event.key === 'ArrowRight') { event.preventDefault(); showGalleryImage(galleryIndex + 1); }
+    });
+    galleryDialog.addEventListener('close', function () { document.body.classList.remove('lightbox-open'); });
+  }
+
+  var compCards = Array.from(document.querySelectorAll('[data-comp-card]'));
+  var compFilters = Array.from(document.querySelectorAll('[data-comp-filter]'));
+  var compStatus = document.querySelector('[data-comp-status]');
+
+  function filterComps(filter) {
+    var visibleCount = 0;
+    compCards.forEach(function (card) {
+      var visible = filter === 'all' || card.dataset.compTags.split(/\s+/).includes(filter);
+      card.hidden = !visible;
+      card.classList.remove('is-highlighted');
+      if (visible) visibleCount += 1;
+    });
+    compFilters.forEach(function (button) {
+      var active = button.dataset.compFilter === filter;
+      button.classList.toggle('active', active);
+      button.setAttribute('aria-pressed', String(active));
+    });
+    if (compStatus) compStatus.textContent = 'Showing ' + visibleCount + ' of ' + compCards.length + ' sale comparables.';
+  }
+
+  compFilters.forEach(function (filterButton) {
+    filterButton.addEventListener('click', function () { filterComps(filterButton.dataset.compFilter); });
+  });
+
+  document.querySelectorAll('[data-comp-target]').forEach(function (targetButton) {
+    targetButton.addEventListener('click', function () {
+      filterComps('all');
+      var card = document.querySelector('[data-comp-id="' + targetButton.dataset.compTarget + '"]');
+      if (!card) return;
+      card.classList.add('is-highlighted');
+      var details = card.querySelector('details');
+      if (details) details.open = true;
+      card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      window.setTimeout(function () {
+        var summary = card.querySelector('summary');
+        if (summary) summary.focus({ preventScroll: true });
+      }, 450);
+    });
+  });
+
   window.addEventListener('scroll', function () {
     if (header) header.classList.toggle('compact', window.scrollY > 32);
   }, { passive: true });

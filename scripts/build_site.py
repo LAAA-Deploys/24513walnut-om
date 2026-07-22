@@ -48,21 +48,60 @@ def expense_rows() -> str:
 def comp_cards() -> str:
     cards = []
     for comp in DATA["sale_comps"]:
+        tags = " ".join(comp["tags"])
+        strengths = "".join(f"<li>{html.escape(item)}</li>" for item in comp["strengths"])
+        cautions = "".join(f"<li>{html.escape(item)}</li>" for item in comp["cautions"])
+        ppu_note = f"<small>{html.escape(comp['ppu_note'])}</small>" if comp.get("ppu_note") else ""
+        sf_note = f"<small>{html.escape(comp['sf_note'])}</small>" if comp.get("sf_note") else ""
         cards.append(
-            "<article class='comp-card'>"
-            f"<span class='eyebrow'>{html.escape(comp['role'])}</span>"
-            f"<h3>{html.escape(comp['address'])}</h3>"
-            f"<p class='comp-meta'>{html.escape(comp['city'])} · Closed {html.escape(comp['close_date'])}</p>"
+            f"<article class='comp-card' data-comp-card data-comp-id='{html.escape(comp['id'])}' data-comp-tags='{html.escape(tags)}'>"
+            f"<a class='comp-photo' href='{html.escape(comp['map_url'])}' target='_blank' rel='noopener' aria-label='Open {html.escape(comp['address'])} in Google Maps'>"
+            f"<img src='{html.escape(comp['image'])}' alt='{html.escape(comp['image_alt'])}' loading='lazy'>"
+            f"<span class='map-badge' aria-hidden='true'>{html.escape(comp['map_label'])}</span>"
+            f"<small>{html.escape(comp['image_credit'])}</small></a>"
+            "<div class='comp-body'>"
+            f"<div class='comp-heading'><div><span class='eyebrow'>{html.escape(comp['role'])}</span><h3>{html.escape(comp['address'])}</h3>"
+            f"<p class='comp-meta'>{html.escape(comp['city'])} · Closed {html.escape(comp['close_date'])} · {html.escape(comp['dom'])} DOM</p></div>"
+            f"<span class='comp-verdict'>{html.escape(comp['verdict'])}</span></div>"
             f"<p class='comp-price'>{money(comp['price'])}</p>"
             "<div class='comp-stats'>"
-            f"<span><b>{money(comp['ppu'])}</b> / unit</span>"
-            f"<span><b>{money(comp['ppsf'])}</b> / SF</span>"
-            f"<span><b>{comp['units']}</b> units</span>"
+            f"<span><b>{money(comp['ppu'])}</b> / unit{ppu_note}</span>"
+            f"<span><b>{money(comp['ppsf'])}</b> / SF{sf_note}</span>"
+            f"<span><b>{html.escape(str(comp['units']))}</b> units</span>"
+            f"<span><b>{html.escape(comp['bed_bath'])}</b></span>"
             "</div>"
-            f"<p>{html.escape(comp['note'])}</p>"
+            f"<p class='comp-summary'>{html.escape(comp['note'])}</p>"
+            "<details class='comp-details'><summary>Explore the full comparison</summary><div class='comp-detail-grid'>"
+            "<section><h4>Sale and physical profile</h4><dl>"
+            f"<div><dt>Sale-to-list</dt><dd>{html.escape(comp['sp_lp'])}</dd></div>"
+            f"<div><dt>Building</dt><dd>{comp['sf']:,} SF</dd></div>"
+            f"<div><dt>Lot</dt><dd>{comp['lot_sf']:,} SF</dd></div>"
+            f"<div><dt>Year built</dt><dd>{html.escape(comp['year_built'])}</dd></div>"
+            f"<div><dt>GRM</dt><dd>{html.escape(comp['grm'])}</dd></div>"
+            f"<div><dt>Cap rate</dt><dd>{html.escape(comp['cap'])}</dd></div>"
+            "</dl></section>"
+            f"<section><h4>Occupancy and condition</h4><p><b>Occupancy:</b> {html.escape(comp['occupancy'])}</p><p><b>Condition:</b> {html.escape(comp['condition'])}</p></section>"
+            f"<section><h4>What supports the sale</h4><ul>{strengths}</ul></section>"
+            f"<section><h4>What limits comparability</h4><ul>{cautions}</ul></section>"
+            "</div>"
+            f"<a class='comp-map-link' href='{html.escape(comp['map_url'])}' target='_blank' rel='noopener'>Open this property in Google Maps <span aria-hidden='true'>↗</span></a>"
+            "</details></div>"
             "</article>"
         )
     return "".join(cards)
+
+
+def comp_map_legend() -> str:
+    items = [
+        "<div class='map-legend-subject'><span>S</span><div><b>Subject</b><small>24513-24519 Walnut Street</small></div></div>"
+    ]
+    for comp in DATA["sale_comps"]:
+        items.append(
+            f"<button type='button' data-comp-target='{html.escape(comp['id'])}' aria-label='Show details for {html.escape(comp['address'])}'>"
+            f"<span>{html.escape(comp['map_label'])}</span><div><b>{html.escape(comp['address'])}</b>"
+            f"<small>{money(comp['price'])} · {html.escape(comp['role'])}</small></div></button>"
+        )
+    return "".join(items)
 
 
 def rent_rows() -> str:
@@ -87,8 +126,9 @@ def gallery_items() -> str:
         loading = "eager" if i == 0 else "lazy"
         items.append(
             "<figure class='gallery-item'>"
+            f"<a href='{html.escape(image['src'])}' data-gallery-link data-gallery-index='{i}' aria-label='View larger: {html.escape(image['caption'])}'>"
             f"<img src='{html.escape(image['src'])}' alt='{html.escape(image['alt'])}' loading='{loading}'>"
-            f"<figcaption>{html.escape(image['caption'])}</figcaption>"
+            f"<figcaption>{html.escape(image['caption'])}<span aria-hidden='true'>Expand +</span></figcaption></a>"
             "</figure>"
         )
     return "".join(items)
@@ -128,6 +168,7 @@ replacements = {
     "{{UNIT_ROWS}}": unit_rows(),
     "{{EXPENSE_ROWS}}": expense_rows(),
     "{{COMP_CARDS}}": comp_cards(),
+    "{{COMP_MAP_LEGEND}}": comp_map_legend(),
     "{{RENT_ROWS}}": rent_rows(),
     "{{GALLERY_ITEMS}}": gallery_items(),
     "{{CONTACT_CARDS}}": contact_cards(),

@@ -2,6 +2,8 @@
 
 Static buyer-facing Offering Memorandum website for 24513–24519 Walnut Street, Newhall, California.
 
+The buyer experience includes a 12-image subject gallery, six source-backed sale-comparable profiles, a locally committed regional comp map, and keyless outbound Google Maps links. All page assets load locally; the Google links are optional enhancements and no browser API key or runtime map tracker is shipped.
+
 ## Build and validate
 
 ```powershell
@@ -16,3 +18,4 @@ The UI regression suite expects the local server (`python scripts/serve_local.py
 
 The public repository intentionally excludes leases, tenant information, seller communications, internal underwriting, review workbooks, MLS source PDFs, and other confidential deal materials.
 
+Selected subject and comparable images are extracted from the archived MLS evidence authorized for this offering. Their visible MLS attribution is preserved.
