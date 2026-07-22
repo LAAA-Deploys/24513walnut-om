@@ -19,25 +19,27 @@
     "zoning": "Old Town Newhall Specific Plan — Corridor (COR)",
     "occupancy": "100%",
     "parking": "Garage and on-site parking; buyer to verify count and configuration",
-    "flood_zone": "Zone X"
+    "flood_zone": "Zone X",
+    "latitude": 34.3810926,
+    "longitude": -118.5315719
   },
   "investment_overview": [
-    "The LAAA Team of Marcus & Millichap is proud to present 24513–24519 Walnut Street, a three-unit residential investment in Old Town Newhall. The 9,379-square-foot site contains a duplex and detached rear house totaling 2,364 square feet, with two 2-bedroom/1-bath units and one 1-bedroom/1-bath unit.",
-    "Reported in-place rents total $5,700 per month. At $1,095,000, the offering reflects a 4.02% current cap rate and 16.01x current GRM. Broker pro forma rents of $6,950 per month produce $59,023 of NOI, a 5.39% cap rate, and 13.13x GRM, before financing and without a vacancy assumption.",
-    "The property offers an occupied small-residential income profile with measurable rent upside and a walkable, transit-oriented setting. Its COR zoning, alley access, and lot configuration may merit independent ADU or redevelopment study; no entitlement is represented. Buyers should verify leases, permitted unit configuration, utility obligations, physical condition, and all development assumptions."
+    "The LAAA Team of Marcus & Millichap is proud to present 24513–24519 Walnut Street, a three-unit residential investment in Old Town Newhall. Built in 1926 and 1954, the 2,364-square-foot property includes a duplex with two 2-bedroom/1-bath residences and a detached 1-bedroom/1-bath rear home on a 9,379-square-foot COR-zoned lot.",
+    "The investment offers 21.9% gross rent upside from reported monthly rents of $5,700 to broker pro forma of $6,950. The two duplex residences each generate $1,800 per month against a $2,400 pro forma, while the rear home generates $2,100 against a $2,150 pro forma. The three residences are fully occupied, subject to lease verification.",
+    "Newhall Metrolink Station is approximately 0.26 mile from the property, and Old Town Newhall’s Main Street district provides nearby dining, arts, library, and civic amenities. The lot’s alley access and COR zoning support independent ADU and site-planning study, with no entitlement represented. The offering is positioned for small-property investors, 1031 exchange buyers, and owner-operators seeking occupied income with defined rent upside."
   ],
   "location_overview": [
-    "Walnut Street sits at the edge of Old Town Newhall’s Main Street district, where the City identifies restaurants, shopping, arts, and entertainment, including The MAIN performance venue and the Old Town Newhall Library. Hart Park’s museum and grounds also anchor the nearby civic and recreation network.",
-    "Newhall Metrolink Station is approximately 0.26 mile from the property and serves the Antelope Valley Line, with 324 parking spaces listed by Metrolink. Interstate 5 and State Route 14 provide regional freeway access; buyers should confirm trip times for their own commuting patterns.",
+    "Old Town Newhall combines Main Street dining, arts, and civic amenities within a compact historic district. The Old Town Newhall Library is approximately 0.09 mile from Walnut Street, The MAIN performance venue is 0.30 mile away, and William S. Hart Park is approximately 0.46 mile south.",
+    "Newhall Metrolink Station is approximately 0.26 mile from the property and serves the Antelope Valley Line, with 324 parking spaces listed by Metrolink. Interstate 5 access is approximately one mile west, and Henry Mayo Newhall Hospital is approximately 1.71 miles away.",
     "Santa Clarita’s 2024 population estimate was 229,159. Census data reports median household income of $123,062, median gross rent of $2,544, and a 34.1-minute mean commute for 2020–2024. College of the Canyons reports 40,987 annual enrollment, adding a major education and employment anchor in the valley."
   ],
   "investment_highlights": [
     {"headline": "Three Income-Producing Residences", "detail": "An occupied duplex and detached rear home provide three rent streams on one 9,379-square-foot lot, subject to lease and legal-status verification."},
-    {"headline": "Defined Rent Upside", "detail": "Current rents total $5,700 per month; broker-selected pro forma rents total $6,950 and remain below the surveyed two-bedroom median."},
-    {"headline": "Transparent Buyer Underwriting", "detail": "The offering shows each expense line, current and pro forma NOI, and source limitations without adding an unapproved vacancy or financing assumption."},
+    {"headline": "21.9% Gross Rent Upside", "detail": "Current rents total $5,700 per month, compared with broker pro forma rents of $6,950 per month across the three residences."},
+    {"headline": "$600 Duplex Rent Upside", "detail": "Each two-bedroom duplex residence generates $1,800 per month, compared with a broker pro forma of $2,400 per month."},
     {"headline": "Old Town Newhall Access", "detail": "Newhall Metrolink Station is approximately 0.26 mile away, with Main Street dining, arts, library, and civic amenities nearby."},
-    {"headline": "Comparable Evidence In Context", "detail": "Six verified sales are organized by analytical role, condition, rent rules, and physical similarity—not reduced to a single price-per-foot headline."},
-    {"headline": "Optionality, Not Entitlement", "detail": "COR zoning, alley access, and site configuration support further study, while the OM clearly makes no ADU or redevelopment representation."}
+    {"headline": "Six Verified Comparable Sales", "detail": "The selected three- and four-unit sales range from $760,000 to $1,150,000 and provide multiple physical and location reference points."},
+    {"headline": "9,379 SF COR-Zoned Lot", "detail": "Alley access and the existing site configuration support independent ADU and site-planning study; no additional development entitlement is represented."}
   ],
   "location_sources": [
     {"label": "City of Santa Clarita — Old Town Newhall", "url": "https://santaclarita.gov/blog/2025/03/20/discover-old-town-newhall/"},
@@ -63,7 +65,7 @@
   ],
   "sale_comps": [
     {
-      "id": "atwood", "map_label": "1", "tags": ["newhall", "same-regime", "upper"],
+      "id": "atwood", "map_label": "1", "latitude": 34.3781256, "longitude": -118.5538742, "tags": ["newhall", "same-regime", "upper"],
       "address": "25252 Atwood Blvd", "city": "Newhall, CA 91321", "close_date": "2026-05-15", "price": 1150000,
       "units": "3", "bed_bath": "5 BR / 4 BA", "sf": 2810, "lot_sf": 7487, "year_built": "1954 + newer ADU",
       "ppu": 383333, "ppsf": 409, "grm": "11.98x current", "cap": "5.86% current", "dom": "26", "sp_lp": "97.9%",
@@ -79,7 +81,7 @@
       "map_url": "https://www.google.com/maps/search/?api=1&query=25252%20Atwood%20Blvd%2C%20Newhall%2C%20CA%2091321&query_place_id=ChIJ2wt3K5WGwoARhKj4M_X5iQI"
     },
     {
-      "id": "coronel", "map_label": "2", "tags": ["same-regime", "anchor"],
+      "id": "coronel", "map_label": "2", "latitude": 34.2837309, "longitude": -118.4456534, "tags": ["same-regime", "anchor"],
       "address": "1237 Coronel Street", "city": "San Fernando, CA 91340", "close_date": "2024-08-27", "price": 1090000,
       "units": "3", "bed_bath": "8 BR / 6 BA", "sf": 3106, "lot_sf": 5000, "year_built": "1964",
       "ppu": 363333, "ppsf": 351, "grm": "14.49x current", "cap": "4.68% current", "dom": "131", "sp_lp": "99.5% adjusted / 91.2% original",
@@ -89,13 +91,13 @@
       "occupancy": "All three large family units were occupied at below-market rents.",
       "condition": "One unit renovated; copper repipe, tankless water heater, in-unit laundry and ten parking spaces.",
       "note": "The best regulatory match. Its larger two-bath units and stronger improvements offset Walnut's larger lot, better location and ADU optionality.",
-      "strengths": ["Same AB 1482-only rent regime", "Large 3BR and 2BR family units", "Institutional 75% financing supports the sale"],
+      "strengths": ["Same AB 1482-only rent rules", "Large 3BR and 2BR family units", "Institutional 75% financing supports the sale"],
       "cautions": ["Required a $100,000 price cut", "Only one of three units was renovated", "Per-unit comparison is distorted by much larger units"],
       "image": "assets/images/comps/coronel.jpg", "image_alt": "Exterior of the sold triplex at 1237 Coronel Street", "image_credit": "MLS photography",
       "map_url": "https://www.google.com/maps/search/?api=1&query=1237%20Coronel%20Street%2C%20San%20Fernando%2C%20CA%2091340&query_place_id=ChIJrVShBzaQwoAR8vOrJRSsjpU"
     },
     {
-      "id": "oro-vista", "map_label": "3", "tags": ["anchor", "occupied"],
+      "id": "oro-vista", "map_label": "3", "latitude": 34.2586845, "longitude": -118.3160038, "tags": ["anchor", "occupied"],
       "address": "10427 Oro Vista Avenue", "city": "Sunland, CA 91040", "close_date": "2025-07-01", "price": 1075000,
       "units": "3", "bed_bath": "6 BR / 3 BA", "sf": 2858, "lot_sf": 5961, "year_built": "1964",
       "ppu": 358333, "ppsf": 376, "grm": "18.59x current", "cap": "3.26% current", "dom": "6", "sp_lp": "107.6%",
@@ -111,7 +113,7 @@
       "map_url": "https://www.google.com/maps/search/?api=1&query=10427%20Oro%20Vista%20Avenue%2C%20Sunland%2C%20CA%2091040&query_place_id=ChIJH76XRlmTwoARBPOhjM1qqwE"
     },
     {
-      "id": "pinewood", "map_label": "4", "tags": ["physical", "occupied"],
+      "id": "pinewood", "map_label": "4", "latitude": 34.2510631, "longitude": -118.2857562, "tags": ["physical", "occupied"],
       "address": "10030 Pinewood Avenue", "city": "Tujunga, CA 91042", "close_date": "2024-12-06", "price": 1050000,
       "units": "3", "bed_bath": "5 BR / 3 BA", "sf": 2656, "lot_sf": 11048, "year_built": "1920 / 1948 / 1950",
       "ppu": 350000, "ppsf": 395, "grm": "28.00x current", "cap": "1.76% current", "dom": "51", "sp_lp": "95.5% adjusted / 87.9% original",
@@ -127,7 +129,7 @@
       "map_url": "https://www.google.com/maps/search/?api=1&query=10030%20Pinewood%20Avenue%2C%20Tujunga%2C%20CA%2091042&query_place_id=ChIJUReoO0XrwoAREr9897i6xyI"
     },
     {
-      "id": "santol", "map_label": "5", "tags": ["floor", "occupied"],
+      "id": "santol", "map_label": "5", "latitude": 34.2937439, "longitude": -118.3795696, "tags": ["floor", "occupied"],
       "address": "11344 Santol Drive", "city": "Sylmar, CA 91342", "close_date": "2025-12-17", "price": 899000,
       "units": "4 actual / 3 legal", "bed_bath": "5 BR / 4 BA", "sf": 2981, "lot_sf": 8406, "year_built": "1945 MLS / 1928 public record",
       "ppu": 224750, "ppu_note": "$299,667 per legal unit", "ppsf": 302, "grm": "11.19x current", "cap": "6.45% current", "dom": "75", "sp_lp": "100.0%",
@@ -136,14 +138,14 @@
       "source": "TheMLS closed-sale report; U.S. Census geocoder for straight-line distance",
       "occupancy": "Four occupied dwellings with post-renovation rents near market; one studio was non-conforming.",
       "condition": "Approximately $300,000 of reported improvements, including kitchens, baths, balconies and upgraded electrical panels.",
-      "note": "Useful floor evidence, but not a clean triplex comparison. Canyon location, fire exposure, county rent controls and the non-conforming fourth unit weigh on the print.",
+      "note": "Santol establishes a lower current-cycle reference, although its canyon location, fire exposure, county rent controls, and non-conforming fourth unit limit direct comparison.",
       "strengths": ["Most recent lower-bracket sale", "Renovated and near-market income", "Full-price closing"],
       "cautions": ["Four actual units but only three legal", "Undisclosed seller concessions", "Canyon access, fire exposure and RSTPO regulation"],
       "image": "assets/images/comps/santol.jpg", "image_alt": "Hillside exterior of the sold income property at 11344 Santol Drive", "image_credit": "MLS photography",
       "map_url": "https://www.google.com/maps/search/?api=1&query=11344%20Santol%20Drive%2C%20Sylmar%2C%20CA%2091342&query_place_id=ChIJTWbPazuSwoAR-CrDswhfBhI"
     },
     {
-      "id": "harding", "map_label": "6", "tags": ["same-regime", "floor"],
+      "id": "harding", "map_label": "6", "latitude": 34.2879706, "longitude": -118.44114, "tags": ["same-regime", "floor"],
       "address": "216 Harding Avenue", "city": "San Fernando, CA 91340", "close_date": "2025-01-15", "price": 760000,
       "units": "3", "bed_bath": "3 BR / 3 BA", "sf": 1560, "sf_note": "MLS reports 1,590 SF", "lot_sf": 6142, "year_built": "1934",
       "ppu": 253333, "ppsf": 487, "grm": "10.56x projected", "cap": "7.14% projected", "dom": "9", "sp_lp": "101.4%",
@@ -152,8 +154,8 @@
       "source": "TheMLS closed-sale report; U.S. Census geocoder for straight-line distance",
       "occupancy": "Delivered completely vacant; income metrics use projected rents rather than achieved leases.",
       "condition": "Original-condition fixer with no listed heating, cooling or laundry and three separate water meters.",
-      "note": "The ring's floor sale. Its tiny building inflates price per square foot, so the useful evidence is absolute price and price per unit—not the $487/SF headline.",
-      "strengths": ["Same AB 1482-only rent regime", "Vacant delivery and fast nine-day sale", "Clean standard sale with no concessions"],
+      "note": "Harding establishes the lowest absolute-price reference in the selected set. Its small building area inflates price per square foot, making price and price per unit the more relevant measures.",
+      "strengths": ["Same AB 1482-only rent rules", "Vacant delivery and fast nine-day sale", "Clean standard sale with no concessions"],
       "cautions": ["Small 1,560 SF denominator distorts $/SF", "Projected rather than achieved income", "Worst physical condition in the set"],
       "image": "assets/images/comps/harding.jpg", "image_alt": "Exterior of the sold fixer triplex at 216 Harding Avenue", "image_credit": "MLS photography",
       "map_url": "https://www.google.com/maps/search/?api=1&query=216%20Harding%20Avenue%2C%20San%20Fernando%2C%20CA%2091340&query_place_id=ChIJJ0vgwTSQwoARBPN4GxyzPIs"

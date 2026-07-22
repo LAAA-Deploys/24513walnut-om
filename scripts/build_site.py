@@ -213,7 +213,7 @@ def rent_rows() -> str:
         selected = money(item["selected"]) if item["selected"] is not None else "Cross-check"
         rows.append(
             "<tr>"
-            f"<td data-label='Evidence'><strong>{esc(item['segment'])}</strong><small>{esc(item['sample'])}</small></td>"
+            f"<td data-label='Unit type / survey'><strong>{esc(item['segment'])}</strong><small>{esc(item['sample'])}</small></td>"
             f"<td data-label='Median'>{median}</td><td data-label='25th percentile'>{p25}</td><td data-label='Selected'>{selected}</td>"
             f"<td data-label='Interpretation'>{esc(item['note'])}</td></tr>"
         )
@@ -251,6 +251,35 @@ def source_links() -> str:
         f"<a href='{esc(source['url'])}' target='_blank' rel='noopener'>{esc(source['label'])}<span aria-hidden='true'>↗</span></a>"
         for source in DATA["location_sources"]
     )
+
+
+def map_config_json() -> str:
+    subject = {
+        "id": "subject",
+        "label": "S",
+        "title": "24513–24519 Walnut Street",
+        "lat": DATA["property"]["latitude"],
+        "lng": DATA["property"]["longitude"],
+    }
+    locations = [
+        subject,
+        {"id": "station", "label": "T", "title": "Newhall Metrolink Station", "lat": 34.379125, "lng": -118.527363},
+        {"id": "main", "label": "M", "title": "The MAIN", "lat": 34.3784335, "lng": -118.5274043},
+        {"id": "library", "label": "L", "title": "Old Town Newhall Library", "lat": 34.3816793, "lng": -118.5301927},
+        {"id": "park", "label": "P", "title": "William S. Hart Park", "lat": 34.3759169, "lng": -118.5263644},
+    ]
+    comps = [
+        {
+            "id": comp["id"],
+            "label": comp["map_label"],
+            "title": comp["address"],
+            "lat": comp["latitude"],
+            "lng": comp["longitude"],
+        }
+        for comp in DATA["sale_comps"]
+    ]
+    payload = {"subject": subject, "locations": locations, "comps": comps}
+    return json.dumps(payload, ensure_ascii=False, separators=(",", ":")).replace("</", "<\\/")
 
 
 def validate_editorial_contract() -> None:
@@ -300,6 +329,7 @@ replacements = {
     "{{GALLERY_ITEMS}}": gallery_items(),
     "{{CONTACT_CARDS}}": contact_cards(),
     "{{LOCATION_SOURCES}}": source_links(),
+    "{{MAP_CONFIG_JSON}}": map_config_json(),
     "{{CURRENT_NOI}}": money(current_noi),
     "{{PROFORMA_NOI}}": money(proforma_noi),
     "{{CURRENT_CAP}}": metric(current_noi / price * 100, "%"),

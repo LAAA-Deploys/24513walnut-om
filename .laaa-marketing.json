@@ -2,5 +2,15 @@
   "schemaVersion": 1,
   "deliverable": "om",
   "entrypoint": "index.html",
-  "requireNoindex": true
+  "requireNoindex": true,
+  "externalDependencies": [
+    {
+      "purpose": "Interactive location and comparable maps",
+      "url": "https://maps.googleapis.com/maps/api/js",
+      "runtimeOrigins": [
+        "https://maps.googleapis.com",
+        "https://maps.gstatic.com"
+      ]
+    }
+  ]
 }

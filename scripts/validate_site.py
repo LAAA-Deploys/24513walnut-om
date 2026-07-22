@@ -123,6 +123,9 @@ for value in required_strings:
 for stale in [
     "$1,249,000", "3.99%", "30 trains", "Why the LAAA Team", "expected sale", "price reduction",
     "Focus the evidence", "Same rent regime", "Main Street sample", "Fourth Street", "Chestnut Street",
+    "Interactive Prototype", "buyers can audit", "responsive screen", "continuous table",
+    "invented financing", "evidence tool", "false precision", "no unapproved assumption",
+    "until Glen approves",
 ]:
     if stale.lower() in HTML.lower():
         errors.append(f"Stale or seller-facing phrase present: {stale}")
@@ -163,14 +166,15 @@ comp_ids = [comp.get("id") for comp in DATA["sale_comps"]]
 if len(set(comp_ids)) != len(comp_ids):
     errors.append("Sale comparable IDs must be unique")
 for comp in DATA["sale_comps"]:
-    for required in ["id", "map_label", "image", "map_url", "verdict", "occupancy", "condition", "strengths", "cautions", "distance", "rent_rules", "source"]:
+    for required in ["id", "map_label", "latitude", "longitude", "image", "map_url", "verdict", "occupancy", "condition", "strengths", "cautions", "distance", "rent_rules", "source"]:
         if not comp.get(required):
             errors.append(f"Sale comparable {comp.get('address', '(unknown)')} lacks {required}")
     if comp.get("image") and not (ROOT / comp["image"]).exists():
         errors.append(f"Missing sale comparable image: {comp['image']}")
 
-if not (ROOT / "assets" / "images" / "map-sale-comps.jpg").exists():
-    errors.append("Missing locally committed sale-comparable map")
+for required_map in ["map-newhall.jpg", "map-transit.jpg", "map-subject-satellite.jpg", "map-sale-comps.jpg"]:
+    if not (ROOT / "assets" / "images" / required_map).exists():
+        errors.append(f"Missing locally committed map: {required_map}")
 for required_comp in [
     "25252 Atwood Blvd", "1237 Coronel Street", "10427 Oro Vista Avenue",
     "10030 Pinewood Avenue", "11344 Santol Drive", "216 Harding Avenue",
@@ -188,6 +192,8 @@ for contact in DATA.get("contacts", []):
 for required_markup in [
     "data-fin-basis=\"total\"", "data-fin-basis=\"unit\"", "data-fin-basis=\"sf\"",
     "data-comp-view=\"list\"", "data-comp-view=\"map\"", "data-location-view=\"district\"",
+    "data-location-view=\"satellite\"", "data-location-view=\"transit\"", "data-location-view=\"street\"",
+    "data-google-map=\"location\"", "data-google-map=\"comps\"", "id=\"map-config\"",
     "table-scroll-cue", "assets/images/glen-scher.jpg", "assets/images/filip-niculete.jpg",
 ]:
     if required_markup not in HTML:
@@ -195,6 +201,16 @@ for required_markup in [
 
 if re.search(r'''(?:src|poster)=["']https?://''', HTML, re.I) or re.search(r"url\(\s*[\"']?https?://", HTML, re.I):
     errors.append("Runtime assets must remain local; external URLs may be links only")
+
+contract = json.loads((ROOT / ".laaa-marketing.json").read_text(encoding="utf-8"))
+map_dependencies = [item for item in contract.get("externalDependencies", []) if item.get("url") == "https://maps.googleapis.com/maps/api/js"]
+if len(map_dependencies) != 1:
+    errors.append("Google Maps JavaScript API must be declared exactly once")
+elif set(map_dependencies[0].get("runtimeOrigins", [])) != {"https://maps.googleapis.com", "https://maps.gstatic.com"}:
+    errors.append("Google Maps runtime origins are incomplete")
+map_runtime = (ROOT / "assets" / "site.js").read_text(encoding="utf-8")
+if "https://maps.googleapis.com/maps/api/js?key=" not in map_runtime or "callback=LAAAInitGoogleMaps" not in map_runtime:
+    errors.append("Google Maps JavaScript API loader is missing")
 
 if not re.search(r'<main\b', HTML):
     errors.append("Missing main landmark")

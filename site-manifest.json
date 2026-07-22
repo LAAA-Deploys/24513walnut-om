@@ -12,8 +12,8 @@
     },
     {
       "path": ".laaa-marketing.json",
-      "sha256": "5de08fef00e973c2393c2980822ba31fe24262c57ae5ca84f991913913c783e3",
-      "bytes": 104
+      "sha256": "960805bbd45d369a5254f81db1d66d4ea041d3c07ca0c93bfcf73d88450755c7",
+      "bytes": 374
     },
     {
       "path": ".nojekyll",
@@ -82,18 +82,23 @@
     },
     {
       "path": "assets/images/map-newhall.jpg",
-      "sha256": "b6548180e93452bc431ab242d2947f4a836134ebf125cdd46a429fd4a307d101",
-      "bytes": 104642
+      "sha256": "a3db96336cbe2273b1aa9129c4c1131cd14d31c5afd90b20856b8adde234dc0a",
+      "bytes": 94336
     },
     {
       "path": "assets/images/map-sale-comps.jpg",
-      "sha256": "4ea6d1151885eae1ead0279d3be7991f08c1e8caceeb4e733ffc41d546de7865",
-      "bytes": 181980
+      "sha256": "71bbe783c883f99b861406d71e08cd5ba702cc4c9a5d39be9e66d48cd62ca925",
+      "bytes": 150311
+    },
+    {
+      "path": "assets/images/map-subject-satellite.jpg",
+      "sha256": "96fecfc98ffbfdb6e30f5659d2631663f7dfc99a30a5e6c73e49d52c7d847991",
+      "bytes": 251103
     },
     {
       "path": "assets/images/map-transit.jpg",
-      "sha256": "f7344f6d27c726a8309d0db33b7134ddbc05dac2d3f8d6e8583776fd7635bf25",
-      "bytes": 99519
+      "sha256": "9223de003050cf8e1589f82b5ddf84433ead0dd79caae63701fb5bf2fe7cfef8",
+      "bytes": 97454
     },
     {
       "path": "assets/images/rear-buildings-aerial.jpg",
@@ -147,23 +152,23 @@
     },
     {
       "path": "assets/site.js",
-      "sha256": "cdb653bef740b153d93bb2553fbd7eb488c8758c66af56c9cdbccc36045b98c0",
-      "bytes": 11465
+      "sha256": "8b17d7e93426b7ff1788dfa77955f35ccdaaa0c4bad1bd60f0880777b5df8e5c",
+      "bytes": 18694
     },
     {
       "path": "assets/styles.css",
-      "sha256": "b1771c9f1b45e9c6126c71023917d5a8aa1e72c1de9155c067c9950e6f7fa52b",
-      "bytes": 42487
+      "sha256": "5ecf7f461805dcb4a4ad7692ba9e831d3fd119c3dcc416f0a1b87c1b7c440ffc",
+      "bytes": 44356
     },
     {
       "path": "data/site-data.json",
-      "sha256": "1b7896b2186a146965b79899ef124d24fe8678a6d64c42f0b9020b844a9f6fb3",
-      "bytes": 19904
+      "sha256": "bb0d7812f0021dacdd42f3e2c972b5df4ceac924f610704897caa1acc3c21bed",
+      "bytes": 20345
     },
     {
       "path": "index.html",
-      "sha256": "75bc1b99b93c118b85d00fba4dbe9c00b301d21bdca122d21c659e823c64c0ea",
-      "bytes": 64657
+      "sha256": "496c1b566d514b6ffe3b1ba2d9cf3274340c9a983f82d486f583be518ade45f8",
+      "bytes": 67073
     },
     {
       "path": "package-lock.json",
@@ -177,8 +182,8 @@
     },
     {
       "path": "README.md",
-      "sha256": "424d52f5383cf00198bd298f3af604d7b8b795ef246937c239823f0c99b7f888",
-      "bytes": 1980
+      "sha256": "12dc5e5d92c7ba005cd99555dbb754cf2af95daf57b9e81047b1bd5fd8e0ceba",
+      "bytes": 2163
     },
     {
       "path": "robots.txt",
@@ -187,8 +192,8 @@
     },
     {
       "path": "scripts/build_site.py",
-      "sha256": "cb4be3ea01a85a4d5ed8519e51944c07a65621527549176c9129b1c269afba96",
-      "bytes": 17760
+      "sha256": "5d28290fb40bc0788acb3bd31b15f87bc0ac45a34112554dcaf95ffa540800e3",
+      "bytes": 18975
     },
     {
       "path": "scripts/serve_local.py",
@@ -197,13 +202,13 @@
     },
     {
       "path": "scripts/validate_site.py",
-      "sha256": "a7c44859f0bb0f593d6f6f94797af825cb5f70fecd8f560401fc853d3f960846",
-      "bytes": 10259
+      "sha256": "2bc2f785f8354bce7957f3dcd09eb5951c87c4a2897390183fe556eed457edd6",
+      "bytes": 11576
     },
     {
       "path": "src/index.template",
-      "sha256": "20bb95e6ba23192e8f36465b78b32f700c1dbc31afb3ce0b0e7af6f1c109dabf",
-      "bytes": 20852
+      "sha256": "bda047faf0169ac1ab43b0580c5e4f2dddfbb6055d33852b0d113756bcf4d5a5",
+      "bytes": 22000
     },
     {
       "path": "tests/ui-regression.cjs",
