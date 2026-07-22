@@ -152,8 +152,8 @@
     },
     {
       "path": "scripts/build_site.py",
-      "sha256": "bfb9d504aa61f760f8e7a1488db08846a7772fe041d79f66e884a4b13eb65bfb",
-      "bytes": 5853
+      "sha256": "d96268278ea6f6439aeda19f39812840db70cbaeefabf0f8cd786a450565bff4",
+      "bytes": 5848
     },
     {
       "path": "scripts/serve_local.py",
@@ -162,11 +162,11 @@
     },
     {
       "path": "scripts/validate_site.py",
-      "sha256": "edfcb4d637774bc407f5d238f2387056ebbdcd069037f0f3fc3e45f41b601b56",
-      "bytes": 6238
+      "sha256": "f0876391e08f5cede4404a9ddd2f4b8d62e6aebebd01dc35b82016d66f4288ab",
+      "bytes": 6233
     },
     {
-      "path": "src/index.template.html",
+      "path": "src/index.template",
       "sha256": "88fd14b60192a88ee71bf9461ac830bfe460e7491291976fd97dc2fb9d2bdf4a",
       "bytes": 14899
     },

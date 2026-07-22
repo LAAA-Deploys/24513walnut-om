@@ -136,7 +136,7 @@ public_text = "\n".join(
     path.read_text(encoding="utf-8", errors="ignore")
     for path in [
         ROOT / "index.html",
-        ROOT / "src" / "index.template.html",
+        ROOT / "src" / "index.template",
         ROOT / "data" / "site-data.json",
         ROOT / "README.md",
         ROOT / "assets" / "site.js",

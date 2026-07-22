@@ -6,7 +6,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 DATA = json.loads((ROOT / "data" / "site-data.json").read_text(encoding="utf-8"))
-TEMPLATE = (ROOT / "src" / "index.template.html").read_text(encoding="utf-8")
+TEMPLATE = (ROOT / "src" / "index.template").read_text(encoding="utf-8")
 
 
 def money(value: float | int) -> str:
