@@ -1,0 +1,6 @@
+{
+  "schemaVersion": 1,
+  "deliverable": "om",
+  "entrypoint": "index.html",
+  "requireNoindex": true
+}

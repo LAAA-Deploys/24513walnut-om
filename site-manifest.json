@@ -2,13 +2,28 @@
   "files": [
     {
       "path": ".gitignore",
-      "sha256": "dbb53c15a3bef0ad78316ecd564c9915f3719d3fdbe341855181c679f1663c2f",
-      "bytes": 40
+      "sha256": "720d7f617daf7b341daadd70c5730a28af770ddef86a6efacfa392b4ba97e5e7",
+      "bytes": 46
+    },
+    {
+      "path": ".laaa-marketing.json",
+      "sha256": "5de08fef00e973c2393c2980822ba31fe24262c57ae5ca84f991913913c783e3",
+      "bytes": 104
     },
     {
       "path": ".nojekyll",
-      "sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
-      "bytes": 1
+      "sha256": "7eb70257593da06f682a3ddda54a9d260d4fc514f645237f5ca74b08f8da61a6",
+      "bytes": 2
+    },
+    {
+      "path": "assets/brand/LAAA_Team_Blue.png",
+      "sha256": "ebced402dee39f41c25da2b2cf7124d1932a45df95754675cc79e4658bf9a6d2",
+      "bytes": 31373
+    },
+    {
+      "path": "assets/brand/LAAA_Team_White.png",
+      "sha256": "40439c1b03b8132b2e09832258ca22bc04b0f18f3796537c43f45f0fef68e2f5",
+      "bytes": 28342
     },
     {
       "path": "assets/images/filip-niculete.jpg",
@@ -92,53 +107,58 @@
     },
     {
       "path": "assets/site.js",
-      "sha256": "451d8bc5b02d09adeb596fcfb40bd978bd9bf1e878014a83c9a91b25f700949a",
-      "bytes": 963
+      "sha256": "3e634ca0042b077c14493606d62874af54905b323c9d8e6dd4816a02ebf05e0b",
+      "bytes": 3929
     },
     {
       "path": "assets/styles.css",
-      "sha256": "4fa8a0914734869e0fc63323bd75e84a57c800cec1b66cb77608b51d6a72583f",
-      "bytes": 15185
+      "sha256": "1afeecddd15294a21ca3ba9414771e9e82f8d886969a3720c9d580395e3a3489",
+      "bytes": 21820
     },
     {
       "path": "data/site-data.json",
-      "sha256": "500f105c16aa2ea31a428b8e3d48d8166c77911983a3a7157cdf4e63b03be54b",
-      "bytes": 5787
+      "sha256": "fb401d79d3cd3b030743022a39aff2c37063e3906503bcddfb7ac83ac248dd68",
+      "bytes": 5849
     },
     {
       "path": "index.html",
-      "sha256": "9e25570fc95880c48805f253be84d09372dbe95121d92af0ccaf42f69f470a43",
-      "bytes": 19684
+      "sha256": "adfcae40177e0b89806827bcaec3869ecaea447712f2d4a9cbcec3aecca33102",
+      "bytes": 21078
     },
     {
       "path": "README.md",
-      "sha256": "5ab9f6536e437d786f0c75633598255c299b6322b0f96267c6ffb0ecef53b2f3",
-      "bytes": 453
+      "sha256": "149f13ec224141816695584a4415abeda424c88b810094c8904e53ca4afa1f34",
+      "bytes": 895
     },
     {
       "path": "robots.txt",
-      "sha256": "32403248dc764535c87140955fc9451f9ebc9702f3e298d1c24fe84e558a53a9",
-      "bytes": 27
+      "sha256": "352b106d928309ada9804d262f6e4de1454e055d5b7c8a2dd5d1fb22d795b2d2",
+      "bytes": 30
     },
     {
       "path": "scripts/build_site.py",
-      "sha256": "bfb9d504aa61f760f8e7a1488db08846a7772fe041d79f66e884a4b13eb65bfb",
-      "bytes": 5853
+      "sha256": "cdcc67cb29febb791de87e1daf6ebe4441e6889e24e357fd7ba8898f9d5fe02a",
+      "bytes": 6009
     },
     {
       "path": "scripts/serve_local.py",
-      "sha256": "4346fdd24503ca38854584ae197ec1c25341ea11506e0e6b2d4dfe951e02f029",
-      "bytes": 494
+      "sha256": "98108a79b162e0104f728044ec6410a8a84382f2491e34febe95582526fe9179",
+      "bytes": 509
     },
     {
       "path": "scripts/validate_site.py",
-      "sha256": "f5bb26af1c41934ac80dcfa5b87064d45e491ebb7aeb2c13973a1975f083f1e0",
-      "bytes": 3386
+      "sha256": "f7c8d5091cfc4bb801d12bb32b7b1f25953c1df55da5f8d2be47232954198626",
+      "bytes": 6279
     },
     {
       "path": "src/index.template.html",
-      "sha256": "c23e15a56fb6b5d4ad6e97d79ff09787449233d88ea29033121351aefdc41587",
-      "bytes": 13505
+      "sha256": "edbc3166ae0f1af85c83abbbfa0c78556378b211d10e498e351862b274eda07a",
+      "bytes": 14988
+    },
+    {
+      "path": "tests/ui-regression.cjs",
+      "sha256": "c7d6b8a4768682a3dbeef98bcf0882b704b81ac66217da62774bd88adb207230",
+      "bytes": 9961
     }
   ]
 }

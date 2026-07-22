@@ -10,32 +10,36 @@
   <meta property="og:description" content="A three-unit residential investment opportunity in Old Town Newhall, California.">
   <meta property="og:type" content="website">
   <meta property="og:image" content="assets/images/hero-front-aerial.jpg">
-  <link rel="stylesheet" href="assets/styles.css?v=20260721-2">
-  <script defer src="assets/site.js?v=20260721-2"></script>
+  <link rel="stylesheet" href="assets/styles.css?v=20260722-1">
+  <script defer src="assets/site.js?v=20260722-1"></script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to offering details</a>
   <div class="preview-band">Confidential Offering Memorandum · Review Edition · July 2026</div>
   <header class="site-header">
-    <a class="wordmark" href="#top" aria-label="24513 Walnut offering home"><span>LAAA</span><b>Offering Memorandum</b></a>
-    <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="primary-nav"><span></span><span></span><span></span><span class="sr-only">Open navigation</span></button>
-    <nav id="primary-nav" aria-label="Primary navigation">
+    <a class="wordmark" href="#top" aria-label="24513 Walnut offering home">
+      <span class="brand-slot" data-laaa-brand-slot="header" data-logo-variant="blue" data-brand-context="light"><img src="assets/brand/LAAA_Team_Blue.png" alt="LAAA Team"></span>
+      <span class="site-descriptor">Offering Memorandum</span>
+    </a>
+    <button class="menu-toggle" data-laaa-menu-toggle type="button" aria-expanded="false" aria-controls="primary-nav"><span aria-hidden="true"></span><span aria-hidden="true"></span><span aria-hidden="true"></span><span class="sr-only menu-label" data-laaa-menu-label>Open navigation</span></button>
+    <nav id="primary-nav" data-laaa-menu aria-label="Primary navigation">
       <a href="#overview">Overview</a><a href="#property">Property</a><a href="#financials">Financials</a><a href="#comps">Market</a><a href="#location">Location</a><a href="#contact">Contact</a>
     </nav>
   </header>
+  <div class="menu-backdrop" data-laaa-menu-backdrop hidden></div>
 
   <main id="main">
     <section class="hero" id="top" aria-labelledby="hero-title">
       <img class="hero-image" src="assets/images/hero-front-aerial.jpg" alt="Aerial view of 24513–24519 Walnut Street in Old Town Newhall">
       <div class="hero-scrim"></div>
-      <div class="hero-content">
+      <div class="hero-content" data-laaa-hero-content data-laaa-over-image>
         <p class="kicker">Three-unit residential investment · Old Town Newhall</p>
         <h1 id="hero-title">24513–24519 Walnut Street</h1>
         <p class="hero-location">Newhall, CA 91321</p>
         <div class="hero-offer"><span>Offering price</span><strong>$1,095,000</strong></div>
         <div class="hero-actions"><a class="button primary" href="#financials">Review the numbers</a><a class="button ghost" href="#contact">Request a tour</a></div>
       </div>
-      <div class="hero-stats" aria-label="Offering highlights">
+      <div class="hero-stats" data-laaa-hero-kpis data-laaa-over-image aria-label="Offering highlights">
         <div><b>3</b><span>Units</span></div><div><b>2,364</b><span>Building SF</span></div><div><b>9,379</b><span>Lot SF</span></div><div><b>100%</b><span>Occupied</span></div>
       </div>
     </section>
@@ -64,8 +68,11 @@
 
     <section class="section financial-section" id="financials">
       <div class="container section-heading light"><div><p class="eyebrow">Operating profile</p><h2>Current income with a conservative path to stabilization.</h2></div><p>Current rents were reported to the broker and remain subject to lease verification. No seller T-12 was available; expenses below are broker estimates using the LAAA residential 2–4-unit basis.</p></div>
-      <div class="container table-shell">
-        <table><caption>Rent roll</caption><thead><tr><th>Residence</th><th>Unit type</th><th>Current rent</th><th>Pro Forma rent</th><th>Status</th></tr></thead><tbody><tr><td><strong>Duplex Unit A</strong></td><td>2BR / 1BA</td><td>$1,800</td><td>$2,400</td><td><span class='status-pill'>Occupied</span></td></tr><tr><td><strong>Duplex Unit B</strong></td><td>2BR / 1BA</td><td>$1,800</td><td>$2,400</td><td><span class='status-pill'>Occupied</span></td></tr><tr><td><strong>Rear House</strong></td><td>1BR / 1BA</td><td>$2,100</td><td>$2,150</td><td><span class='status-pill'>Occupied</span></td></tr></tbody><tfoot><tr><td colspan="2">Monthly total</td><td>$5,700</td><td>$6,950</td><td></td></tr></tfoot></table>
+      <div class="container table-region">
+        <p class="table-scroll-cue" data-laaa-scroll-cue id="rent-roll-cue">Swipe or use arrow keys to view all columns <span aria-hidden="true">→</span></p>
+        <div class="table-shell" data-laaa-scroll-region tabindex="0" role="region" aria-label="Rent roll table. Scroll horizontally for additional columns." aria-describedby="rent-roll-cue">
+          <table><caption>Rent roll</caption><thead><tr><th>Residence</th><th>Unit type</th><th>Current rent</th><th>Pro Forma rent</th><th>Status</th></tr></thead><tbody><tr><td><strong>Duplex Unit A</strong></td><td>2BR / 1BA</td><td>$1,800</td><td>$2,400</td><td><span class='status-pill'>Occupied</span></td></tr><tr><td><strong>Duplex Unit B</strong></td><td>2BR / 1BA</td><td>$1,800</td><td>$2,400</td><td><span class='status-pill'>Occupied</span></td></tr><tr><td><strong>Rear House</strong></td><td>1BR / 1BA</td><td>$2,100</td><td>$2,150</td><td><span class='status-pill'>Occupied</span></td></tr></tbody><tfoot><tr><td colspan="2">Monthly total</td><td>$5,700</td><td>$6,950</td><td></td></tr></tfoot></table>
+        </div>
       </div>
       <div class="container financial-grid">
         <article class="statement-card"><div class="statement-head"><span>Operating statement</span><div><b>Year 1</b><b>Pro Forma</b></div></div>
@@ -82,7 +89,7 @@
     <section class="section market-section" id="comps">
       <div class="container section-heading"><div><p class="eyebrow">Sale evidence</p><h2>A thin market, anchored by four instructive trades.</h2></div><p>No single comparable duplicates the subject. The most useful evidence comes from reading physical similarity, occupancy, condition and income together—not from a single average.</p></div>
       <div class="container comp-grid"><article class='comp-card'><span class='eyebrow'>Upper benchmark</span><h3>25252 Atwood Avenue</h3><p class='comp-meta'>Newhall · Closed 2026-05-15</p><p class='comp-price'>$1,150,000</p><div class='comp-stats'><span><b>$383,333</b> / unit</span><span><b>$409</b> / SF</span><span><b>3</b> units</span></div><p>Renovated multi-building property with newer ADU and pool; materially superior condition.</p></article><article class='comp-card'><span class='eyebrow'>Income benchmark</span><h3>1237 Coronel Street</h3><p class='comp-meta'>San Fernando · Closed 2024-08-27</p><p class='comp-price'>$1,090,000</p><div class='comp-stats'><span><b>$363,333</b> / unit</span><span><b>$351</b> / SF</span><span><b>3</b> units</span></div><p>Larger triplex with stable tenancy; useful as a price-per-unit and price-per-square-foot benchmark.</p></article><article class='comp-card'><span class='eyebrow'>Occupied benchmark</span><h3>10427 Oro Vista Avenue</h3><p class='comp-meta'>Sunland · Closed 2025-07-01</p><p class='comp-price'>$1,075,000</p><div class='comp-stats'><span><b>$358,333</b> / unit</span><span><b>$376</b> / SF</span><span><b>3</b> units</span></div><p>Pride-of-ownership triplex with stable tenants and lower in-place rents.</p></article><article class='comp-card'><span class='eyebrow'>Physical analog</span><h3>10030 Pinewood Avenue</h3><p class='comp-meta'>Tujunga · Closed 2024-12-06</p><p class='comp-price'>$1,050,000</p><div class='comp-stats'><span><b>$350,000</b> / unit</span><span><b>$395</b> / SF</span><span><b>3</b> units</span></div><p>Three detached homes on a larger lot; current income was not used as a yield benchmark.</p></article></div>
-      <div class="container rent-panel"><div class="rent-copy"><p class="eyebrow">Rent evidence</p><h2>Pro Forma rents are positioned below survey medians.</h2><p>The survey includes newer Old Town product and is not a lease comp set. The selected 1-bedroom rent is modestly above the survey’s 25th percentile, while the selected 2-bedroom rents are below it; both remain below their respective medians.</p></div><div class="table-shell compact"><table><thead><tr><th>Evidence</th><th>Median</th><th>25th percentile</th><th>Selected</th><th>Interpretation</th></tr></thead><tbody><tr><td><strong>1BR apartments</strong><small>15 observations / 2-mile radius</small></td><td>$2,210</td><td>$2,093</td><td>$2,150</td><td>Selected near the lower quartile for the detached rear house; condition and lease terms require verification.</td></tr><tr><td><strong>2BR apartments</strong><small>20 observations / 1-mile radius</small></td><td>$3,295</td><td>$2,493</td><td>$2,400</td><td>Selected below the lower quartile to reflect vintage and current condition.</td></tr><tr><td><strong>Atwood achieved rents</strong><small>Closed 2026 triplex</small></td><td>—</td><td>—</td><td>Cross-check</td><td>Achieved rents of $2,175 to $3,450 support the direction of the pro forma but reflect superior condition.</td></tr></tbody></table></div></div>
+      <div class="container rent-panel"><div class="rent-copy"><p class="eyebrow">Rent evidence</p><h2>Pro Forma rents are positioned below survey medians.</h2><p>The survey includes newer Old Town product and is not a lease comp set. The selected 1-bedroom rent is modestly above the survey’s 25th percentile, while the selected 2-bedroom rents are below it; both remain below their respective medians.</p></div><div class="table-region"><p class="table-scroll-cue" data-laaa-scroll-cue id="rent-evidence-cue">Swipe or use arrow keys to view all columns <span aria-hidden="true">→</span></p><div class="table-shell compact" data-laaa-scroll-region tabindex="0" role="region" aria-label="Rent evidence table. Scroll horizontally for additional columns." aria-describedby="rent-evidence-cue"><table><thead><tr><th>Evidence</th><th>Median</th><th>25th percentile</th><th>Selected</th><th>Interpretation</th></tr></thead><tbody><tr><td><strong>1BR apartments</strong><small>15 observations / 2-mile radius</small></td><td>$2,210</td><td>$2,093</td><td>$2,150</td><td>Selected near the lower quartile for the detached rear house; condition and lease terms require verification.</td></tr><tr><td><strong>2BR apartments</strong><small>20 observations / 1-mile radius</small></td><td>$3,295</td><td>$2,493</td><td>$2,400</td><td>Selected below the lower quartile to reflect vintage and current condition.</td></tr><tr><td><strong>Atwood achieved rents</strong><small>Closed 2026 triplex</small></td><td>—</td><td>—</td><td>Cross-check</td><td>Achieved rents of $2,175 to $3,450 support the direction of the pro forma but reflect superior condition.</td></tr></tbody></table></div></div></div>
     </section>
 
     <section class="section location-section" id="location">
@@ -100,7 +107,7 @@
     </section>
   </main>
 
-  <footer><div class="container"><p class="footer-brand">LAAA Team <span>·</span> Marcus &amp; Millichap</p><p>16830 Ventura Boulevard, Suite 100, Encino, California 91436</p><p class="disclosure">The information contained in this Offering Memorandum has been obtained from sources believed reliable, including public records, MLS information, broker research and third-party services, but has not been independently verified and is not guaranteed. Prospective purchasers must conduct their own investigation of the property and all matters material to an acquisition. Current rents were reported to the broker and remain subject to lease verification. Seller operating statements were not available; all expenses and Pro Forma figures are broker estimates, are presented for illustration only and should not be relied upon as a representation of future performance. Square footage, lot area, unit configuration, parking, zoning, legal status, development potential, photographs and map boundaries are subject to independent verification. This material is confidential, is not an appraisal or offer to sell, and may be withdrawn or modified without notice. Marcus &amp; Millichap Real Estate Investment Services, Inc. · NYSE: MMI.</p></div></footer>
+  <footer><div class="container"><div class="footer-brand"><span class="brand-slot" data-laaa-brand-slot="footer" data-logo-variant="white" data-brand-context="dark"><img src="assets/brand/LAAA_Team_White.png" alt="LAAA Team"></span><span class="footer-descriptor">Offering Memorandum</span></div><p>16830 Ventura Boulevard, Suite 100, Encino, California 91436</p><p class="disclosure">The information contained in this Offering Memorandum has been obtained from sources believed reliable, including public records, MLS information, broker research and third-party services, but has not been independently verified and is not guaranteed. Prospective purchasers must conduct their own investigation of the property and all matters material to an acquisition. Current rents were reported to the broker and remain subject to lease verification. Seller operating statements were not available; all expenses and Pro Forma figures are broker estimates, are presented for illustration only and should not be relied upon as a representation of future performance. Square footage, lot area, unit configuration, parking, zoning, legal status, development potential, photographs and map boundaries are subject to independent verification. This material is confidential, is not an appraisal or offer to sell, and may be withdrawn or modified without notice. Marcus &amp; Millichap Real Estate Investment Services, Inc. · NYSE: MMI.</p></div></footer>
   <div class="mobile-cta"><a href="tel:+18182122808">Call Glen</a><a href="mailto:Glen.Scher@marcusmillichap.com?subject=24513%20Walnut%20Street%20Offering">Email</a></div>
 </body>
 </html>
