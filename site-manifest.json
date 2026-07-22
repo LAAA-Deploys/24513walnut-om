@@ -107,8 +107,8 @@
     },
     {
       "path": "index.html",
-      "sha256": "5d96c75f5f03aa7752831241f39376d61b93ef2613bb80628a418212c8402bc2",
-      "bytes": 19658
+      "sha256": "9e25570fc95880c48805f253be84d09372dbe95121d92af0ccaf42f69f470a43",
+      "bytes": 19684
     },
     {
       "path": "README.md",
@@ -137,8 +137,8 @@
     },
     {
       "path": "src/index.template.html",
-      "sha256": "0e3752a81c5a755789af122c3f333fb5878ebc494af9ccbda6de03d374e7b02a",
-      "bytes": 13479
+      "sha256": "c23e15a56fb6b5d4ad6e97d79ff09787449233d88ea29033121351aefdc41587",
+      "bytes": 13505
     }
   ]
 }
