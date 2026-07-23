@@ -247,6 +247,7 @@
       canvas.hidden = true;
     });
     document.querySelectorAll('[data-map-fallback]').forEach(function (fallback) { fallback.hidden = false; });
+    showLocationFallback(activeLocationView);
     var compCanvas = document.querySelector('[data-google-map="comps"]');
     if (compCanvas) compCanvas.closest('.comp-map-canvas').classList.remove('maps-active');
     if (googleMapsAttempts < 2 && !googleMapsRetryTimer) {

@@ -300,6 +300,11 @@ async function inspectDelayedMapsKey(browser) {
   await page.locator('[data-location-map]').scrollIntoViewIfNeeded();
   await page.locator('[data-location-view="satellite"]').click();
   await page.waitForFunction(() => document.querySelector('[data-map-status="location"]')?.textContent.includes('Google map data'));
+  const fallbackState = await page.evaluate(() => ({
+    visiblePanels: Array.from(document.querySelectorAll('[data-location-panel]')).filter(panel => !panel.hidden).map(panel => panel.dataset.locationPanel),
+    activeView: document.querySelector('[data-location-view][aria-pressed="true"]')?.dataset.locationView,
+  }));
+  check(fallbackState.activeView === 'satellite' && fallbackState.visiblePanels.length === 1 && fallbackState.visiblePanels[0] === 'satellite', `delayed-maps-key: failure fallback desynced ${JSON.stringify(fallbackState)}`);
   await page.waitForFunction(() => window.__fakeMaps?.length === 1);
   await page.locator('[data-comp-view="map"]').click();
   await page.waitForFunction(() => window.__fakeMaps?.length === 2);
