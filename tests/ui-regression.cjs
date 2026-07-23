@@ -299,9 +299,6 @@ async function inspectDelayedMapsKey(browser) {
   await page.locator('[data-location-map]').scrollIntoViewIfNeeded();
   await page.locator('[data-location-view="satellite"]').click();
   await page.waitForFunction(() => document.querySelector('[data-map-status="location"]')?.textContent.includes('Google map data'));
-  await page.evaluate(() => window.scrollTo(0, 0));
-  await page.waitForTimeout(100);
-  await page.locator('[data-location-map]').scrollIntoViewIfNeeded();
   await page.waitForFunction(() => window.__fakeMaps?.length === 2);
   await page.locator('[data-comp-view="map"]').click();
   await page.evaluate(() => {
@@ -321,7 +318,7 @@ async function inspectDelayedMapsKey(browser) {
     selectedComp: document.querySelector('.comp-summary[aria-pressed="true"]')?.dataset.compSelect,
     compCenter: window.__fakeMaps[1].center,
   }));
-  check(mapsRequests === 2, `delayed-maps-key: expected one failed request and one retry, found ${mapsRequests}`);
+  check(mapsRequests === 2, `delayed-maps-key: expected one failed request and one automatic retry, found ${mapsRequests}`);
   check(result.activeView === 'satellite', `delayed-maps-key: active view reset to ${result.activeView}`);
   check(result.mapTypeId === 'satellite' && result.zoom === 19, `delayed-maps-key: Google map did not preserve Satellite (${result.mapTypeId}, zoom ${result.zoom})`);
   check(result.selectedComp === 'coronel', `delayed-maps-key: swipe selected ${result.selectedComp} instead of Coronel`);

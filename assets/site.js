@@ -168,6 +168,8 @@
   var compMarkerById = {};
   var googleMapsRequested = false;
   var googleMapsScript = null;
+  var googleMapsAttempts = 0;
+  var googleMapsRetryTimer = null;
   var mapObserver = null;
   var activeLocationButton = locationButtons.find(function (button) {
     return button.getAttribute('aria-pressed') === 'true';
@@ -314,11 +316,19 @@
       }
       activateLocationView(activeLocationView);
       if (compIds.length) selectComp(compIds[selectedCompIndex]);
+      if (googleMapsRetryTimer) window.clearTimeout(googleMapsRetryTimer);
+      googleMapsRetryTimer = null;
       if (mapObserver) mapObserver.disconnect();
     }).catch(function () {
       googleMapsRequested = false;
       if (googleMapsScript) googleMapsScript.remove();
       googleMapsScript = null;
+      if (googleMapsAttempts < 2 && !googleMapsRetryTimer) {
+        googleMapsRetryTimer = window.setTimeout(function () {
+          googleMapsRetryTimer = null;
+          requestGoogleMaps();
+        }, 1000);
+      }
       var locationStatus = document.querySelector('[data-map-status="location"]');
       if (locationStatus) locationStatus.textContent = 'Location overview · Google map data.';
     });
@@ -329,6 +339,8 @@
     var keyMeta = document.querySelector('meta[name="google-maps-browser-key"]');
     var key = String(window.LAAA_GOOGLE_MAPS_BROWSER_KEY || (keyMeta && keyMeta.content) || '').trim();
     if (!key) return false;
+    if (googleMapsAttempts >= 2) return false;
+    googleMapsAttempts += 1;
     googleMapsRequested = true;
     window.LAAAInitGoogleMaps = initGoogleMaps;
     googleMapsScript = document.createElement('script');
@@ -338,6 +350,12 @@
       googleMapsRequested = false;
       googleMapsScript.remove();
       googleMapsScript = null;
+      if (googleMapsAttempts < 2 && !googleMapsRetryTimer) {
+        googleMapsRetryTimer = window.setTimeout(function () {
+          googleMapsRetryTimer = null;
+          requestGoogleMaps();
+        }, 1000);
+      }
       var locationStatus = document.querySelector('[data-map-status="location"]');
       if (locationStatus) locationStatus.textContent = 'Location overview · Google map data.';
     };
