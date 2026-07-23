@@ -431,10 +431,10 @@
   if (previousComp) previousComp.addEventListener('click', function () { selectComp(compIds[(selectedCompIndex - 1 + compIds.length) % compIds.length], 'step'); });
   if (nextComp) nextComp.addEventListener('click', function () { selectComp(compIds[(selectedCompIndex + 1) % compIds.length], 'step'); });
 
-  var compMapPanel = document.querySelector('.comp-map-panel');
-  if (compMapPanel) {
-    compMapPanel.addEventListener('touchstart', function (event) { compTouchStart = event.changedTouches[0].clientX; }, { passive: true });
-    compMapPanel.addEventListener('touchend', function (event) {
+  var compSwipeSurface = document.querySelector('.comp-preview-stack');
+  if (compSwipeSurface) {
+    compSwipeSurface.addEventListener('touchstart', function (event) { compTouchStart = event.changedTouches[0].clientX; }, { passive: true });
+    compSwipeSurface.addEventListener('touchend', function (event) {
       if (compTouchStart === null) return;
       var delta = event.changedTouches[0].clientX - compTouchStart;
       if (Math.abs(delta) > 55) selectComp(compIds[(selectedCompIndex + (delta < 0 ? 1 : -1) + compIds.length) % compIds.length], 'swipe');

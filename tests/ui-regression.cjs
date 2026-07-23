@@ -301,15 +301,25 @@ async function inspectDelayedMapsKey(browser) {
   await page.waitForFunction(() => document.querySelector('[data-map-status="location"]')?.textContent.includes('Google map data'));
   await page.waitForFunction(() => window.__fakeMaps?.length === 2);
   await page.locator('[data-comp-view="map"]').click();
-  await page.evaluate(() => {
-    const panel = document.querySelector('.comp-map-panel');
+  await page.evaluate(selector => {
+    const panel = document.querySelector(selector);
     const start = new Event('touchstart', { bubbles: true });
     const end = new Event('touchend', { bubbles: true });
     Object.defineProperty(start, 'changedTouches', { value: [{ clientX: 300 }] });
     Object.defineProperty(end, 'changedTouches', { value: [{ clientX: 180 }] });
     panel.dispatchEvent(start);
     panel.dispatchEvent(end);
-  });
+  }, '[data-google-map="comps"]');
+  check(await page.locator('.comp-summary[aria-pressed="true"]').getAttribute('data-comp-select') === 'atwood', 'delayed-maps-key: panning the map changed the selected comp');
+  await page.evaluate(selector => {
+    const panel = document.querySelector(selector);
+    const start = new Event('touchstart', { bubbles: true });
+    const end = new Event('touchend', { bubbles: true });
+    Object.defineProperty(start, 'changedTouches', { value: [{ clientX: 300 }] });
+    Object.defineProperty(end, 'changedTouches', { value: [{ clientX: 180 }] });
+    panel.dispatchEvent(start);
+    panel.dispatchEvent(end);
+  }, '.comp-preview-stack');
 
   const result = await page.evaluate(() => ({
     activeView: document.querySelector('[data-location-view][aria-pressed="true"]')?.dataset.locationView,
