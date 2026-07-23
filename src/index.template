@@ -95,27 +95,58 @@
     </section>
 
     <section class="section financial-section" id="financials">
-      <div class="container financial-title"><div class="section-marker"><span>05</span><p>Financial Details</p></div><div><h2>Current and Pro Forma Financial Analysis</h2></div><div><span>24513–24519 Walnut Street</span><small>As of July 2026 · buyer to verify</small></div></div>
+      <div class="container financial-title">
+        <div class="section-marker"><span>05</span><p>Financial Details</p></div>
+        <div class="financial-title-meta"><strong>24513–24519 Walnut Street</strong><small>As of July 2026 · Buyer to verify</small></div>
+      </div>
 
       <div class="container rent-roll-block">
-        <div class="subsection-heading"><div><p class="eyebrow">Rent Roll</p><h3>Current and Pro Forma Rent Roll</h3></div><p>Unit areas are assessor-reported and subject to walkthrough verification. Rent per square foot is calculated from the reported unit areas.</p></div>
+        <div class="subsection-heading"><div><h3>Rent Roll</h3></div><p>Unit areas are assessor-reported and subject to walkthrough verification. Rent per square foot is calculated from the reported unit areas.</p></div>
         <div class="table-region"><div class="table-shell" data-laaa-scroll-region tabindex="0" role="region" aria-label="Rent roll table">
-          <table class="rent-roll-table"><caption>Current and pro forma rent roll</caption><thead><tr><th>Residence</th><th class="desktop-unit-type">Unit Type</th><th class="desktop-unit-sf">Unit SF</th><th>Current Rent</th><th class="desktop-rent-rate">Current Rent / SF</th><th>Pro Forma Rent</th><th class="desktop-rent-rate">Pro Forma Rent / SF</th><th>Upside</th></tr></thead><tbody>{{UNIT_ROWS}}</tbody><tfoot><tr><th scope="row">Monthly total</th><td class="desktop-unit-type"></td><td class="desktop-unit-sf"></td><td><strong>{{CURRENT_MONTHLY_RENT}}</strong></td><td class="desktop-rent-rate"></td><td><strong>{{PROFORMA_MONTHLY_RENT}}</strong></td><td class="desktop-rent-rate"></td><td><strong>{{MONTHLY_RENT_UPSIDE}}</strong><small>{{MONTHLY_RENT_UPSIDE_PERCENT}}</small></td></tr></tfoot></table>
+          <table class="rent-roll-table"><caption>Current and pro forma rent roll</caption><thead><tr><th>Unit</th><th class="desktop-unit-type">Type</th><th class="desktop-unit-sf">SF</th><th>Current</th><th class="desktop-rent-rate"><abbr title="Current Rent Per Square Foot">/ SF</abbr></th><th>Pro Forma</th><th class="desktop-rent-rate"><abbr title="Pro Forma Rent Per Square Foot">/ SF</abbr></th><th>Upside</th></tr></thead><tbody>{{UNIT_ROWS}}</tbody><tfoot><tr><th scope="row">Monthly Total</th><td class="desktop-unit-type"></td><td class="desktop-unit-sf"></td><td><strong>{{CURRENT_MONTHLY_RENT}}</strong></td><td class="desktop-rent-rate"></td><td><strong>{{PROFORMA_MONTHLY_RENT}}</strong></td><td class="desktop-rent-rate"></td><td><strong>{{MONTHLY_RENT_UPSIDE}}</strong><small>{{MONTHLY_RENT_UPSIDE_PERCENT}}</small></td></tr></tfoot></table>
         </div><p class="table-scroll-cue" hidden>Scroll horizontally to review all columns.</p></div>
       </div>
 
       <div class="container financial-detail-block">
-        <div class="subsection-heading"><div><p class="eyebrow">Financial Details</p><h3>Operating Statement and Investment Returns</h3></div><p>No seller T-12 was available. Detailed expenses reflect broker estimates and should be confirmed during buyer due diligence.</p></div>
-        <div class="financial-desktop table-region"><div class="table-shell" data-laaa-scroll-region tabindex="0" role="region" aria-label="Detailed financial analysis">
-          <table class="financial-table"><caption>Detailed operating analysis</caption><thead><tr><th>Financial detail</th><th>Current</th><th>Pro Forma</th><th>Pro Forma / Unit</th><th>Pro Forma / SF</th></tr></thead><tbody>{{FINANCIAL_DESKTOP_ROWS}}</tbody></table>
-        </div><p class="table-scroll-cue" hidden>Scroll horizontally to review all columns.</p></div>
+        <div class="subsection-heading"><div><h3>Operating Statement</h3></div><p>No seller T-12 was available. The analysis combines seller-provided expense information with approved broker estimates and illustrative financing.</p></div>
+        <div class="financial-desktop">
+          <div class="financial-overview-grid">
+            <div class="financial-summary-stack">
+              <section class="financial-ledger">
+                <h4>Summary</h4>
+                <table class="financial-mini-table financial-summary-table"><caption>Property financial summary</caption><tbody>{{FINANCIAL_SUMMARY_ROWS}}</tbody></table>
+              </section>
+              <section class="financial-ledger">
+                <h4>Returns</h4>
+                <table class="financial-mini-table"><caption>Current and pro forma returns</caption><thead><tr><th>Return</th><th>Current</th><th>Pro Forma</th></tr></thead><tbody>{{FINANCIAL_RETURNS_ROWS}}</tbody></table>
+              </section>
+              <section class="financial-ledger financial-ledger-financing">
+                <h4>Financing</h4>
+                <table class="financial-mini-table financial-financing-table"><caption>Illustrative financing assumptions</caption><tbody>{{FINANCIAL_FINANCING_ROWS}}</tbody></table>
+              </section>
+            </div>
+            <section class="financial-ledger financial-operating-ledger">
+              <h4>Operating Data</h4>
+              <table class="financial-table financial-operating-table"><caption>Current and pro forma operating data</caption><thead><tr><th>Operating Data</th><th>Current</th><th>Pro Forma</th></tr></thead><tbody>{{FINANCIAL_OPERATING_ROWS}}</tbody></table>
+            </section>
+          </div>
+          <section class="financial-ledger financial-expense-ledger">
+            <h4>Detailed Expenses</h4>
+            <div class="table-region"><div class="table-shell financial-expense-shell" data-laaa-scroll-region tabindex="0" role="region" aria-label="Detailed expense table">
+              <table class="financial-table financial-expense-table"><caption>Detailed operating expenses</caption><thead><tr><th>Expense</th><th>Current</th><th>Pro Forma</th><th>Per Unit</th><th><abbr title="Per Square Foot">/ SF</abbr></th></tr></thead><tbody>{{FINANCIAL_EXPENSE_ROWS}}</tbody></table>
+            </div><p class="table-scroll-cue" hidden>Scroll horizontally to review all columns.</p></div>
+          </section>
+        </div>
         <div class="financial-mobile">
-          <div class="basis-tabs" role="group" aria-label="Financial basis"><button class="active" type="button" data-fin-basis="total" aria-pressed="true">Total</button><button type="button" data-fin-basis="unit" aria-pressed="false">Per Unit</button><button type="button" data-fin-basis="sf" aria-pressed="false">Per SF</button></div>
-          <div class="table-region"><div class="table-shell" tabindex="0" role="region" aria-label="Mobile detailed financial analysis"><table class="financial-table mobile-financial-table"><caption>Detailed operating analysis by selected basis</caption><thead><tr><th>Financial detail</th><th>Current</th><th>Pro Forma</th></tr></thead><tbody>{{FINANCIAL_MOBILE_ROWS}}</tbody></table></div></div>
+          <section class="financial-ledger">
+            <h4>Summary</h4>
+            <table class="financial-mini-table financial-summary-table"><caption>Property financial summary</caption><tbody>{{FINANCIAL_SUMMARY_ROWS}}</tbody></table>
+          </section>
+          <div class="basis-tabs" role="group" aria-label="Financial basis"><button class="active" type="button" data-fin-basis="total" aria-pressed="true">Total</button><button type="button" data-fin-basis="unit" aria-pressed="false">Per Unit</button><button type="button" data-fin-basis="sf" aria-pressed="false" aria-label="Per Square Foot">/ SF</button></div>
+          <div class="table-region"><div class="table-shell" tabindex="0" role="region" aria-label="Mobile detailed financial analysis"><table class="financial-table mobile-financial-table"><caption>Detailed operating analysis by selected basis</caption><thead><tr><th>Detail</th><th>Current</th><th>Pro Forma</th></tr></thead><tbody>{{FINANCIAL_MOBILE_ROWS}}</tbody></table></div></div>
         </div>
       </div>
-      <div class="container finance-note"><strong>Financing</strong><p>Financing terms are available from Marcus &amp; Millichap Capital Corporation or a lender selected by the buyer.</p></div>
-      <div class="container footnote-box"><b>Underwriting basis.</b> Property taxes assume reassessment at 1.403% of the offering price. Insurance, water/sewer, trash, repairs, and landscaping/pest are broker estimates. No vacancy, management fee, replacement reserves, or debt service is included. Buyers should underwrite from their own inspection, leases, financing, and operating assumptions.</div>
+      <div class="container footnote-box"><b>Underwriting basis.</b> Property taxes assume reassessment at 1.40% of the offering price. Insurance, water/sewer, and trash use seller-provided annual amounts. R&amp;M, landscaping, and G&amp;A are approved broker estimates. No vacancy, management fee, or replacement reserves are included. Illustrative financing assumes a 75% LTV new loan at 6.50% interest with 30-year amortization; terms remain subject to lender approval. Buyers should underwrite from their own inspection, leases, financing, and operating assumptions.</div>
     </section>
 
     <section class="section market-section" id="comps">
@@ -202,7 +233,7 @@
 
   <script id="map-config" type="application/json">{{MAP_CONFIG_JSON}}</script>
 
-  <footer><div class="container"><div class="footer-brand"><span class="brand-slot" data-laaa-brand-slot="footer" data-logo-variant="white" data-brand-context="dark"><img src="assets/brand/LAAA_Team_White.png" alt="LAAA Team"></span><span class="footer-descriptor">Offering Memorandum</span></div><p>16830 Ventura Boulevard, Suite 100, Encino, California 91436</p><p class="disclosure">The information contained in this Offering Memorandum has been obtained from sources believed reliable, including public records, MLS information, broker research, and third-party services, but has not been independently verified and is not guaranteed. Prospective purchasers must conduct their own investigation of the property and all matters material to an acquisition. Current rents and occupancy remain subject to lease verification. Seller operating statements were not available; all expenses and Pro Forma figures are broker estimates and are presented for illustration only. Square footage, lot area, unit configuration, parking, zoning, legal status, development potential, photographs, and map boundaries are subject to independent verification. This material is confidential, is not an appraisal or offer to sell, and may be withdrawn or modified without notice. Marcus &amp; Millichap Real Estate Investment Services, Inc. · NYSE: MMI.</p></div></footer>
+  <footer><div class="container"><div class="footer-brand"><span class="brand-slot" data-laaa-brand-slot="footer" data-logo-variant="white" data-brand-context="dark"><img src="assets/brand/LAAA_Team_White.png" alt="LAAA Team"></span><span class="footer-descriptor">Offering Memorandum</span></div><p>16830 Ventura Boulevard, Suite 100, Encino, California 91436</p><p class="disclosure">The information contained in this Offering Memorandum has been obtained from sources believed reliable, including public records, MLS information, seller-provided information, broker research, and third-party services, but has not been independently verified and is not guaranteed. Prospective purchasers must conduct their own investigation of the property and all matters material to an acquisition. Current rents and occupancy remain subject to lease verification. Seller operating statements were not available; selected expenses were provided by the seller, while remaining expenses, Pro Forma figures, and financing results are estimates presented for illustration only. Square footage, lot area, unit configuration, parking, zoning, legal status, development potential, photographs, and map boundaries are subject to independent verification. Financing terms remain subject to lender approval and change without notice. This material is confidential, is not an appraisal or offer to sell, and may be withdrawn or modified without notice. Marcus &amp; Millichap Real Estate Investment Services, Inc. · NYSE: MMI.</p></div></footer>
   <div class="mobile-cta" aria-label="Quick contact"><a href="tel:+18182122808">Call Glen</a><a href="mailto:Glen.Scher@marcusmillichap.com?subject=24513%20Walnut%20Street%20Offering">Email</a></div>
 </body>
 </html>

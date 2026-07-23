@@ -4,7 +4,16 @@
     "description": "A three-unit residential investment opportunity in Old Town Newhall, California.",
     "as_of": "2026-07-21",
     "status": "Confidential Offering Memorandum",
-    "offering_price": 1095000
+    "offering_price": 1095000,
+    "financial_source": {
+      "file": "24513 Walnut St Model (Glen approved).xlsm",
+      "file_size": 1208338,
+      "last_modified": "2026-07-23T15:34:16-07:00",
+      "approved_in_chat": "2026-07-23",
+      "unit_sf": [728, 728, 908],
+      "repairs_and_maintenance": 1800,
+      "publish_financing": true
+    }
   },
   "property": {
     "address": "24513–24519 Walnut Street",
@@ -30,12 +39,12 @@
       "The selected sales place Walnut within a credible three-unit pricing range while illustrating why no single metric tells the full story. Atwood provides the closest Newhall location and an upper benchmark at $1,150,000, while Coronel provides the strongest rent-rule comparison at $1,090,000. Pinewood offers the closest physical comparison as three vintage residences on a large lot.",
       "Santol and Harding establish lower reference points but carry meaningful differences in location, legal unit count, condition, and income basis. Price per unit and price per square foot should therefore be considered alongside each property's physical profile, occupancy, rent rules, and renovation level rather than read as stand-alone conclusions."
     ],
-    "rent_conclusion": "The selected monthly rents remain measured against the available survey. The $2,150 one-bedroom Pro Forma falls between the survey's 25th percentile and median, while the $2,400 two-bedroom Pro Forma remains below the 25th percentile. Atwood's achieved rents provide a directional cross-check but reflect materially superior condition.",
+    "rent_conclusion": "The selected monthly rents remain measured against the available survey. The $2,195 one-bedroom Pro Forma falls between the survey's 25th percentile and median, while the $2,295 two-bedroom Pro Forma remains below the 25th percentile. Atwood's achieved rents provide a directional cross-check but reflect materially superior condition.",
     "integrated_conclusion": "The six sales bracket Walnut's offering within the current small-property market, with the strongest support coming from Atwood's Newhall location, Coronel's comparable rent rules, and Pinewood's physical configuration. The rent survey supports a restrained Pro Forma rather than a top-of-market assumption. Buyers should evaluate the offering through the combined evidence and confirm leases, property condition, unit status, and operating assumptions during due diligence."
   },
   "investment_overview": [
     "The LAAA Team of Marcus & Millichap is proud to present 24513–24519 Walnut Street, a three-unit residential investment in Old Town Newhall. Built in 1926 and 1954, the 2,364-square-foot property includes a duplex with two 2-bedroom/1-bath residences and a detached 1-bedroom/1-bath rear home on a 9,379-square-foot COR-zoned lot.",
-    "The investment offers 21.9% gross rent upside from reported monthly rents of $5,700 to broker pro forma of $6,950. The two duplex residences each generate $1,800 per month against a $2,400 pro forma, while the rear home generates $2,100 against a $2,150 pro forma. The three residences are fully occupied, subject to lease verification.",
+    "The investment offers 15.0% gross rent upside from reported monthly rents of $5,900 to broker pro forma of $6,785. The two-bedroom residences each generate $1,900 per month against a $2,295 pro forma, while the one-bedroom residence generates $2,100 against a $2,195 pro forma. The three residences are fully occupied, subject to lease verification.",
     "Newhall Metrolink Station is approximately 0.26 mile from the property, and Old Town Newhall’s Main Street district provides nearby dining, arts, library, and civic amenities. The lot’s alley access and COR zoning support independent ADU and site-planning study, with no entitlement represented. The offering is positioned for small-property investors, 1031 exchange buyers, and owner-operators seeking occupied income with defined rent upside."
   ],
   "location_overview": [
@@ -45,8 +54,8 @@
   ],
   "investment_highlights": [
     {"headline": "Three Income-Producing Residences", "detail": "An occupied duplex and detached rear home provide three rent streams on one 9,379-square-foot lot, subject to lease and legal-status verification."},
-    {"headline": "21.9% Gross Rent Upside", "detail": "Current rents total $5,700 per month, compared with broker pro forma rents of $6,950 per month across the three residences."},
-    {"headline": "$600 Duplex Rent Upside", "detail": "Each two-bedroom duplex residence generates $1,800 per month, compared with a broker pro forma of $2,400 per month."},
+    {"headline": "15.0% Gross Rent Upside", "detail": "Current rents total $5,900 per month, compared with broker pro forma rents of $6,785 per month across the three residences."},
+    {"headline": "$395 Two-Bedroom Upside", "detail": "Each two-bedroom residence generates $1,900 per month, compared with a broker pro forma of $2,295 per month."},
     {"headline": "Old Town Newhall Access", "detail": "Newhall Metrolink Station is approximately 0.26 mile away, with Main Street dining, arts, library, and civic amenities nearby."},
     {"headline": "Six Verified Comparable Sales", "detail": "The selected three- and four-unit sales range from $760,000 to $1,150,000 and provide multiple physical and location reference points."},
     {"headline": "9,379 SF COR-Zoned Lot", "detail": "Alley access and the existing site configuration support independent ADU and site-planning study; no additional development entitlement is represented."}
@@ -61,18 +70,45 @@
     {"label": "College of the Canyons", "url": "https://www.canyons.edu/about/"}
   ],
   "units": [
-    {"label": "Duplex Unit A", "type": "2BR / 1BA", "unit_sf": 728, "current_rent": 1800, "market_rent": 2400, "status": "Occupied"},
-    {"label": "Duplex Unit B", "type": "2BR / 1BA", "unit_sf": 728, "current_rent": 1800, "market_rent": 2400, "status": "Occupied"},
-    {"label": "Rear House", "type": "1BR / 1BA", "unit_sf": 908, "current_rent": 2100, "market_rent": 2150, "status": "Occupied"}
+    {"label": "24515 Walnut", "type": "2BR / 1BA", "unit_sf": 728, "current_rent": 1900, "market_rent": 2295, "status": "Occupied"},
+    {"label": "24519 Walnut", "type": "2BR / 1BA", "unit_sf": 728, "current_rent": 1900, "market_rent": 2295, "status": "Occupied"},
+    {"label": "24513 Walnut", "type": "1BR / 1BA", "unit_sf": 908, "current_rent": 2100, "market_rent": 2195, "status": "Occupied"}
   ],
   "expenses": [
-    {"label": "Property taxes", "current": 15363, "pro_forma": 15363, "basis": "Estimated reassessment at 1.403% of offering price"},
-    {"label": "Insurance", "current": 2964, "pro_forma": 2964, "basis": "Broker benchmark estimate"},
-    {"label": "Water / sewer", "current": 2000, "pro_forma": 2000, "basis": "Broker estimate; responsibility to be verified"},
-    {"label": "Trash", "current": 1050, "pro_forma": 1050, "basis": "Broker estimate; responsibility to be verified"},
-    {"label": "Repairs & maintenance", "current": 2250, "pro_forma": 2250, "basis": "$750 per unit benchmark"},
-    {"label": "Landscaping / pest", "current": 750, "pro_forma": 750, "basis": "Broker benchmark estimate"}
+    {"label": "Property taxes", "current": 15330, "pro_forma": 15330, "basis": "Estimated reassessment at 1.40% of the offering price"},
+    {"label": "Insurance", "current": 2754, "pro_forma": 2754, "basis": "Seller-provided annual amount"},
+    {"label": "Water / sewer", "current": 1944, "pro_forma": 1944, "basis": "Seller-provided annual amount"},
+    {"label": "Trash", "current": 569, "pro_forma": 569, "basis": "Seller-provided annual amount"},
+    {"label": "Repairs & maintenance", "current": 1800, "pro_forma": 1800, "basis": "Broker estimate approved at $1,800 annually"},
+    {"label": "Landscaping", "current": 1200, "pro_forma": 1200, "basis": "Broker estimate at $100 per month"},
+    {"label": "General & administrative", "current": 450, "pro_forma": 450, "basis": "Broker estimate at $150 per unit"}
   ],
+  "financing": {
+    "loan_type": "New",
+    "loan_amount": 821250,
+    "down_payment": 273750,
+    "ltv": 0.75,
+    "interest_rate": 0.065,
+    "amortization_years": 30,
+    "maturity_year": 2056,
+    "annual_debt_service": 62290.30371523158,
+    "current": {
+      "cash_flow_after_debt_service": -15537.30371523158,
+      "cash_on_cash": -0.05675727384559481,
+      "dscr": 0.7505662552832872,
+      "principal_reduction": 9179.320413833877,
+      "total_return": -6357.983301397704,
+      "total_return_rate": -0.023225509776795265
+    },
+    "pro_forma": {
+      "cash_flow_after_debt_service": -4917.303715231581,
+      "cash_on_cash": -0.01796275329764956,
+      "dscr": 0.9210582799899052,
+      "principal_reduction": 9794.076502073089,
+      "total_return": 4876.772786841508,
+      "total_return_rate": 0.0178146951117498
+    }
+  },
   "sale_comps": [
     {
       "id": "atwood", "map_label": "1", "latitude": 34.3781256, "longitude": -118.5538742, "tags": ["newhall", "same-regime", "upper"],
@@ -172,8 +208,8 @@
     }
   ],
   "rent_evidence": [
-    {"segment": "1BR apartments", "sample": "15 observations / 2-mile radius", "median": 2210, "percentile_25": 2093, "selected": 2150, "note": "Selected near the lower quartile for the detached rear house; condition and lease terms require verification."},
-    {"segment": "2BR apartments", "sample": "20 observations / 1-mile radius", "median": 3295, "percentile_25": 2493, "selected": 2400, "note": "Selected below the lower quartile to reflect vintage and current condition."},
+    {"segment": "1BR apartments", "sample": "15 observations / 2-mile radius", "median": 2210, "percentile_25": 2093, "selected": 2195, "note": "Selected between the lower quartile and median for the detached rear house; condition and lease terms require verification."},
+    {"segment": "2BR apartments", "sample": "20 observations / 1-mile radius", "median": 3295, "percentile_25": 2493, "selected": 2295, "note": "Selected below the lower quartile to reflect vintage and current condition."},
     {"segment": "Atwood achieved rents", "sample": "Closed 2026 triplex", "median": null, "percentile_25": null, "selected": null, "note": "Achieved rents of $2,175 to $3,450 support the direction of the pro forma but reflect superior condition."}
   ],
   "contacts": [

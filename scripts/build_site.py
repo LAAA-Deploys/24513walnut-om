@@ -18,6 +18,11 @@ def money(value: float | int, decimals: int = 0) -> str:
     return f"${value:,.{decimals}f}"
 
 
+def accounting_money(value: float | int, decimals: int = 0) -> str:
+    formatted = money(abs(value), decimals)
+    return f"({formatted})" if value < 0 else formatted
+
+
 def metric(value: float, suffix: str = "") -> str:
     return f"{value:,.2f}{suffix}"
 
@@ -69,71 +74,195 @@ def format_financial(value: float | int | None, kind: str, basis: str = "total")
         if basis == "sf":
             return money(value / DATA["property"]["building_sf"], 2)
         return money(value)
+    if kind == "accounting":
+        if basis == "unit":
+            return accounting_money(value / DATA["property"]["units"])
+        if basis == "sf":
+            return accounting_money(value / DATA["property"]["building_sf"], 2)
+        return accounting_money(value)
     if kind == "percent":
         return metric(float(value), "%")
     if kind == "multiple":
         return metric(float(value), "x")
+    if kind == "years":
+        return f"{int(value)} Years"
     return esc(value)
 
 
-def financial_definition() -> list[dict[str, object]]:
+FINANCIAL_LABELS = {
+    "Gross Scheduled Rent": ("GSR", "Gross Scheduled Rent"),
+    "Net Operating Income": ("NOI", "Net Operating Income"),
+    "GRM": ("GRM", "Gross Rent Multiplier"),
+    "Property taxes": ("Taxes", None),
+    "Repairs & maintenance": ("R&M", "Repairs and Maintenance"),
+    "Landscaping": ("Landscape", None),
+    "General & administrative": ("G&A", "General and Administrative"),
+    "Expenses as % of GSR": ("Expense Ratio", None),
+    "Cash Flow After Debt Service": ("Cash Flow After DS", "Cash Flow After Debt Service"),
+    "Debt Service Coverage Ratio": ("DSCR", "Debt Service Coverage Ratio"),
+    "Cash-on-Cash Return": ("Cash-on-Cash", None),
+}
+
+
+def compact_financial_label(label: str) -> str:
+    visible, expansion = FINANCIAL_LABELS.get(label, (label, None))
+    if expansion:
+        return f"<abbr title='{esc(expansion)}'>{esc(visible)}</abbr>"
+    return esc(visible)
+
+
+def financial_metrics() -> dict[str, float]:
     price = DATA["meta"]["offering_price"]
     current_gsr = sum(unit["current_rent"] for unit in DATA["units"]) * 12
     proforma_gsr = sum(unit["market_rent"] for unit in DATA["units"]) * 12
     current_expenses = sum(item["current"] for item in DATA["expenses"])
     proforma_expenses = sum(item["pro_forma"] for item in DATA["expenses"])
-    current_noi = current_gsr - current_expenses
-    proforma_noi = proforma_gsr - proforma_expenses
+    return {
+        "price": price,
+        "current_gsr": current_gsr,
+        "proforma_gsr": proforma_gsr,
+        "current_expenses": current_expenses,
+        "proforma_expenses": proforma_expenses,
+        "current_noi": current_gsr - current_expenses,
+        "proforma_noi": proforma_gsr - proforma_expenses,
+    }
+
+
+def financial_definition() -> list[dict[str, object]]:
+    values = financial_metrics()
+    financing = DATA["financing"]
+    current_financing = financing["current"]
+    proforma_financing = financing["pro_forma"]
     rows: list[dict[str, object]] = [
         {"section": "Operating Data"},
-        {"label": "Gross Scheduled Rent", "kind": "currency", "current": current_gsr, "proforma": proforma_gsr, "note": "Annualized from the reported current and broker-selected pro forma monthly rents."},
-        {"label": "Total Expenses", "kind": "currency", "current": current_expenses, "proforma": proforma_expenses, "emphasis": "subtotal", "note": "Broker-estimated operating expenses; no seller T-12 was available."},
-        {"label": "Net Operating Income", "kind": "currency", "current": current_noi, "proforma": proforma_noi, "emphasis": "noi", "note": "Gross scheduled rent less the displayed expense stack; no vacancy or financing is included."},
+        {"label": "Gross Scheduled Rent", "kind": "currency", "current": values["current_gsr"], "proforma": values["proforma_gsr"], "note": "Annualized from the reported current and broker-selected pro forma monthly rents."},
+        {"label": "Total Expenses", "kind": "currency", "current": values["current_expenses"], "proforma": values["proforma_expenses"], "emphasis": "subtotal", "note": "Selected seller-provided and broker-estimated operating expenses; no seller T-12 was available."},
+        {"label": "Net Operating Income", "kind": "currency", "current": values["current_noi"], "proforma": values["proforma_noi"], "emphasis": "noi", "note": "Gross scheduled rent less the displayed expense stack; no vacancy is included."},
+        {"label": "Debt Service", "kind": "currency", "current": financing["annual_debt_service"], "proforma": financing["annual_debt_service"], "note": "Annual principal and interest under the displayed illustrative financing assumptions."},
+        {"label": "Cash Flow After Debt Service", "kind": "accounting", "current": current_financing["cash_flow_after_debt_service"], "proforma": proforma_financing["cash_flow_after_debt_service"], "note": "Net operating income less annual debt service."},
+        {"label": "Principal Reduction", "kind": "currency", "current": current_financing["principal_reduction"], "proforma": proforma_financing["principal_reduction"], "note": "Modeled principal reduction from the approved financing model."},
+        {"label": "Total Return", "kind": "accounting", "current": current_financing["total_return"], "proforma": proforma_financing["total_return"], "emphasis": "subtotal", "note": "Cash flow after debt service plus modeled principal reduction."},
         {"section": "Returns"},
-        {"label": "Cap Rate", "kind": "percent", "current": current_noi / price * 100, "proforma": proforma_noi / price * 100, "note": "NOI divided by the $1,095,000 offering price."},
-        {"label": "GRM", "kind": "multiple", "current": price / current_gsr, "proforma": price / proforma_gsr, "note": "Offering price divided by gross scheduled rent."},
-        {"section": "Expense Summary"},
-        {"label": "Total Expenses", "kind": "currency", "current": current_expenses, "proforma": proforma_expenses, "emphasis": "subtotal"},
-        {"label": "Expenses as % of GSR", "kind": "percent", "current": current_expenses / current_gsr * 100, "proforma": proforma_expenses / proforma_gsr * 100},
+        {"label": "Cap Rate", "kind": "percent", "current": values["current_noi"] / values["price"] * 100, "proforma": values["proforma_noi"] / values["price"] * 100, "note": "NOI divided by the $1,095,000 offering price."},
+        {"label": "GRM", "kind": "multiple", "current": values["price"] / values["current_gsr"], "proforma": values["price"] / values["proforma_gsr"], "note": "Offering price divided by gross scheduled rent."},
+        {"label": "Cash-on-Cash Return", "kind": "percent", "current": current_financing["cash_on_cash"] * 100, "proforma": proforma_financing["cash_on_cash"] * 100, "note": "Cash flow after debt service divided by the modeled down payment."},
+        {"label": "Debt Service Coverage Ratio", "kind": "multiple", "current": current_financing["dscr"], "proforma": proforma_financing["dscr"], "note": "NOI divided by annual debt service."},
+        {"label": "Total Return", "kind": "percent", "current": current_financing["total_return_rate"] * 100, "proforma": proforma_financing["total_return_rate"] * 100, "note": "Cash flow after debt service plus principal reduction, divided by the modeled down payment."},
         {"section": "Detailed Expenses"},
     ]
     rows.extend(
         {"label": item["label"], "kind": "currency", "current": item["current"], "proforma": item["pro_forma"], "note": item["basis"]}
         for item in DATA["expenses"]
     )
-    rows.append({"section": "Financing"})
-    rows.append({"label": "Financing assumptions forthcoming.", "kind": "empty"})
+    rows.extend([
+        {"section": "Financing"},
+        {"label": "Loan Amount", "kind": "currency", "current": financing["loan_amount"], "proforma": financing["loan_amount"], "static_basis": True, "note": "Illustrative new first loan at 75% of the offering price."},
+        {"label": "Down Payment", "kind": "currency", "current": financing["down_payment"], "proforma": financing["down_payment"], "static_basis": True, "note": "Illustrative equity contribution equal to 25% of the offering price."},
+        {"label": "Loan Type", "kind": "text", "current": financing["loan_type"], "proforma": financing["loan_type"], "static_basis": True, "note": "Illustrative new financing."},
+        {"label": "LTV", "kind": "percent", "current": financing["ltv"] * 100, "proforma": financing["ltv"] * 100, "static_basis": True, "note": "Loan-to-value ratio."},
+        {"label": "Interest Rate", "kind": "percent", "current": financing["interest_rate"] * 100, "proforma": financing["interest_rate"] * 100, "static_basis": True, "note": "Illustrative annual interest rate."},
+        {"label": "Amortization", "kind": "years", "current": financing["amortization_years"], "proforma": financing["amortization_years"], "static_basis": True, "note": "Illustrative amortization period."},
+        {"label": "Year Due", "kind": "text", "current": financing["maturity_year"], "proforma": financing["maturity_year"], "static_basis": True, "note": "Illustrative maturity year."},
+    ])
     return rows
 
 
 def info_control(label: str, note: str | None) -> str:
+    display = compact_financial_label(label)
     if not note:
-        return esc(label)
+        return display
     return (
-        f"<span>{esc(label)}</span><details class='row-note'><summary aria-label='Calculation note for {esc(label)}'>i</summary>"
+        f"<span>{display}</span><details class='row-note'><summary aria-label='Calculation note for {esc(label)}'>i</summary>"
         f"<p>{esc(note)}</p></details>"
     )
 
 
-def financial_desktop_rows() -> str:
-    output = []
-    for row in financial_definition():
-        if "section" in row:
-            output.append(f"<tr class='financial-band'><th colspan='5' scope='colgroup'>{esc(row['section'])}</th></tr>")
-            continue
-        if row["kind"] == "empty":
-            output.append(f"<tr class='financial-empty'><th scope='row'>{esc(row['label'])}</th><td colspan='4'>—</td></tr>")
-            continue
-        css = f"financial-row {row.get('emphasis', '')}".strip()
-        label = info_control(str(row["label"]), row.get("note"))
-        output.append(
-            f"<tr class='{css}'><th scope='row'>{label}</th>"
-            f"<td>{format_financial(row['current'], str(row['kind']))}</td>"
-            f"<td>{format_financial(row['proforma'], str(row['kind']))}</td>"
-            f"<td>{format_financial(row['proforma'], str(row['kind']), 'unit') if row['kind'] == 'currency' else '—'}</td>"
-            f"<td>{format_financial(row['proforma'], str(row['kind']), 'sf') if row['kind'] == 'currency' else '—'}</td></tr>"
+def financial_summary_rows() -> str:
+    price = DATA["meta"]["offering_price"]
+    property_data = DATA["property"]
+    rows = [
+        ("Price", money(price)),
+        ("Units", f"{property_data['units']:,}"),
+        ("Building SF", f"{property_data['building_sf']:,}"),
+        ("Lot SF", f"{property_data['lot_sf']:,}"),
+        ("Price / Unit", money(price / property_data["units"])),
+        ("Price / SF", money(price / property_data["building_sf"], 2)),
+        ("Year Built", esc(property_data["year_built"])),
+    ]
+    return "".join(f"<tr><th scope='row'>{esc(label)}</th><td>{value}</td></tr>" for label, value in rows)
+
+
+def financial_returns_rows() -> str:
+    values = financial_metrics()
+    financing = DATA["financing"]
+    rows = [
+        ("Cap Rate", metric(values["current_noi"] / values["price"] * 100, "%"), metric(values["proforma_noi"] / values["price"] * 100, "%")),
+        ("GRM", metric(values["price"] / values["current_gsr"], "x"), metric(values["price"] / values["proforma_gsr"], "x")),
+        ("Cash-on-Cash Return", metric(financing["current"]["cash_on_cash"] * 100, "%"), metric(financing["pro_forma"]["cash_on_cash"] * 100, "%")),
+        ("Debt Service Coverage Ratio", metric(financing["current"]["dscr"], "x"), metric(financing["pro_forma"]["dscr"], "x")),
+        ("Total Return", metric(financing["current"]["total_return_rate"] * 100, "%"), metric(financing["pro_forma"]["total_return_rate"] * 100, "%")),
+    ]
+    return "".join(
+        f"<tr><th scope='row'>{compact_financial_label(label)}</th><td>{current}</td><td>{proforma}</td></tr>"
+        for label, current, proforma in rows
+    )
+
+
+def financial_operating_rows() -> str:
+    values = financial_metrics()
+    financing = DATA["financing"]
+    rows = [
+        ("Gross Scheduled Rent", values["current_gsr"], values["proforma_gsr"], "", "Annualized from the reported current and broker-selected pro forma monthly rents.", False),
+        ("Total Expenses", values["current_expenses"], values["proforma_expenses"], "subtotal", "Selected seller-provided and broker-estimated operating expenses; no seller T-12 was available.", False),
+        ("Net Operating Income", values["current_noi"], values["proforma_noi"], "noi", "Gross scheduled rent less the displayed expense stack; no vacancy is included.", False),
+        ("Debt Service", financing["annual_debt_service"], financing["annual_debt_service"], "", "Annual principal and interest under the displayed illustrative financing assumptions.", False),
+        ("Cash Flow After Debt Service", financing["current"]["cash_flow_after_debt_service"], financing["pro_forma"]["cash_flow_after_debt_service"], "", "Net operating income less annual debt service.", True),
+        ("Principal Reduction", financing["current"]["principal_reduction"], financing["pro_forma"]["principal_reduction"], "", "Modeled principal reduction from the approved financing model.", False),
+        ("Total Return", financing["current"]["total_return"], financing["pro_forma"]["total_return"], "subtotal", "Cash flow after debt service plus modeled principal reduction.", True),
+    ]
+    return "".join(
+        f"<tr class='financial-row {css}'><th scope='row'>{info_control(label, note)}</th>"
+        f"<td>{accounting_money(current) if signed else money(current)}</td><td>{accounting_money(proforma) if signed else money(proforma)}</td></tr>"
+        for label, current, proforma, css, note, signed in rows
+    )
+
+
+def financial_financing_rows() -> str:
+    financing = DATA["financing"]
+    rows = [
+        ("Loan Amount", money(financing["loan_amount"])),
+        ("Down Payment", money(financing["down_payment"])),
+        ("Loan Type", esc(financing["loan_type"])),
+        ("LTV", metric(financing["ltv"] * 100, "%")),
+        ("Interest Rate", metric(financing["interest_rate"] * 100, "%")),
+        ("Amortization", f"{financing['amortization_years']} Years"),
+        ("Annual Debt Service", money(financing["annual_debt_service"])),
+        ("Year Due", f"{financing['maturity_year']}"),
+    ]
+    return "".join(f"<tr><th scope='row'>{esc(label)}</th><td>{value}</td></tr>" for label, value in rows)
+
+
+def financial_expense_rows() -> str:
+    rows = []
+    for item in DATA["expenses"]:
+        rows.append(
+            "<tr class='financial-row'>"
+            f"<th scope='row'>{info_control(str(item['label']), str(item['basis']))}</th>"
+            f"<td>{money(item['current'])}</td>"
+            f"<td>{money(item['pro_forma'])}</td>"
+            f"<td>{format_financial(item['pro_forma'], 'currency', 'unit')}</td>"
+            f"<td>{format_financial(item['pro_forma'], 'currency', 'sf')}</td>"
+            "</tr>"
         )
-    return "".join(output)
+    values = financial_metrics()
+    rows.append(
+        "<tr class='financial-row noi'><th scope='row'>Total Expenses</th>"
+        f"<td>{money(values['current_expenses'])}</td>"
+        f"<td>{money(values['proforma_expenses'])}</td>"
+        f"<td>{format_financial(values['proforma_expenses'], 'currency', 'unit')}</td>"
+        f"<td>{format_financial(values['proforma_expenses'], 'currency', 'sf')}</td></tr>"
+    )
+    return "".join(rows)
 
 
 def financial_mobile_rows() -> str:
@@ -142,13 +271,10 @@ def financial_mobile_rows() -> str:
         if "section" in row:
             output.append(f"<tr class='financial-band'><th colspan='3' scope='colgroup'>{esc(row['section'])}</th></tr>")
             continue
-        if row["kind"] == "empty":
-            output.append(f"<tr class='financial-empty'><th scope='row'>{esc(row['label'])}</th><td colspan='2'>—</td></tr>")
-            continue
         label = info_control(str(row["label"]), row.get("note"))
         current_values = {basis: format_financial(row["current"], str(row["kind"]), basis) for basis in ("total", "unit", "sf")}
         proforma_values = {basis: format_financial(row["proforma"], str(row["kind"]), basis) for basis in ("total", "unit", "sf")}
-        if row["kind"] in {"percent", "multiple"}:
+        if row["kind"] in {"percent", "multiple", "years"} or row.get("static_basis"):
             current_values["unit"] = current_values["sf"] = current_values["total"]
             proforma_values["unit"] = proforma_values["sf"] = proforma_values["total"]
         css = f"financial-row {row.get('emphasis', '')}".strip()
@@ -453,7 +579,11 @@ replacements = {
     "{{PROFORMA_MONTHLY_RENT}}": money(proforma_monthly_rent),
     "{{MONTHLY_RENT_UPSIDE}}": money(monthly_rent_upside),
     "{{MONTHLY_RENT_UPSIDE_PERCENT}}": f"{monthly_rent_upside_percent:.1f}%",
-    "{{FINANCIAL_DESKTOP_ROWS}}": financial_desktop_rows(),
+    "{{FINANCIAL_SUMMARY_ROWS}}": financial_summary_rows(),
+    "{{FINANCIAL_RETURNS_ROWS}}": financial_returns_rows(),
+    "{{FINANCIAL_FINANCING_ROWS}}": financial_financing_rows(),
+    "{{FINANCIAL_OPERATING_ROWS}}": financial_operating_rows(),
+    "{{FINANCIAL_EXPENSE_ROWS}}": financial_expense_rows(),
     "{{FINANCIAL_MOBILE_ROWS}}": financial_mobile_rows(),
     "{{SALE_COMPARABLE_CONCLUSION}}": copy_paragraphs(DATA["comparables_analysis"]["sale_conclusion"], "comparison-narrative"),
     "{{SUBJECT_BASELINE}}": subject_baseline(),

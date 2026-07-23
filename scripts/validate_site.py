@@ -93,12 +93,12 @@ proforma_noi = proforma_gsr - proforma_expenses
 
 expected = {
     "price": 1095000,
-    "current_gsr": 68400,
-    "proforma_gsr": 83400,
-    "current_expenses": 24377,
-    "proforma_expenses": 24377,
-    "current_noi": 44023,
-    "proforma_noi": 59023,
+    "current_gsr": 70800,
+    "proforma_gsr": 81420,
+    "current_expenses": 24047,
+    "proforma_expenses": 24047,
+    "current_noi": 46753,
+    "proforma_noi": 57373,
 }
 actual = {
     "price": price,
@@ -113,10 +113,23 @@ for key, value in expected.items():
     if actual[key] != value:
         errors.append(f"{key}: expected {value}, got {actual[key]}")
 
+financial_source = DATA["meta"].get("financial_source", {})
+expected_source_decisions = {
+    "file": "24513 Walnut St Model (Glen approved).xlsm",
+    "file_size": 1208338,
+    "unit_sf": [728, 728, 908],
+    "repairs_and_maintenance": 1800,
+    "publish_financing": True,
+}
+for key, value in expected_source_decisions.items():
+    if financial_source.get(key) != value:
+        errors.append(f"Financial source decision {key}: expected {value}, got {financial_source.get(key)}")
+
 required_strings = [
-    "$1,095,000", "$68,400", "$83,400", "$44,023", "$59,023",
-    "4.02%", "5.39%", "16.01x", "13.13x", "CA 01962976", "CA 01905352",
-    "noindex, nofollow, noarchive", "Financing assumptions forthcoming.",
+    "$1,095,000", "$70,800", "$81,420", "$46,753", "$57,373",
+    "4.27%", "5.24%", "15.47x", "13.45x", "CA 01962976", "CA 01905352",
+    "$821,250", "$273,750", "6.50%", "30 Years", "0.75x", "0.92x",
+    "noindex, nofollow, noarchive",
     "The LAAA Team of Marcus &amp; Millichap is proud to present", "Same rent rules"
 ]
 for value in required_strings:
@@ -128,7 +141,7 @@ for stale in [
     "Focus the evidence", "Same rent regime", "Main Street sample", "Fourth Street", "Chestnut Street",
     "Interactive Prototype", "buyers can audit", "responsive screen", "continuous table",
     "invented financing", "evidence tool", "false precision", "no unapproved assumption",
-    "until Glen approves",
+    "until Glen approves", "Financing assumptions forthcoming.",
 ]:
     if stale.lower() in HTML.lower():
         errors.append(f"Stale or seller-facing phrase present: {stale}")
@@ -141,6 +154,36 @@ expected_unit_areas = [728, 728, 908]
 actual_unit_areas = [unit.get("unit_sf") for unit in DATA["units"]]
 if actual_unit_areas != expected_unit_areas:
     errors.append(f"Unit areas: expected {expected_unit_areas}, got {actual_unit_areas}")
+
+financing = DATA.get("financing", {})
+expected_financing = {
+    "loan_amount": 821250,
+    "down_payment": 273750,
+    "ltv": 0.75,
+    "interest_rate": 0.065,
+    "amortization_years": 30,
+    "maturity_year": 2056,
+}
+for key, value in expected_financing.items():
+    if financing.get(key) != value:
+        errors.append(f"Financing {key}: expected {value}, got {financing.get(key)}")
+annual_debt_service = financing.get("annual_debt_service", 0)
+for basis, noi in [("current", current_noi), ("pro_forma", proforma_noi)]:
+    result = financing.get(basis, {})
+    expected_cash_flow = noi - annual_debt_service
+    expected_coc = expected_cash_flow / financing.get("down_payment", 1)
+    expected_dscr = noi / annual_debt_service if annual_debt_service else 0
+    expected_total_return = expected_cash_flow + result.get("principal_reduction", 0)
+    expected_total_return_rate = expected_total_return / financing.get("down_payment", 1)
+    for label, calculated, reported in [
+        ("cash_flow_after_debt_service", expected_cash_flow, result.get("cash_flow_after_debt_service")),
+        ("cash_on_cash", expected_coc, result.get("cash_on_cash")),
+        ("dscr", expected_dscr, result.get("dscr")),
+        ("total_return", expected_total_return, result.get("total_return")),
+        ("total_return_rate", expected_total_return_rate, result.get("total_return_rate")),
+    ]:
+        if reported is None or abs(calculated - reported) > 0.01:
+            errors.append(f"Financing {basis} {label}: expected {calculated}, got {reported}")
 for unit in DATA["units"]:
     current_psf = f"${unit['current_rent'] / unit['unit_sf']:.2f}"
     proforma_psf = f"${unit['market_rent'] / unit['unit_sf']:.2f}"
@@ -209,8 +252,8 @@ if len(rent_evidence) != 3:
     errors.append(f"Expected two surveyed rent segments and one achieved-rent cross-check, got {len(rent_evidence)}")
 else:
     expected_rents = {
-        "1BR apartments": (15, 2093, 2210, 2150),
-        "2BR apartments": (20, 2493, 3295, 2400),
+        "1BR apartments": (15, 2093, 2210, 2195),
+        "2BR apartments": (20, 2493, 3295, 2295),
     }
     for row in rent_evidence:
         if row["segment"] not in expected_rents:
@@ -238,6 +281,11 @@ for contact in DATA.get("contacts", []):
 
 for required_markup in [
     "data-fin-basis=\"total\"", "data-fin-basis=\"unit\"", "data-fin-basis=\"sf\"",
+    "class=\"financial-overview-grid\"", "class=\"financial-ledger financial-expense-ledger\"",
+    "<abbr title='Gross Scheduled Rent'>GSR</abbr>", "<abbr title='Net Operating Income'>NOI</abbr>",
+    "<abbr title='Repairs and Maintenance'>R&amp;M</abbr>", "<abbr title='General and Administrative'>G&amp;A</abbr>",
+    "<abbr title='Debt Service Coverage Ratio'>DSCR</abbr>", "<abbr title=\"Per Square Foot\">/ SF</abbr>",
+    "class=\"financial-mini-table financial-financing-table\"",
     "data-comp-view=\"list\"", "data-comp-view=\"map\"", "data-location-view=\"district\"",
     "data-location-view=\"satellite\"", "data-location-view=\"transit\"", "data-location-view=\"street\"",
     "data-google-map=\"location\"", "data-google-map=\"comps\"", "data-google-map=\"rents\"", "id=\"map-config\"",
@@ -250,6 +298,10 @@ for required_markup in [
 ]:
     if required_markup not in HTML:
         errors.append(f"Missing required responsive feature: {required_markup}")
+
+for verbose_financial_header in ["Pro Forma / Unit", "Pro Forma / SF"]:
+    if verbose_financial_header in HTML:
+        errors.append(f"Verbose financial header must use the compact label standard: {verbose_financial_header}")
 
 if re.search(r'''(?:src|poster)=["']https?://''', HTML, re.I) or re.search(r"url\(\s*[\"']?https?://", HTML, re.I):
     errors.append("Runtime assets must remain local; external URLs may be links only")

@@ -216,13 +216,15 @@ async function inspectViewport(browser, width, height, options = {}) {
   }
 
   if (width === 390 && !options.suffix) {
-    const gsrRow = page.locator('.mobile-financial-table tbody tr').filter({ hasText: 'Gross Scheduled Rent' }).first();
+    const gsrRow = page.locator('.mobile-financial-table tbody tr').filter({
+      has: page.locator('abbr[title="Gross Scheduled Rent"]'),
+    }).first();
     const before = await gsrRow.locator('td').first().textContent();
     await page.locator('[data-fin-basis="unit"]').click();
     const after = await gsrRow.locator('td').first().textContent();
-    check(before.trim() === '$68,400' && after.trim() === '$22,800', `${key}: financial basis tabs did not recalculate current GSR (${before} -> ${after})`);
+    check(before.trim() === '$70,800' && after.trim() === '$23,600', `${key}: financial basis tabs did not recalculate current GSR (${before} -> ${after})`);
     await page.locator('[data-fin-basis="sf"]').click();
-    check((await gsrRow.locator('td').first().textContent()).trim() === '$28.93', `${key}: per-SF basis did not render expected current GSR`);
+    check((await gsrRow.locator('td').first().textContent()).trim() === '$29.95', `${key}: per-SF basis did not render expected current GSR`);
 
     await page.locator('[data-location-view="transit"]').click();
     check(await page.locator('[data-location-panel="transit"]').isVisible(), `${key}: transit map fallback did not activate`);
