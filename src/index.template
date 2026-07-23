@@ -135,7 +135,7 @@
         <div class="comp-map-panel" data-comp-panel="map">
           <div class="comp-map-toolbar">
             <span>Subject and Comparable Sales</span>
-            <div role="group" aria-label="Sale comparable map type"><button class="active" type="button" data-comp-map-type="roadmap" aria-pressed="true">Roadmap</button><button type="button" data-comp-map-type="satellite" aria-pressed="false">Satellite</button></div>
+            <div role="group" aria-label="Sale comparable map type" data-comp-map-type-controls hidden><button class="active" type="button" data-comp-map-type="roadmap" aria-pressed="true">Roadmap</button><button type="button" data-comp-map-type="satellite" aria-pressed="false">Satellite</button></div>
           </div>
           <div class="comp-map-canvas">
             <div class="google-map-canvas" data-google-map="comps" hidden aria-label="Interactive map of the subject property and six sale comparables"></div>

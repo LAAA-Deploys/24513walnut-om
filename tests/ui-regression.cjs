@@ -235,7 +235,7 @@ async function inspectViewport(browser, width, height, options = {}) {
     }
     await page.locator('[data-comp-metric="ppu"]').click();
     check(await page.locator('[data-comp-metric-panel="ppu"]').isVisible(), `${key}: price-per-unit comparison did not activate`);
-    await page.locator('[data-comp-map-type="satellite"]').click();
+    check(await page.locator('[data-comp-map-type-controls]').isHidden(), `${key}: map-type controls appeared without a live comparable map`);
     const firstProfileDetail = page.locator('.comp-profile').first().locator('[data-profile-detail]').first();
     await firstProfileDetail.locator('summary').click();
     check(await firstProfileDetail.getAttribute('open') !== null, `${key}: mobile comp disclosure did not open`);
@@ -323,10 +323,6 @@ async function inspectDelayedMapsKey(browser) {
   await page.waitForTimeout(100);
   check(mapsRequests === 0, `delayed-maps-key: map requested before a browser key existed`);
 
-  await page.locator('[data-comp-view="map"]').click();
-  await page.locator('[data-comp-map-type="satellite"]').click();
-  check(await page.locator('[data-comp-map-type="satellite"]').getAttribute('aria-pressed') === 'true', 'delayed-maps-key: comparable Satellite state did not activate before failure');
-  await page.locator('[data-comp-view="list"]').click();
   await page.evaluate(() => { window.LAAA_GOOGLE_MAPS_BROWSER_KEY = 'test-browser-key'; });
   await page.evaluate(() => window.scrollTo(0, 0));
   await page.waitForTimeout(100);
@@ -338,6 +334,7 @@ async function inspectDelayedMapsKey(browser) {
     activeView: document.querySelector('[data-location-view][aria-pressed="true"]')?.dataset.locationView,
   }));
   check(fallbackState.activeView === 'satellite' && fallbackState.visiblePanels.length === 1 && fallbackState.visiblePanels[0] === 'satellite', `delayed-maps-key: failure fallback desynced ${JSON.stringify(fallbackState)}`);
+  check(await page.locator('[data-comp-map-type-controls]').isHidden(), 'delayed-maps-key: comparable map-type controls remained visible over the static fallback');
   check(await page.locator('[data-comp-map-type="roadmap"]').getAttribute('aria-pressed') === 'true', 'delayed-maps-key: comparable failure fallback did not reset to Roadmap');
   check(await page.locator('[data-comp-map-type="satellite"]').getAttribute('aria-pressed') === 'false', 'delayed-maps-key: comparable Satellite control remained active after failure');
   await page.waitForFunction(() => window.__fakeMaps?.some(map => map.element.dataset.googleMap === 'location'));
@@ -347,6 +344,7 @@ async function inspectDelayedMapsKey(browser) {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.locator('[data-comp-view="map"]').click();
   await page.waitForFunction(() => window.__fakeMaps?.some(map => map.element.dataset.googleMap === 'comps'));
+  check(await page.locator('[data-comp-map-type-controls]').isVisible(), 'delayed-maps-key: comparable map-type controls stayed hidden after live-map recovery');
   await page.locator('[data-comp-map-type="satellite"]').click();
   await page.evaluate(selector => {
     const panel = document.querySelector(selector);
@@ -384,6 +382,35 @@ async function inspectDelayedMapsKey(browser) {
   check(result.compCenter?.lat === 34.2837309 && result.compCenter?.lng === -118.4456534, `delayed-maps-key: swipe did not pan the live comp map`);
   check(result.compMapTypeId === 'satellite', `delayed-maps-key: live comparable map did not switch to Satellite`);
   check(result.rentCircleCount === 2, `delayed-maps-key: expected two rent-survey radii, found ${result.rentCircleCount}`);
+
+  const laterFailureState = await page.evaluate(() => {
+    const script = document.querySelector('script[src*="maps.googleapis.com/maps/api/js"]');
+    if (!script || typeof script.onerror !== 'function') throw new Error('Google Maps error handler was not available');
+    script.onerror(new Event('error'));
+    return {
+      controlsHidden: document.querySelector('[data-comp-map-type-controls]')?.hidden,
+      roadmapPressed: document.querySelector('[data-comp-map-type="roadmap"]')?.getAttribute('aria-pressed'),
+      satellitePressed: document.querySelector('[data-comp-map-type="satellite"]')?.getAttribute('aria-pressed')
+    };
+  });
+  check(laterFailureState.controlsHidden, 'delayed-maps-key: later failure left live-map controls visible over the fallback');
+  check(laterFailureState.roadmapPressed === 'true', 'delayed-maps-key: later failure did not restore Roadmap state');
+  check(laterFailureState.satellitePressed === 'false', 'delayed-maps-key: later failure left Satellite active');
+  for (let attempt = 0; attempt < 20 && mapsRequests < 3; attempt += 1) await page.waitForTimeout(100);
+  check(mapsRequests === 3, `delayed-maps-key: retry budget was not restored after success (${mapsRequests} requests)`);
+  await page.locator('[data-comp-view="map"]').click();
+  await page.waitForTimeout(500);
+  const laterRecoveryState = await page.evaluate(() => ({
+    controlsHidden: document.querySelector('[data-comp-map-type-controls]')?.hidden,
+    compPanelDisplay: getComputedStyle(document.querySelector('.comp-map-panel')).display,
+    compCanvasHidden: document.querySelector('[data-google-map="comps"]')?.hidden,
+    fakeMapTypes: (window.__fakeMaps || []).map(map => map.element.dataset.googleMap)
+  }));
+  check(!laterRecoveryState.controlsHidden, `delayed-maps-key: comparable controls did not return after later recovery ${JSON.stringify(laterRecoveryState)}`);
+  check(await page.evaluate(() => {
+    const maps = window.__fakeMaps.filter(map => map.element.dataset.googleMap === 'comps');
+    return maps[maps.length - 1]?.mapTypeId === 'roadmap';
+  }), 'delayed-maps-key: recovered comparable map did not match the Roadmap control state');
   await context.close();
 }
 

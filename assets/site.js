@@ -200,6 +200,17 @@
     locationPanels.forEach(function (panel) { panel.hidden = panel.dataset.locationPanel !== view; });
   }
 
+  function setCompMapTypeState(mapType, available) {
+    activeCompMapType = mapType;
+    var controls = document.querySelector('[data-comp-map-type-controls]');
+    if (controls) controls.hidden = !available;
+    document.querySelectorAll('[data-comp-map-type]').forEach(function (button) {
+      var active = button.dataset.compMapType === activeCompMapType;
+      button.classList.toggle('active', active);
+      button.setAttribute('aria-pressed', String(active));
+    });
+  }
+
   function activateLocationView(view) {
     activeLocationView = view;
     setLocationButtonState(view);
@@ -253,12 +264,7 @@
     });
     document.querySelectorAll('[data-map-fallback]').forEach(function (fallback) { fallback.hidden = false; });
     showLocationFallback(activeLocationView);
-    activeCompMapType = 'roadmap';
-    document.querySelectorAll('[data-comp-map-type]').forEach(function (button) {
-      var active = button.dataset.compMapType === activeCompMapType;
-      button.classList.toggle('active', active);
-      button.setAttribute('aria-pressed', String(active));
-    });
+    setCompMapTypeState('roadmap', false);
     var compCanvas = document.querySelector('[data-google-map="comps"]');
     if (compCanvas) compCanvas.closest('.comp-map-canvas').classList.remove('maps-active');
     if (googleMapsAttempts < 2 && !googleMapsRetryTimer) {
@@ -295,6 +301,7 @@
       zoomControl: true,
       clickableIcons: false
     });
+    setCompMapTypeState(activeCompMapType, true);
     compGoogleMap.setMapTypeId(activeCompMapType);
     compGoogleBounds = new google.maps.LatLngBounds();
     compGoogleBounds.extend(mapConfig.subject);
@@ -425,6 +432,7 @@
       initCompGoogleMap();
       initRentGoogleMap();
       activateLocationView(activeLocationView);
+      googleMapsAttempts = 0;
       if (googleMapsRetryTimer) window.clearTimeout(googleMapsRetryTimer);
       googleMapsRetryTimer = null;
       if (mapObserver) mapObserver.disconnect();
@@ -485,13 +493,9 @@
   var compMapTypeButtons = Array.from(document.querySelectorAll('[data-comp-map-type]'));
   compMapTypeButtons.forEach(function (button) {
     button.addEventListener('click', function () {
-      activeCompMapType = button.dataset.compMapType;
-      compMapTypeButtons.forEach(function (candidate) {
-        var active = candidate === button;
-        candidate.classList.toggle('active', active);
-        candidate.setAttribute('aria-pressed', String(active));
-      });
-      if (compGoogleMap) compGoogleMap.setMapTypeId(activeCompMapType);
+      if (!compGoogleMap) return;
+      setCompMapTypeState(button.dataset.compMapType, true);
+      compGoogleMap.setMapTypeId(activeCompMapType);
     });
   });
 
