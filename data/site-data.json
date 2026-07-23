@@ -21,7 +21,17 @@
     "parking": "Garage and on-site parking; buyer to verify count and configuration",
     "flood_zone": "Zone X",
     "latitude": 34.3810926,
-    "longitude": -118.5315719
+    "longitude": -118.5315719,
+    "rent_rules": "Santa Clarita; statewide AB 1482 protections apply",
+    "map_url": "https://www.google.com/maps/search/?api=1&query=24513%20Walnut%20Street%2C%20Newhall%2C%20CA%2091321&query_place_id=ChIJNzPctWGGwoAR-jc8Y6-l4Fo"
+  },
+  "comparables_analysis": {
+    "sale_conclusion": [
+      "The selected sales place Walnut within a credible three-unit pricing range while illustrating why no single metric tells the full story. Atwood provides the closest Newhall location and an upper benchmark at $1,150,000, while Coronel provides the strongest rent-rule comparison at $1,090,000. Pinewood offers the closest physical comparison as three vintage residences on a large lot.",
+      "Santol and Harding establish lower reference points but carry meaningful differences in location, legal unit count, condition, and income basis. Price per unit and price per square foot should therefore be considered alongside each property's physical profile, occupancy, rent rules, and renovation level rather than read as stand-alone conclusions."
+    ],
+    "rent_conclusion": "The selected monthly rents remain measured against the available survey. The $2,150 one-bedroom Pro Forma falls between the survey's 25th percentile and median, while the $2,400 two-bedroom Pro Forma remains below the 25th percentile. Atwood's achieved rents provide a directional cross-check but reflect materially superior condition.",
+    "integrated_conclusion": "The six sales bracket Walnut's offering within the current small-property market, with the strongest support coming from Atwood's Newhall location, Coronel's comparable rent rules, and Pinewood's physical configuration. The rent survey supports a restrained Pro Forma rather than a top-of-market assumption. Buyers should evaluate the offering through the combined evidence and confirm leases, property condition, unit status, and operating assumptions during due diligence."
   },
   "investment_overview": [
     "The LAAA Team of Marcus & Millichap is proud to present 24513–24519 Walnut Street, a three-unit residential investment in Old Town Newhall. Built in 1926 and 1954, the 2,364-square-foot property includes a duplex with two 2-bedroom/1-bath residences and a detached 1-bedroom/1-bath rear home on a 9,379-square-foot COR-zoned lot.",

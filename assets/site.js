@@ -165,6 +165,8 @@
   var locationMap = null;
   var locationTransitLayer = null;
   var compGoogleMap = null;
+  var rentGoogleMap = null;
+  var rentSurveyCircles = [];
   var googleMapConstructor = null;
   var googleMarkerConstructor = null;
   var compGoogleBounds = null;
@@ -174,6 +176,7 @@
   var googleMapsAttempts = 0;
   var googleMapsRetryTimer = null;
   var mapObserver = null;
+  var activeCompMapType = 'roadmap';
   var activeLocationButton = locationButtons.find(function (button) {
     return button.getAttribute('aria-pressed') === 'true';
   });
@@ -238,6 +241,8 @@
     locationMap = null;
     locationTransitLayer = null;
     compGoogleMap = null;
+    rentGoogleMap = null;
+    rentSurveyCircles = [];
     googleMapConstructor = null;
     googleMarkerConstructor = null;
     compGoogleBounds = null;
@@ -278,12 +283,13 @@
       center: { lat: 34.31, lng: -118.43 },
       zoom: 10,
       mapId: 'DEMO_MAP_ID',
-      mapTypeControl: true,
+      mapTypeControl: false,
       streetViewControl: false,
       fullscreenControl: true,
       zoomControl: true,
       clickableIcons: false
     });
+    compGoogleMap.setMapTypeId(activeCompMapType);
     compGoogleBounds = new google.maps.LatLngBounds();
     compGoogleBounds.extend(mapConfig.subject);
     var subjectMarker = new googleMarkerConstructor({
@@ -310,6 +316,61 @@
     compCanvas.closest('.comp-map-canvas').classList.add('maps-active');
     compGoogleMap.fitBounds(compGoogleBounds, 42);
     if (compIds.length) selectComp(compIds[selectedCompIndex]);
+  }
+
+  function refreshCompGoogleMap() {
+    window.requestAnimationFrame(function () {
+      initCompGoogleMap();
+      var compCanvas = document.querySelector('[data-google-map="comps"]');
+      var compPanel = compCanvas ? compCanvas.closest('.comp-map-panel') : null;
+      if (!compGoogleMap || !compPanel || window.getComputedStyle(compPanel).display === 'none') return;
+      if (window.google && google.maps && google.maps.event) google.maps.event.trigger(compGoogleMap, 'resize');
+      if (compGoogleBounds) compGoogleMap.fitBounds(compGoogleBounds, 42);
+    });
+  }
+
+  function initRentGoogleMap() {
+    var rentCanvas = document.querySelector('[data-google-map="rents"]');
+    if (!rentCanvas || !googleMapConstructor || !googleMarkerConstructor || rentGoogleMap || !mapConfig) return;
+
+    rentCanvas.hidden = false;
+    rentGoogleMap = new googleMapConstructor(rentCanvas, {
+      center: mapConfig.subject,
+      zoom: 12,
+      mapId: 'DEMO_MAP_ID',
+      mapTypeControl: false,
+      streetViewControl: false,
+      fullscreenControl: true,
+      zoomControl: true,
+      clickableIcons: false
+    });
+    new googleMarkerConstructor({
+      map: rentGoogleMap,
+      position: mapConfig.subject,
+      title: mapConfig.subject.title,
+      content: markerContent('S', true),
+      gmpClickable: true
+    });
+    if (google.maps.Circle) {
+      [
+        { radius: 3218.688, strokeColor: '#1B3A5C', fillColor: '#1B3A5C', fillOpacity: .05 },
+        { radius: 1609.344, strokeColor: '#C5A258', fillColor: '#C5A258', fillOpacity: .08 }
+      ].forEach(function (style) {
+        rentSurveyCircles.push(new google.maps.Circle({
+          map: rentGoogleMap,
+          center: mapConfig.subject,
+          radius: style.radius,
+          strokeColor: style.strokeColor,
+          strokeOpacity: .9,
+          strokeWeight: 2,
+          fillColor: style.fillColor,
+          fillOpacity: style.fillOpacity,
+          clickable: false
+        }));
+      });
+    }
+    var rentFallback = document.querySelector('[data-map-fallback="rents"]');
+    if (rentFallback) rentFallback.hidden = true;
   }
 
   function initGoogleMaps() {
@@ -356,6 +417,7 @@
       }
 
       initCompGoogleMap();
+      initRentGoogleMap();
       activateLocationView(activeLocationView);
       if (googleMapsRetryTimer) window.clearTimeout(googleMapsRetryTimer);
       googleMapsRetryTimer = null;
@@ -380,7 +442,7 @@
     return true;
   }
 
-  var mapSections = Array.from(document.querySelectorAll('[data-location-map], .comp-map-panel'));
+  var mapSections = Array.from(document.querySelectorAll('[data-location-map], .comp-map-panel, .rent-survey-map'));
   if ('IntersectionObserver' in window && mapSections.length) {
     mapObserver = new IntersectionObserver(function (entries) {
       if (entries.some(function (entry) { return entry.isIntersecting; })) {
@@ -414,6 +476,19 @@
   var selectedCompIndex = 0;
   var compTouchStart = null;
 
+  var compMapTypeButtons = Array.from(document.querySelectorAll('[data-comp-map-type]'));
+  compMapTypeButtons.forEach(function (button) {
+    button.addEventListener('click', function () {
+      activeCompMapType = button.dataset.compMapType;
+      compMapTypeButtons.forEach(function (candidate) {
+        var active = candidate === button;
+        candidate.classList.toggle('active', active);
+        candidate.setAttribute('aria-pressed', String(active));
+      });
+      if (compGoogleMap) compGoogleMap.setMapTypeId(activeCompMapType);
+    });
+  });
+
   function selectComp(id, focusOrigin) {
     var index = compIds.indexOf(id);
     if (index < 0) return;
@@ -433,7 +508,10 @@
     if (focusOrigin && compGoogleMap && compMarkerById[id]) compGoogleMap.panTo(compMarkerById[id].point);
     if (focusOrigin === 'pin') {
       var summary = document.querySelector('.comp-summary[data-comp-select="' + id + '"]');
-      if (summary) summary.setAttribute('aria-current', 'true');
+      if (summary) {
+        summary.setAttribute('aria-current', 'true');
+        if (summary.getClientRects().length) summary.scrollIntoView({ block: 'nearest', behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+      }
     }
     document.querySelectorAll('.comp-summary[aria-current]').forEach(function (summary) {
       if (summary.dataset.compSelect !== id) summary.removeAttribute('aria-current');
@@ -448,7 +526,7 @@
   if (previousComp) previousComp.addEventListener('click', function () { selectComp(compIds[(selectedCompIndex - 1 + compIds.length) % compIds.length], 'step'); });
   if (nextComp) nextComp.addEventListener('click', function () { selectComp(compIds[(selectedCompIndex + 1) % compIds.length], 'step'); });
 
-  var compSwipeSurface = document.querySelector('.comp-preview-stack');
+  var compSwipeSurface = document.querySelector('.comp-selected-stack');
   if (compSwipeSurface) {
     compSwipeSurface.addEventListener('touchstart', function (event) { compTouchStart = event.changedTouches[0].clientX; }, { passive: true });
     compSwipeSurface.addEventListener('touchend', function (event) {
@@ -469,17 +547,37 @@
         candidate.setAttribute('aria-pressed', String(active));
       });
       if (compExplorer) compExplorer.dataset.mobileView = view;
-      if (view === 'map') {
-        window.requestAnimationFrame(function () {
-          initCompGoogleMap();
-          if (compGoogleMap && compGoogleBounds) {
-            if (window.google && google.maps && google.maps.event) google.maps.event.trigger(compGoogleMap, 'resize');
-            compGoogleMap.fitBounds(compGoogleBounds, 42);
-          }
-        });
-      }
+      if (view === 'map') refreshCompGoogleMap();
     });
   });
+  window.addEventListener('resize', refreshCompGoogleMap, { passive: true });
   if (compExplorer) compExplorer.dataset.mobileView = 'list';
   if (compIds.length) selectComp(compIds[0]);
+
+  var comparisonMetricButtons = Array.from(document.querySelectorAll('[data-comp-metric]'));
+  var comparisonMetricPanels = Array.from(document.querySelectorAll('[data-comp-metric-panel]'));
+  comparisonMetricButtons.forEach(function (button) {
+    button.addEventListener('click', function () {
+      var metric = button.dataset.compMetric;
+      comparisonMetricButtons.forEach(function (candidate) {
+        var active = candidate === button;
+        candidate.classList.toggle('active', active);
+        candidate.setAttribute('aria-pressed', String(active));
+      });
+      comparisonMetricPanels.forEach(function (panel) {
+        panel.hidden = panel.dataset.compMetricPanel !== metric;
+      });
+    });
+  });
+
+  var profileDetails = Array.from(document.querySelectorAll('[data-profile-detail]'));
+  var profileDetailMode = null;
+  function syncProfileDetails() {
+    var mobile = window.innerWidth <= 760;
+    if (profileDetailMode === mobile) return;
+    profileDetailMode = mobile;
+    profileDetails.forEach(function (detail) { detail.open = !mobile; });
+  }
+  syncProfileDetails();
+  window.addEventListener('resize', syncProfileDetails, { passive: true });
 })();

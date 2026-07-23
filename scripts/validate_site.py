@@ -180,11 +180,44 @@ comp_ids = [comp.get("id") for comp in DATA["sale_comps"]]
 if len(set(comp_ids)) != len(comp_ids):
     errors.append("Sale comparable IDs must be unique")
 for comp in DATA["sale_comps"]:
-    for required in ["id", "map_label", "latitude", "longitude", "image", "map_url", "verdict", "occupancy", "condition", "strengths", "cautions", "distance", "rent_rules", "source"]:
+    for required in ["id", "map_label", "latitude", "longitude", "image", "map_url", "verdict", "occupancy", "condition", "strengths", "cautions", "distance", "rent_rules", "source", "price", "units", "sf", "lot_sf", "ppu", "ppsf", "year_built"]:
         if not comp.get(required):
             errors.append(f"Sale comparable {comp.get('address', '(unknown)')} lacks {required}")
     if comp.get("image") and not (ROOT / comp["image"]).exists():
         errors.append(f"Missing sale comparable image: {comp['image']}")
+    unit_match = re.match(r"(\d+)", str(comp.get("units", "")))
+    if unit_match and abs(comp["ppu"] - round(comp["price"] / int(unit_match.group(1)))) > 1:
+        errors.append(f"Price per unit does not reconcile for {comp['address']}")
+    if abs(comp["ppsf"] - round(comp["price"] / comp["sf"])) > 1:
+        errors.append(f"Price per square foot does not reconcile for {comp['address']}")
+if not DATA["property"].get("map_url"):
+    errors.append("Subject property Google Maps action is missing")
+
+subject_ppu = round(price / DATA["property"]["units"])
+subject_ppsf = price / DATA["property"]["building_sf"]
+for rendered in [f"${subject_ppu:,.0f}", f"${subject_ppsf:,.0f}"]:
+    if rendered not in HTML:
+        errors.append(f"Missing calculated subject comparison metric: {rendered}")
+
+analysis = DATA.get("comparables_analysis", {})
+for required in ["sale_conclusion", "rent_conclusion", "integrated_conclusion"]:
+    if not analysis.get(required):
+        errors.append(f"Missing comparables analysis narrative: {required}")
+
+rent_evidence = DATA.get("rent_evidence", [])
+if len(rent_evidence) != 3:
+    errors.append(f"Expected two surveyed rent segments and one achieved-rent cross-check, got {len(rent_evidence)}")
+else:
+    expected_rents = {
+        "1BR apartments": (15, 2093, 2210, 2150),
+        "2BR apartments": (20, 2493, 3295, 2400),
+    }
+    for row in rent_evidence:
+        if row["segment"] not in expected_rents:
+            continue
+        expected_sample, expected_p25, expected_median, expected_selected = expected_rents[row["segment"]]
+        if str(expected_sample) not in row["sample"] or (row["percentile_25"], row["median"], row["selected"]) != (expected_p25, expected_median, expected_selected):
+            errors.append(f"Rent evidence changed for {row['segment']}")
 
 for required_map in ["map-newhall.jpg", "map-transit.jpg", "map-subject-satellite.jpg", "map-sale-comps.jpg"]:
     if not (ROOT / "assets" / "images" / required_map).exists():
@@ -207,7 +240,11 @@ for required_markup in [
     "data-fin-basis=\"total\"", "data-fin-basis=\"unit\"", "data-fin-basis=\"sf\"",
     "data-comp-view=\"list\"", "data-comp-view=\"map\"", "data-location-view=\"district\"",
     "data-location-view=\"satellite\"", "data-location-view=\"transit\"", "data-location-view=\"street\"",
-    "data-google-map=\"location\"", "data-google-map=\"comps\"", "id=\"map-config\"",
+    "data-google-map=\"location\"", "data-google-map=\"comps\"", "data-google-map=\"rents\"", "id=\"map-config\"",
+    "data-map-fallback=\"rents\"", "data-comp-map-type=\"roadmap\"", "data-comp-map-type=\"satellite\"",
+    "data-comp-metric=\"price\"", "data-comp-metric=\"ppu\"", "data-comp-metric=\"ppsf\"",
+    "data-comp-metric-panel='price'", "data-comp-metric-panel='ppu'", "data-comp-metric-panel='ppsf'",
+    "class='subject-baseline'", "class='subject-baseline-strip'", "class=\"comp-selected-stack\"", "class=\"rent-benchmark-cards\"",
     "class=\"map-pin pin-6\" style=\"--x:51%;--y:43%\"",
     "table-scroll-cue", "assets/images/glen-scher.jpg", "assets/images/filip-niculete.jpg",
 ]:

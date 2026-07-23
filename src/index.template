@@ -119,11 +119,24 @@
     </section>
 
     <section class="section market-section" id="comps">
-      <div class="container section-heading"><div><p class="eyebrow">06 · Sale and Rent Comparables</p><h2>Six Comparable Sales from $760,000 to $1,150,000</h2></div><p>Select a property or map marker to review its transaction details, photograph, physical characteristics, and relationship to Walnut Street.</p></div>
+      <div class="container section-heading"><div><p class="eyebrow">06 · Sale and Rent Comparables</p><h2>Comparable Evidence for Walnut Street</h2></div><p>Six selected sales and the approved rent survey frame the offering through location, physical characteristics, rent rules, condition, and income.</p></div>
+
+      <div class="container comparison-thesis">
+        <div><p class="eyebrow">Sale Comparison</p><h3>How the Sales Frame Walnut</h3></div>
+        <div>{{SALE_COMPARABLE_CONCLUSION}}</div>
+      </div>
+
+      <div class="container">{{SUBJECT_BASELINE}}</div>
+
+      <div class="container comp-studio-heading"><div><p class="eyebrow">Interactive Sale Comparison</p><h3>Six Sales, One Consistent Frame of Reference</h3></div><p>Select any sale to connect its photograph, map position, transaction facts, and relationship to Walnut.</p></div>
       <div class="container comp-view-tabs" role="group" aria-label="Comparable explorer view"><button class="active" type="button" data-comp-view="list" aria-pressed="true">List · 6</button><button type="button" data-comp-view="map" aria-pressed="false">Map</button></div>
       <div class="container comp-explorer">
         <div class="comp-list" data-comp-panel="list" aria-label="Sale comparable summaries">{{COMP_SUMMARY_ITEMS}}</div>
         <div class="comp-map-panel" data-comp-panel="map">
+          <div class="comp-map-toolbar">
+            <span>Subject and Comparable Sales</span>
+            <div role="group" aria-label="Sale comparable map type"><button class="active" type="button" data-comp-map-type="roadmap" aria-pressed="true">Roadmap</button><button type="button" data-comp-map-type="satellite" aria-pressed="false">Satellite</button></div>
+          </div>
           <div class="comp-map-canvas">
             <div class="google-map-canvas" data-google-map="comps" hidden aria-label="Interactive map of the subject property and six sale comparables"></div>
             <img data-map-fallback="comps" src="assets/images/map-sale-comps.jpg" alt="Regional map showing the Walnut subject and six numbered sale comparables">
@@ -134,19 +147,45 @@
             <button class="map-pin pin-5" style="--x:59%;--y:55.5%" type="button" data-comp-select="santol" aria-label="Select comparable 5, 11344 Santol Drive">5</button>
             <button class="map-pin pin-6" style="--x:51%;--y:43%" type="button" data-comp-select="harding" aria-label="Select comparable 6, 216 Harding Avenue">6</button>
           </div>
-          <p class="map-caption">Navy S: subject property · numbered markers: sale comparables · Google map data</p>
-          <div class="comp-preview-stack" aria-live="polite">{{COMP_PREVIEWS}}</div>
+          <p class="map-caption"><b>S</b> identifies Walnut Street; numbered markers correspond to the six sales. Interactive Google Maps loads when available.</p>
+          {{SUBJECT_BASELINE_STRIP}}
+          <div class="comp-selected-stack" aria-live="polite">{{COMP_SELECTED_ANALYSES}}</div>
           <div class="comp-stepper"><button type="button" data-comp-previous aria-label="Previous sale comparable">← Previous</button><span data-comp-position>1 of 6</span><button type="button" data-comp-next aria-label="Next sale comparable">Next →</button></div>
         </div>
       </div>
 
-      <div class="container rent-evidence-studio">
-        <div class="rent-evidence-map"><figure><img src="assets/images/map-newhall.jpg" alt="Old Town Newhall map representing the approved rent survey area"><figcaption>One- and two-bedroom rent survey areas surrounding Walnut Street</figcaption></figure><div><span><b>1BR</b>15 observations · 2-mile survey</span><span><b>2BR</b>20 observations · 1-mile survey</span><span><b>Subject</b>Selected rents remain below medians</span></div></div>
-        <div><p class="eyebrow">Rent Comparables</p><h3>Rent Survey Supports the Selected Pro Forma</h3><p>The approved rent survey contains aggregate one- and two-bedroom observations within the stated survey areas. Individual property addresses were not included in the source material.</p><div class="table-region"><div class="table-shell compact" data-laaa-scroll-region tabindex="0" role="region" aria-label="Rent comparable table"><table class="rent-evidence-table"><thead><tr><th>Unit Type / Survey</th><th>Median</th><th>25th percentile</th><th>Selected</th><th>Comparison</th></tr></thead><tbody>{{RENT_ROWS}}</tbody></table></div><p class="table-scroll-cue" hidden>Scroll horizontally to review all columns.</p></div></div>
+      <div class="container comparison-lab">
+        <div class="comparison-lab-heading"><div><p class="eyebrow">All-Sale Comparison</p><h3>Walnut Across the Core Price Metrics</h3></div><p>Change the metric to compare the offering with every selected sale. Select a sale to update the studio above.</p></div>
+        <div class="comparison-metric-tabs" role="group" aria-label="Comparable price metric"><button class="active" type="button" data-comp-metric="price" aria-pressed="true">Price</button><button type="button" data-comp-metric="ppu" aria-pressed="false">Per Unit</button><button type="button" data-comp-metric="ppsf" aria-pressed="false">Per SF</button></div>
+        <div class="comparison-metric-panels">{{COMPARISON_METRIC_PANELS}}</div>
+        <p class="comparison-chart-note"><b>Metric context.</b> Harding’s smaller reported building area elevates its price per square foot, while Santol’s price per unit includes a non-conforming fourth dwelling. These figures are reference points, not stand-alone valuation conclusions.</p>
       </div>
 
-      <div class="container comp-profiles-heading"><p class="eyebrow">Complete comparable profiles</p><h3>Photographs, transaction facts, physical differences, rent rules, analytical roles, and cautions.</h3></div>
+      <div class="container comp-profiles-heading"><p class="eyebrow">Complete Sale Profiles</p><h3>The Transaction and Property Details Behind Each Sale</h3><p>Each profile separates the verified transaction facts from the physical comparison, analytical support, and material cautions.</p></div>
       <div class="container comp-profiles">{{COMP_CARDS}}</div>
+
+      <div class="container rent-comparison-section">
+        <div class="rent-comparison-heading"><div><p class="eyebrow">Rent Comparables</p><h3>Selected Rents Remain Below Survey Benchmarks</h3></div><p>{{RENT_COMPARABLE_CONCLUSION}}</p></div>
+        <div class="rent-comparison-layout">
+          <div class="rent-survey-map" data-rent-map>
+            <div class="google-map-canvas" data-google-map="rents" hidden aria-label="Interactive map showing one-mile and two-mile rent survey radii around Walnut Street"></div>
+            <div class="rent-radius-fallback" data-map-fallback="rents" role="img" aria-label="Diagram showing a one-mile two-bedroom survey radius and two-mile one-bedroom survey radius centered on Walnut Street">
+              <span class="radius radius-two"><b>2 miles</b><small>1BR survey</small></span>
+              <span class="radius radius-one"><b>1 mile</b><small>2BR survey</small></span>
+              <span class="radius-subject"><b>S</b><small>Walnut Street</small></span>
+            </div>
+            <p>Survey radii are centered on Walnut Street. Individual rent-comparable addresses were not included in the source material.</p>
+          </div>
+          <div class="rent-benchmark-cards">{{RENT_BENCHMARK_CARDS}}</div>
+        </div>
+        <div class="atwood-rent-check"><div><p class="eyebrow">Condition-Adjusted Cross-Check</p><h4>Atwood Achieved Rents</h4></div><strong>$2,175–$3,450</strong><p>The closed Newhall triplex supports the direction of the selected rents, but its renovated residences and newer ADU represent materially superior condition.</p></div>
+        <details class="rent-evidence-details">
+          <summary>Review exact rent-survey figures</summary>
+          <div class="table-region"><div class="table-shell compact" data-laaa-scroll-region tabindex="0" role="region" aria-label="Rent comparable table"><table class="rent-evidence-table"><thead><tr><th>Unit Type / Survey</th><th>Median</th><th>25th percentile</th><th>Selected</th><th>Comparison</th></tr></thead><tbody>{{RENT_ROWS}}</tbody></table></div><p class="table-scroll-cue" hidden>Scroll horizontally to review all columns.</p></div>
+        </details>
+      </div>
+
+      <div class="container comparable-conclusion"><p class="eyebrow">Sale and Rent Conclusion</p><h3>Market Evidence Supports the Offering Position</h3><p>{{INTEGRATED_COMPARABLE_CONCLUSION}}</p></div>
     </section>
 
     <section class="section diligence-section" id="diligence">

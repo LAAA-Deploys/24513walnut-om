@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import html
 import json
+from datetime import date
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -19,6 +20,11 @@ def money(value: float | int, decimals: int = 0) -> str:
 
 def metric(value: float, suffix: str = "") -> str:
     return f"{value:,.2f}{suffix}"
+
+
+def date_label(value: str) -> str:
+    parsed = date.fromisoformat(value)
+    return f"{parsed.strftime('%B')} {parsed.day}, {parsed.year}"
 
 
 def copy_blocks(key: str, css_class: str) -> str:
@@ -159,25 +165,116 @@ def comp_summary_items() -> str:
     for index, comp in enumerate(DATA["sale_comps"]):
         selected = " is-selected" if index == 0 else ""
         items.append(
-            f"<button class='comp-summary{selected}' type='button' data-comp-select='{esc(comp['id'])}' aria-pressed='{'true' if index == 0 else 'false'}'>"
-            f"<span class='comp-thumb'><img src='{esc(comp['image'])}' alt='{esc(comp['image_alt'])}' loading='lazy'><b aria-hidden='true'>{esc(comp['map_label'])}</b></span>"
-            f"<span class='comp-summary-copy'><strong>{esc(comp['address'])}</strong><small>{money(comp['price'])} · {money(comp['ppu'])}/unit · {money(comp['ppsf'])}/SF</small><em>{esc(comp['role'])}</em></span>"
+            f"<button class='comp-summary{selected}' type='button' data-comp-select='{esc(comp['id'])}' aria-pressed='{'true' if index == 0 else 'false'}' "
+            f"aria-label='Select comparable {esc(comp['map_label'])}, {esc(comp['address'])}, sold for {money(comp['price'])}'>"
+            f"<span class='comp-thumb'><img src='{esc(comp['image'])}' alt='{esc(comp['image_alt'])}' loading='lazy'><b aria-hidden='true'>{esc(comp['map_label'])}</b><small>{esc(comp['image_credit'])}</small></span>"
+            "<span class='comp-summary-copy'>"
+            f"<span class='comp-summary-role'>{esc(comp['role'])}</span><strong>{esc(comp['address'])}</strong>"
+            f"<span class='comp-summary-place'>{esc(comp['city'])} · {esc(comp['distance'])}</span>"
+            f"<span class='comp-summary-price'>{money(comp['price'])}<small>Closed {date_label(comp['close_date'])}</small></span>"
+            f"<span class='comp-summary-metrics'><span><b>{esc(comp['units'])}</b> units</span><span><b>{money(comp['ppu'])}</b> / unit</span><span><b>{money(comp['ppsf'])}</b> / SF</span></span>"
+            "</span>"
             "</button>"
         )
     return "".join(items)
 
 
-def comp_previews() -> str:
-    previews = []
+def comp_selected_analyses() -> str:
+    analyses = []
     for index, comp in enumerate(DATA["sale_comps"]):
         hidden = "" if index == 0 else " hidden"
-        previews.append(
-            f"<article class='comp-preview' data-comp-preview='{esc(comp['id'])}'{hidden}>"
-            f"<img src='{esc(comp['image'])}' alt='{esc(comp['image_alt'])}' loading='lazy'><div><span>{esc(comp['map_label'])} · {esc(comp['role'])}</span>"
-            f"<strong>{esc(comp['address'])}</strong><small>{money(comp['price'])} · {esc(comp['distance'])}</small>"
-            f"<a href='#comp-{esc(comp['id'])}'>View full comparison</a></div></article>"
+        support = "".join(f"<li>{esc(item)}</li>" for item in comp["strengths"])
+        cautions = "".join(f"<li>{esc(item)}</li>" for item in comp["cautions"])
+        analyses.append(
+            f"<article class='selected-comp' data-comp-preview='{esc(comp['id'])}'{hidden}>"
+            f"<figure><img src='{esc(comp['image'])}' alt='{esc(comp['image_alt'])}' loading='lazy'><figcaption>{esc(comp['image_credit'])}</figcaption><b aria-hidden='true'>{esc(comp['map_label'])}</b></figure>"
+            "<div class='selected-comp-body'>"
+            f"<div class='selected-comp-heading'><div><p class='eyebrow'>{esc(comp['role'])}</p><h3>{esc(comp['address'])}</h3><p>{esc(comp['city'])} · {esc(comp['distance'])}</p></div><strong>{money(comp['price'])}<small>Closed {date_label(comp['close_date'])}</small></strong></div>"
+            "<dl class='selected-comp-metrics'>"
+            f"<div><dt>Units</dt><dd>{esc(comp['units'])}</dd></div><div><dt>Building</dt><dd>{comp['sf']:,} SF</dd></div><div><dt>Lot</dt><dd>{comp['lot_sf']:,} SF</dd></div>"
+            f"<div><dt>Price / Unit</dt><dd>{money(comp['ppu'])}</dd></div><div><dt>Price / SF</dt><dd>{money(comp['ppsf'])}</dd></div><div><dt>Built</dt><dd>{esc(comp['year_built'])}</dd></div>"
+            "</dl>"
+            f"<section class='selected-comparison'><h4>How it compares to Walnut</h4><p>{esc(comp['note'])}</p><p><b>Rent rules:</b> {esc(comp['rent_rules'])}</p><p><b>Occupancy at sale:</b> {esc(comp['occupancy'])}</p><p><b>Physical profile:</b> {esc(comp['condition'])}</p></section>"
+            f"<div class='selected-evidence'><section><h4>Support</h4><ul>{support}</ul></section><section><h4>Cautions</h4><ul>{cautions}</ul></section></div>"
+            f"<div class='selected-actions'><a class='button primary' href='#comp-{esc(comp['id'])}'>Review complete profile</a><a class='button outline' href='{esc(comp['map_url'])}' target='_blank' rel='noopener'>Open in Google Maps</a></div>"
+            "</div></article>"
         )
-    return "".join(previews)
+    return "".join(analyses)
+
+
+def subject_baseline() -> str:
+    price = DATA["meta"]["offering_price"]
+    units = DATA["property"]["units"]
+    building_sf = DATA["property"]["building_sf"]
+    current_gsr = sum(unit["current_rent"] for unit in DATA["units"]) * 12
+    proforma_gsr = sum(unit["market_rent"] for unit in DATA["units"]) * 12
+    current_expenses = sum(item["current"] for item in DATA["expenses"])
+    proforma_expenses = sum(item["pro_forma"] for item in DATA["expenses"])
+    current_noi = current_gsr - current_expenses
+    proforma_noi = proforma_gsr - proforma_expenses
+    return (
+        "<article class='subject-baseline'>"
+        "<figure><img src='assets/images/hero-front-aerial.jpg' alt='Aerial view of 24513–24519 Walnut Street' loading='lazy'><b aria-hidden='true'>S</b><figcaption>Subject property · archived listing photography</figcaption></figure>"
+        "<div class='subject-baseline-body'>"
+        "<p class='eyebrow'>Subject Property</p>"
+        f"<div class='subject-baseline-heading'><div><h3>{esc(DATA['property']['address'])}</h3><p>{esc(DATA['property']['city_state_zip'])}</p></div><strong>{money(price)}<small>Offering price</small></strong></div>"
+        "<dl class='subject-baseline-metrics'>"
+        f"<div><dt>Units</dt><dd>{units}</dd></div><div><dt>Building</dt><dd>{building_sf:,} SF</dd></div><div><dt>Lot</dt><dd>{DATA['property']['lot_sf']:,} SF</dd></div>"
+        f"<div><dt>Price / Unit</dt><dd>{money(price / units)}</dd></div><div><dt>Price / SF</dt><dd>{money(price / building_sf, 2)}</dd></div><div><dt>Rent Rules</dt><dd>{esc(DATA['property']['rent_rules'])}</dd></div>"
+        "</dl>"
+        "<div class='subject-income-comparison'>"
+        f"<div><span>Current NOI</span><b>{money(current_noi)}</b><small>{metric(current_noi / price * 100, '%')} cap rate</small></div>"
+        f"<div><span>Pro Forma NOI</span><b>{money(proforma_noi)}</b><small>{metric(proforma_noi / price * 100, '%')} cap rate</small></div>"
+        f"</div><a class='subject-map-action' href='{esc(DATA['property']['map_url'])}' target='_blank' rel='noopener'>View Walnut Street in Google Maps <span aria-hidden='true'>↗</span></a></div></article>"
+    )
+
+
+def subject_baseline_strip() -> str:
+    price = DATA["meta"]["offering_price"]
+    units = DATA["property"]["units"]
+    building_sf = DATA["property"]["building_sf"]
+    return (
+        "<div class='subject-baseline-strip' aria-label='Walnut subject-property comparison baseline'>"
+        "<span><b>S</b><span>Walnut Street<small>Subject offering</small></span></span>"
+        f"<dl><div><dt>Price</dt><dd>{money(price)}</dd></div><div><dt>Per Unit</dt><dd>{money(price / units)}</dd></div><div><dt>Per SF</dt><dd>{money(price / building_sf)}</dd></div></dl>"
+        f"<a href='{esc(DATA['property']['map_url'])}' target='_blank' rel='noopener' aria-label='Open Walnut Street in Google Maps'>Map <span aria-hidden='true'>↗</span></a>"
+        "</div>"
+    )
+
+
+def comparison_metric_panels() -> str:
+    subject_values = {
+        "price": DATA["meta"]["offering_price"],
+        "ppu": DATA["meta"]["offering_price"] / DATA["property"]["units"],
+        "ppsf": DATA["meta"]["offering_price"] / DATA["property"]["building_sf"],
+    }
+    metrics = [
+        ("price", "Sale / Offering Price", "Price", 0),
+        ("ppu", "Price Per Unit", "Price / Unit", 0),
+        ("ppsf", "Price Per Square Foot", "Price / SF", 0),
+    ]
+    panels = []
+    for metric_id, title, label, decimals in metrics:
+        values = [subject_values[metric_id]] + [float(comp[metric_id]) for comp in DATA["sale_comps"]]
+        maximum = max(values)
+        rows = [
+            "<div class='comparison-bar subject-row'>"
+            "<span class='comparison-bar-label'><b>S</b><span>Walnut Street<small>Subject offering</small></span></span>"
+            f"<span class='comparison-bar-track'><i style='--bar:{subject_values[metric_id] / maximum * 100:.2f}%'></i></span>"
+            f"<strong>{money(subject_values[metric_id], decimals)}</strong></div>"
+        ]
+        for comp in DATA["sale_comps"]:
+            rows.append(
+                f"<button class='comparison-bar' type='button' data-comp-select='{esc(comp['id'])}' aria-pressed='false' aria-label='Select {esc(comp['address'])} in the {esc(label)} comparison'>"
+                f"<span class='comparison-bar-label'><b>{esc(comp['map_label'])}</b><span>{esc(comp['address'])}<small>{esc(comp['role'])}</small></span></span>"
+                f"<span class='comparison-bar-track'><i style='--bar:{float(comp[metric_id]) / maximum * 100:.2f}%'></i></span>"
+                f"<strong>{money(comp[metric_id], decimals)}</strong></button>"
+            )
+        hidden = "" if metric_id == "price" else " hidden"
+        panels.append(
+            f"<section class='comparison-metric-panel' data-comp-metric-panel='{metric_id}'{hidden}><h4>{title}</h4>{''.join(rows)}</section>"
+        )
+    return "".join(panels)
 
 
 def comp_cards() -> str:
@@ -193,13 +290,14 @@ def comp_cards() -> str:
             "<div class='comp-profile-body'>"
             f"<div class='comp-profile-title'><div><p class='eyebrow'>{esc(comp['role'])}</p><h3>{esc(comp['address'])}</h3><p>{esc(comp['city'])} · {esc(comp['distance'])}</p></div><strong>{money(comp['price'])}</strong></div>"
             f"<div class='comp-kpis'><span><b>{money(comp['ppu'])}</b> / unit{ppu_note}</span><span><b>{money(comp['ppsf'])}</b> / SF{sf_note}</span><span><b>{esc(comp['units'])}</b> units</span><span><b>{comp['sf']:,}</b> building SF</span><span><b>{comp['lot_sf']:,}</b> lot SF</span><span><b>{esc(comp['year_built'])}</b> built</span></div>"
-            f"<p class='comp-analysis'>{esc(comp['note'])}</p>"
-            "<div class='comp-evidence-grid'>"
-            f"<section><h4>Transaction</h4><dl><div><dt>Closed</dt><dd>{esc(comp['close_date'])}</dd></div><div><dt>Days on market</dt><dd>{esc(comp['dom'])}</dd></div><div><dt>Sale-to-list</dt><dd>{esc(comp['sp_lp'])}</dd></div><div><dt>GRM</dt><dd>{esc(comp['grm'])}</dd></div><div><dt>Cap rate</dt><dd>{esc(comp['cap'])}</dd></div></dl></section>"
-            f"<section><h4>Comparison</h4><p><b>Rent rules:</b> {esc(comp['rent_rules'])}</p><p><b>Physical profile:</b> {esc(comp['bed_bath'])}; {esc(comp['condition'])}</p><p><b>Occupancy:</b> {esc(comp['occupancy'])}</p><p><b>Conclusion:</b> {esc(comp['verdict'])}</p></section>"
-            f"<section><h4>Support</h4><ul>{strengths}</ul></section><section><h4>Cautions</h4><ul>{cautions}</ul></section>"
+            f"<p class='comp-analysis'><b>How it compares to Walnut.</b> {esc(comp['note'])}</p>"
+            "<div class='comp-profile-disclosures'>"
+            f"<details data-profile-detail open><summary>Transaction</summary><dl><div><dt>Closed</dt><dd>{date_label(comp['close_date'])}</dd></div><div><dt>Days on market</dt><dd>{esc(comp['dom'])}</dd></div><div><dt>Sale-to-list</dt><dd>{esc(comp['sp_lp'])}</dd></div><div><dt>GRM</dt><dd>{esc(comp['grm'])}</dd></div><div><dt>Cap rate</dt><dd>{esc(comp['cap'])}</dd></div></dl></details>"
+            f"<details data-profile-detail open><summary>Property and Occupancy</summary><p><b>Configuration:</b> {esc(comp['bed_bath'])}</p><p><b>Physical profile:</b> {esc(comp['condition'])}</p><p><b>Occupancy at sale:</b> {esc(comp['occupancy'])}</p></details>"
+            f"<details data-profile-detail open><summary>Comparison</summary><p><b>Rent rules:</b> {esc(comp['rent_rules'])}</p><p><b>Overall relationship:</b> {esc(comp['verdict'])}</p></details>"
+            f"<details data-profile-detail open><summary>Support and Cautions</summary><div class='profile-support-grid'><div><h4>Support</h4><ul>{strengths}</ul></div><div><h4>Cautions</h4><ul>{cautions}</ul></div></div></details>"
+            f"<details data-profile-detail open><summary>Sources</summary><p>{esc(comp['source'])}</p><a href='{esc(comp['map_url'])}' target='_blank' rel='noopener'>Open in Google Maps <span aria-hidden='true'>↗</span></a></details>"
             "</div>"
-            f"<div class='comp-source'><span>Source: {esc(comp['source'])}</span><a href='{esc(comp['map_url'])}' target='_blank' rel='noopener'>Open in Google Maps <span aria-hidden='true'>↗</span></a></div>"
             "</div></article>"
         )
     return "".join(cards)
@@ -218,6 +316,33 @@ def rent_rows() -> str:
             f"<td data-label='Interpretation'>{esc(item['note'])}</td></tr>"
         )
     return "".join(rows)
+
+
+def rent_benchmark_cards() -> str:
+    cards = []
+    for item in DATA["rent_evidence"]:
+        if item["selected"] is None:
+            continue
+        maximum = max(item["median"], item["percentile_25"], item["selected"]) * 1.08
+        bars = [
+            ("Selected Pro Forma", item["selected"], "selected"),
+            ("25th Percentile", item["percentile_25"], "p25"),
+            ("Survey Median", item["median"], "median"),
+        ]
+        bar_markup = "".join(
+            f"<div class='rent-benchmark-row {css}'><span>{label}</span><i><b style='--bar:{value / maximum * 100:.2f}%'></b></i><strong>{money(value)}</strong></div>"
+            for label, value, css in bars
+        )
+        cards.append(
+            "<article class='rent-benchmark-card'>"
+            f"<header><div><p class='eyebrow'>{esc(item['sample'])}</p><h4>{esc(item['segment'])}</h4></div><strong>{money(item['selected'])}<small>Selected Pro Forma</small></strong></header>"
+            f"<div class='rent-benchmark-bars'>{bar_markup}</div><p>{esc(item['note'])}</p></article>"
+        )
+    return "".join(cards)
+
+
+def copy_paragraphs(items: list[str], css_class: str) -> str:
+    return "".join(f"<p class='{css_class}'>{esc(item)}</p>" for item in items)
 
 
 def gallery_items() -> str:
@@ -330,10 +455,17 @@ replacements = {
     "{{MONTHLY_RENT_UPSIDE_PERCENT}}": f"{monthly_rent_upside_percent:.1f}%",
     "{{FINANCIAL_DESKTOP_ROWS}}": financial_desktop_rows(),
     "{{FINANCIAL_MOBILE_ROWS}}": financial_mobile_rows(),
+    "{{SALE_COMPARABLE_CONCLUSION}}": copy_paragraphs(DATA["comparables_analysis"]["sale_conclusion"], "comparison-narrative"),
+    "{{SUBJECT_BASELINE}}": subject_baseline(),
+    "{{SUBJECT_BASELINE_STRIP}}": subject_baseline_strip(),
     "{{COMP_SUMMARY_ITEMS}}": comp_summary_items(),
-    "{{COMP_PREVIEWS}}": comp_previews(),
+    "{{COMP_SELECTED_ANALYSES}}": comp_selected_analyses(),
+    "{{COMPARISON_METRIC_PANELS}}": comparison_metric_panels(),
     "{{COMP_CARDS}}": comp_cards(),
     "{{RENT_ROWS}}": rent_rows(),
+    "{{RENT_BENCHMARK_CARDS}}": rent_benchmark_cards(),
+    "{{RENT_COMPARABLE_CONCLUSION}}": DATA["comparables_analysis"]["rent_conclusion"],
+    "{{INTEGRATED_COMPARABLE_CONCLUSION}}": DATA["comparables_analysis"]["integrated_conclusion"],
     "{{GALLERY_ITEMS}}": gallery_items(),
     "{{CONTACT_CARDS}}": contact_cards(),
     "{{LOCATION_SOURCES}}": source_links(),

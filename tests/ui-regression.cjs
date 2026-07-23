@@ -66,7 +66,7 @@ async function inspectViewport(browser, width, height, options = {}) {
     const heroCard = document.querySelector('.hero-card').getBoundingClientRect();
     const kpiRail = document.querySelector('.hero-kpi-rail').getBoundingClientRect();
     const heroCollision = Math.max(0, Math.min(heroCard.bottom, kpiRail.bottom) - Math.max(heroCard.top, kpiRail.top));
-    const controlSelector = '.button,.source-links a,.menu-toggle,#primary-nav a,.mobile-cta a,.gallery-item a,.lightbox button,.map-toolbar button,.map-toolbar a,.basis-tabs button,.comp-view-tabs button,.comp-summary,.map-pin,.comp-stepper button,.comp-preview a,.comp-source a,.agent-actions a,.row-note summary';
+    const controlSelector = '.button,.source-links a,.menu-toggle,#primary-nav a,.mobile-cta a,.gallery-item a,.lightbox button,.map-toolbar button,.map-toolbar a,.basis-tabs button,.comp-view-tabs button,.comp-summary,.map-pin,.comp-map-toolbar button,.comp-stepper button,.comparison-metric-tabs button,.comparison-bar:not(.subject-row),.subject-map-action,.subject-baseline-strip>a,.selected-actions a,.comp-profile-disclosures summary,.rent-evidence-details summary,.agent-actions a,.row-note summary';
     const controls = Array.from(document.querySelectorAll(controlSelector)).filter(visible).map(element => ({
       text: element.getAttribute('aria-label') || element.textContent.trim().replace(/\s+/g, ' '),
       width: Math.round(element.getBoundingClientRect().width * 10) / 10,
@@ -112,6 +112,12 @@ async function inspectViewport(browser, width, height, options = {}) {
       compCount: document.querySelectorAll('[data-comp-card]').length,
       compSummaryCount: document.querySelectorAll('.comp-summary').length,
       compPinCount: document.querySelectorAll('.map-pin').length,
+      compSelectedCount: document.querySelectorAll('[data-comp-preview]').length,
+      compMetricPanelCount: document.querySelectorAll('[data-comp-metric-panel]').length,
+      subjectBaselineCount: document.querySelectorAll('.subject-baseline').length,
+      rentBenchmarkCount: document.querySelectorAll('.rent-benchmark-card').length,
+      rentMapFallback: Boolean(document.querySelector('[data-map-fallback="rents"]')),
+      mobileProfileDetailsClosed: Array.from(document.querySelectorAll('[data-profile-detail]')).every(detail => !detail.open),
       galleryCount: document.querySelectorAll('[data-gallery-link]').length,
       agentCount: document.querySelectorAll('.agent-card').length,
       overviewParagraphs: document.querySelectorAll('#overview .narrative-paragraph').length,
@@ -120,7 +126,9 @@ async function inspectViewport(browser, width, height, options = {}) {
       forbiddenFocus: document.body.textContent.includes('FOCUS THE EVIDENCE') || document.body.textContent.includes('Focus the evidence'),
       hasGalleryDialog: Boolean(document.querySelector('[data-gallery-dialog]')),
       hasHeadshots: Boolean(document.querySelector('img[src="assets/images/glen-scher.jpg"]')) && Boolean(document.querySelector('img[src="assets/images/filip-niculete.jpg"]')),
-      hasMapFallbacks: document.querySelectorAll('.map-frame img,.comp-map-canvas img,.rent-evidence-map img').length >= 4,
+      hasMapFallbacks: document.querySelectorAll('.map-frame img').length >= 4 &&
+        Boolean(document.querySelector('.comp-map-canvas img')) &&
+        Boolean(document.querySelector('[data-map-fallback="rents"]')),
       h1Count: document.querySelectorAll('h1').length,
       landmarks: { main: Boolean(document.querySelector('main')), nav: Boolean(document.querySelector('nav')), footer: Boolean(document.querySelector('footer')) },
       brokenAnchors: hashLinks.filter(href => !document.querySelector(href)),
@@ -140,6 +148,8 @@ async function inspectViewport(browser, width, height, options = {}) {
   check(!result.unresolved, `${key}: unresolved template or placeholder text`);
   check(result.noindex, `${key}: privacy noindex missing`);
   check(result.compCount === 6 && result.compSummaryCount === 6 && result.compPinCount === 6, `${key}: comp explorer counts cards=${result.compCount} summaries=${result.compSummaryCount} pins=${result.compPinCount}`);
+  check(result.compSelectedCount === 6 && result.compMetricPanelCount === 3 && result.subjectBaselineCount === 1, `${key}: redesigned sale-comp structures missing selected=${result.compSelectedCount} metrics=${result.compMetricPanelCount} subject=${result.subjectBaselineCount}`);
+  check(result.rentBenchmarkCount === 2 && result.rentMapFallback, `${key}: redesigned rent evidence missing cards=${result.rentBenchmarkCount} fallback=${result.rentMapFallback}`);
   check(result.galleryCount === 12 && result.hasGalleryDialog, `${key}: gallery incomplete count=${result.galleryCount}`);
   check(result.agentCount === 2 && result.hasHeadshots, `${key}: Glen/Filip profiles or headshots missing`);
   check(result.overviewParagraphs === 3 && result.locationParagraphs === 3, `${key}: narrative paragraph contract failed`);
@@ -159,6 +169,7 @@ async function inspectViewport(browser, width, height, options = {}) {
     check(!result.rentRoll.overflows, `${key}: mobile rent roll still scrolls horizontally`);
     check(result.rentRoll.headerVisible, `${key}: mobile rent roll header is hidden`);
     check(result.rentRoll.rowCount === 3 && result.rentRoll.distinctRowTops === 3, `${key}: mobile rent roll is not one continuous three-row table`);
+    check(result.mobileProfileDetailsClosed, `${key}: comp profile details should begin collapsed on mobile`);
   }
   if (options.reducedMotion === 'reduce') check(result.scrollBehavior === 'auto', `${key}: reduced-motion scroll behavior is ${result.scrollBehavior}`);
   check(runtimeErrors.length === 0, `${key}: runtime errors ${runtimeErrors.join('; ')}`);
@@ -214,6 +225,20 @@ async function inspectViewport(browser, width, height, options = {}) {
     check(await page.locator('.comp-summary[data-comp-select="coronel"]').getAttribute('aria-pressed') === 'true', `${key}: pin/list selection did not synchronize`);
     await page.locator('[data-comp-next]').click();
     check(await page.locator('[data-comp-preview="oro-vista"]').isVisible(), `${key}: comp next control did not advance`);
+    const orderedComps = ['atwood', 'coronel', 'oro-vista', 'pinewood', 'santol', 'harding'];
+    await page.locator('.map-pin[data-comp-select="atwood"]').click();
+    for (let index = 0; index < orderedComps.length; index += 1) {
+      const expected = orderedComps[index];
+      check(await page.locator(`[data-comp-preview="${expected}"]`).isVisible(), `${key}: previous/next sequence did not show ${expected}`);
+      check(await page.locator(`.comp-summary[data-comp-select="${expected}"]`).getAttribute('aria-pressed') === 'true', `${key}: previous/next sequence did not synchronize ${expected}`);
+      if (index < orderedComps.length - 1) await page.locator('[data-comp-next]').click();
+    }
+    await page.locator('[data-comp-metric="ppu"]').click();
+    check(await page.locator('[data-comp-metric-panel="ppu"]').isVisible(), `${key}: price-per-unit comparison did not activate`);
+    await page.locator('[data-comp-map-type="satellite"]').click();
+    const firstProfileDetail = page.locator('.comp-profile').first().locator('[data-profile-detail]').first();
+    await firstProfileDetail.locator('summary').click();
+    check(await firstProfileDetail.getAttribute('open') !== null, `${key}: mobile comp disclosure did not open`);
 
     const firstGalleryLink = page.locator('[data-gallery-link]').first();
     await firstGalleryLink.click();
@@ -256,16 +281,20 @@ async function inspectDelayedMapsKey(browser) {
       }
       class FakeTransitLayer { setMap(value) { this.map = value; } }
       class FakeBounds { extend() {} }
+      class FakeCircle { constructor(options) { Object.assign(this, options); window.__fakeCircles.push(this); } }
       class FakeMarker {
         constructor(options) { Object.assign(this, options); }
         addListener() {}
       }
       window.__fakeMaps = [];
+      window.__fakeCircles = [];
       window.google = {
         maps: {
           importLibrary: async name => name === 'maps' ? { Map: FakeMap } : { AdvancedMarkerElement: FakeMarker },
           TransitLayer: FakeTransitLayer,
-          LatLngBounds: FakeBounds
+          LatLngBounds: FakeBounds,
+          Circle: FakeCircle,
+          event: { trigger() {} }
         }
       };
       window.LAAAInitGoogleMaps();
@@ -305,9 +334,14 @@ async function inspectDelayedMapsKey(browser) {
     activeView: document.querySelector('[data-location-view][aria-pressed="true"]')?.dataset.locationView,
   }));
   check(fallbackState.activeView === 'satellite' && fallbackState.visiblePanels.length === 1 && fallbackState.visiblePanels[0] === 'satellite', `delayed-maps-key: failure fallback desynced ${JSON.stringify(fallbackState)}`);
-  await page.waitForFunction(() => window.__fakeMaps?.length === 1);
+  await page.waitForFunction(() => window.__fakeMaps?.some(map => map.element.dataset.googleMap === 'location'));
+  check(await page.evaluate(() => !window.__fakeMaps.some(map => map.element.dataset.googleMap === 'comps')), 'delayed-maps-key: hidden mobile comparable map initialized before becoming visible');
+  await page.setViewportSize({ width: 1024, height: 768 });
+  await page.waitForFunction(() => window.__fakeMaps?.some(map => map.element.dataset.googleMap === 'comps'));
+  await page.setViewportSize({ width: 390, height: 844 });
   await page.locator('[data-comp-view="map"]').click();
-  await page.waitForFunction(() => window.__fakeMaps?.length === 2);
+  await page.waitForFunction(() => window.__fakeMaps?.some(map => map.element.dataset.googleMap === 'comps'));
+  await page.locator('[data-comp-map-type="satellite"]').click();
   await page.evaluate(selector => {
     const panel = document.querySelector(selector);
     const start = new Event('touchstart', { bubbles: true });
@@ -326,20 +360,24 @@ async function inspectDelayedMapsKey(browser) {
     Object.defineProperty(end, 'changedTouches', { value: [{ clientX: 180 }] });
     panel.dispatchEvent(start);
     panel.dispatchEvent(end);
-  }, '.comp-preview-stack');
+  }, '.comp-selected-stack');
 
   const result = await page.evaluate(() => ({
     activeView: document.querySelector('[data-location-view][aria-pressed="true"]')?.dataset.locationView,
-    mapTypeId: window.__fakeMaps[0].mapTypeId,
-    zoom: window.__fakeMaps[0].zoom,
+    mapTypeId: window.__fakeMaps.find(map => map.element.dataset.googleMap === 'location')?.mapTypeId,
+    zoom: window.__fakeMaps.find(map => map.element.dataset.googleMap === 'location')?.zoom,
     selectedComp: document.querySelector('.comp-summary[aria-pressed="true"]')?.dataset.compSelect,
-    compCenter: window.__fakeMaps[1].center,
+    compCenter: window.__fakeMaps.find(map => map.element.dataset.googleMap === 'comps')?.center,
+    compMapTypeId: window.__fakeMaps.find(map => map.element.dataset.googleMap === 'comps')?.mapTypeId,
+    rentCircleCount: window.__fakeCircles.length,
   }));
   check(mapsRequests === 2, `delayed-maps-key: expected one failed request and one automatic retry, found ${mapsRequests}`);
   check(result.activeView === 'satellite', `delayed-maps-key: active view reset to ${result.activeView}`);
   check(result.mapTypeId === 'satellite' && result.zoom === 19, `delayed-maps-key: Google map did not preserve Satellite (${result.mapTypeId}, zoom ${result.zoom})`);
   check(result.selectedComp === 'coronel', `delayed-maps-key: swipe selected ${result.selectedComp} instead of Coronel`);
   check(result.compCenter?.lat === 34.2837309 && result.compCenter?.lng === -118.4456534, `delayed-maps-key: swipe did not pan the live comp map`);
+  check(result.compMapTypeId === 'satellite', `delayed-maps-key: live comparable map did not switch to Satellite`);
+  check(result.rentCircleCount === 2, `delayed-maps-key: expected two rent-survey radii, found ${result.rentCircleCount}`);
   await context.close();
 }
 

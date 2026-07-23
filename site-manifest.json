@@ -152,23 +152,23 @@
     },
     {
       "path": "assets/site.js",
-      "sha256": "cd9eeb0f29674dc6124ad45c62135a4ba850297d9bfae32ed8612c354715f019",
-      "bytes": 21449
+      "sha256": "e09e367ae32b9e6eaa256cf9ed3005df2d355acec8fb95a8f452577fb71c2f64",
+      "bytes": 25489
     },
     {
       "path": "assets/styles.css",
-      "sha256": "e6e9beb61f4a9ea78fbc241360341728bb2c527373f9ba9e9f8a0b25910f08af",
-      "bytes": 44357
+      "sha256": "d1d02cdc7802723e43f399aed4343b5c91b9eb8356aec5e744e4944b481846b7",
+      "bytes": 62967
     },
     {
       "path": "data/site-data.json",
-      "sha256": "bb0d7812f0021dacdd42f3e2c972b5df4ceac924f610704897caa1acc3c21bed",
-      "bytes": 20345
+      "sha256": "d50adecd2ba7b8872ef13512642e7d94528fd7814279b0899dbd1e49892bd482",
+      "bytes": 22264
     },
     {
       "path": "index.html",
-      "sha256": "3d5b9ef981279c476cf3494f67dd9d7ca787f4c18dea0785ecebbd196c85caf6",
-      "bytes": 67073
+      "sha256": "0e626ba36ee807e614dc2189e17cc7a708da91bdcf703214535b9704287c80a3",
+      "bytes": 98542
     },
     {
       "path": "package-lock.json",
@@ -192,8 +192,8 @@
     },
     {
       "path": "scripts/build_site.py",
-      "sha256": "ac02475b757e08a3415e9ba5f8255c1c32d0ed9e83c15f16daafc74ab571ee93",
-      "bytes": 19472
+      "sha256": "53432a875dc427879a50332b2ed574e917192472c64bdde4db25d3a0be1c8308",
+      "bytes": 28872
     },
     {
       "path": "scripts/serve_local.py",
@@ -202,18 +202,18 @@
     },
     {
       "path": "scripts/validate_site.py",
-      "sha256": "85c5c6328dd0e281888f90b14a77b2cd029d0600cc5ff4e9685d402f33939c53",
-      "bytes": 12351
+      "sha256": "3cbf79d294b406d5825783ca8ffa9e8e50c2214fe042c314e0785be06eb8fe93",
+      "bytes": 14684
     },
     {
       "path": "src/index.template",
-      "sha256": "fb61db6b7ff0e8256b9265be5adafc43963ab3da258d00e30954e320f8716a15",
-      "bytes": 22080
+      "sha256": "e5b2819f99cb0f64384aac9c9afa0746a1f577575c7980bb09e3e7d192fbb4f3",
+      "bytes": 25401
     },
     {
       "path": "tests/ui-regression.cjs",
-      "sha256": "ebf718b1ee95d3deea846cdae49f675b24e7f05993b4e6ac921383b8db3f4088",
-      "bytes": 22843
+      "sha256": "685e16bba9248d4c1fe2a3b9307f683170633ea435c791a63a3e551eda44af36",
+      "bytes": 26854
     }
   ]
 }
