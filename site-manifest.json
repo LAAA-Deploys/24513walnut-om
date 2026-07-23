@@ -12,8 +12,8 @@
     },
     {
       "path": ".laaa-marketing.json",
-      "sha256": "7633ae72ced8c83ea64c7f1cea4d0738986e7bed5feea812aaa73444f9565644",
-      "bytes": 377
+      "sha256": "960805bbd45d369a5254f81db1d66d4ea041d3c07ca0c93bfcf73d88450755c7",
+      "bytes": 374
     },
     {
       "path": ".nojekyll",
@@ -202,8 +202,8 @@
     },
     {
       "path": "scripts/validate_site.py",
-      "sha256": "53a7068a5ba1636956844a8b3510dbf150ee55b184f5f32a5cfccb93b0d32c93",
-      "bytes": 18259
+      "sha256": "08a4c7c7cfeb67724fb8aa3928659810c5203ae31cb7ba3886973fefe66f0433",
+      "bytes": 18649
     },
     {
       "path": "src/index.template",

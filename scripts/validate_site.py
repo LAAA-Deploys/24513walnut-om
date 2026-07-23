@@ -13,6 +13,7 @@ HTML = (ROOT / "index.html").read_text(encoding="utf-8")
 
 errors: list[str] = []
 IGNORED_PARTS = {".git", "qa", "node_modules", "__pycache__"}
+BINARY_SUFFIXES = {".png", ".jpg", ".jpeg", ".webp", ".gif", ".eps"}
 
 APPROVED_LOGOS = {
     "assets/brand/LAAA_Team_Blue.png": {
@@ -41,12 +42,20 @@ def png_dimensions(path: Path) -> tuple[int, int]:
     return struct.unpack(">II", payload[16:24])
 
 
+def repository_bytes(path: Path) -> bytes:
+    """Return bytes as Git stores them under `* text=auto eol=lf`."""
+    payload = path.read_bytes()
+    if path.suffix.lower() not in BINARY_SUFFIXES and b"\0" not in payload[:8192]:
+        return payload.replace(b"\r\n", b"\n")
+    return payload
+
+
 for relative, approved in APPROVED_LOGOS.items():
     logo_path = ROOT / relative
     if not logo_path.exists():
         errors.append(f"Missing approved logo: {relative}")
         continue
-    digest = hashlib.sha256(logo_path.read_bytes()).hexdigest().upper()
+    digest = hashlib.sha256(repository_bytes(logo_path)).hexdigest().upper()
     if digest != approved["sha256"]:
         errors.append(f"Logo hash mismatch: {relative}")
     if logo_path.stat().st_size != approved["bytes"]:
@@ -354,8 +363,9 @@ for path in sorted(ROOT.rglob("*"), key=lambda candidate: candidate.relative_to(
         or path.name == "site-manifest.json"
     ):
         continue
-    digest = hashlib.sha256(path.read_bytes()).hexdigest()
-    files.append({"path": path.relative_to(ROOT).as_posix(), "sha256": digest, "bytes": path.stat().st_size})
+    payload = repository_bytes(path)
+    digest = hashlib.sha256(payload).hexdigest()
+    files.append({"path": path.relative_to(ROOT).as_posix(), "sha256": digest, "bytes": len(payload)})
 (ROOT / "site-manifest.json").write_text(json.dumps({"files": files}, indent=2) + "\n", encoding="utf-8")
 
 if errors:
