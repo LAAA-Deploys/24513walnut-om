@@ -253,6 +253,12 @@
     });
     document.querySelectorAll('[data-map-fallback]').forEach(function (fallback) { fallback.hidden = false; });
     showLocationFallback(activeLocationView);
+    activeCompMapType = 'roadmap';
+    document.querySelectorAll('[data-comp-map-type]').forEach(function (button) {
+      var active = button.dataset.compMapType === activeCompMapType;
+      button.classList.toggle('active', active);
+      button.setAttribute('aria-pressed', String(active));
+    });
     var compCanvas = document.querySelector('[data-google-map="comps"]');
     if (compCanvas) compCanvas.closest('.comp-map-canvas').classList.remove('maps-active');
     if (googleMapsAttempts < 2 && !googleMapsRetryTimer) {
