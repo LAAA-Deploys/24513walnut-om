@@ -49,7 +49,7 @@
     <section class="section narrative-section" id="overview">
       <div class="container editorial-grid">
         <div class="section-marker"><span>01</span><p>Investment Overview</p></div>
-        <div class="editorial-copy"><p class="eyebrow">The Opportunity</p><h2>Three Residential Units in Old Town Newhall</h2>{{INVESTMENT_OVERVIEW}}</div>
+        <div class="editorial-copy"><p class="eyebrow">The Opportunity</p><h2>Three-Unit Residential Investment in Old Town Newhall</h2>{{INVESTMENT_OVERVIEW}}</div>
       </div>
     </section>
 
@@ -243,13 +243,22 @@
     </section>
 
     <section class="section diligence-section" id="diligence">
-      <div class="container section-heading"><div class="section-marker"><span>07</span><p>Diligence and Disclosures</p></div><div><h2>Buyer Due Diligence</h2></div><p>Prospective purchasers should independently verify tenancy, physical condition, public records, operating expenses, and any development potential.</p></div>
-      <div class="container diligence-grid"><article><b>Income and tenancy</b><p>Obtain and review leases, deposits, payment history, tenancy dates, concessions, and current rent notices.</p></article><article><b>Physical condition</b><p>Inspect roofs, structure, electrical, plumbing, mechanical systems, drainage, parking, and all interior areas.</p></article><article><b>Public records</b><p>Confirm permitted unit count, bedroom configuration, square footage, legal-nonconforming status, and code history.</p></article><article><b>Development</b><p>Complete independent zoning, ADU, parking, title, utility, design, and entitlement analysis.</p></article></div>
+      <div class="container section-heading"><div class="section-marker"><span>07</span><p>Diligence and Disclosures</p></div><div><h2>Buyer Due Diligence</h2></div><p>Prospective purchasers should independently investigate and verify all matters material to an acquisition.</p></div>
+      <div class="container diligence-grid">
+        <article><b>Income and tenancy</b><p>Review leases, deposits, payment history, tenancy dates, concessions, and rent notices.</p></article>
+        <article><b>Unit and legal status</b><p>Confirm configuration, square footage, permitted use, legal status, and building records.</p></article>
+        <article><b>Physical condition</b><p>Inspect roofs, structure, electrical, plumbing, mechanical systems, drainage, and interiors.</p></article>
+        <article><b>Parking and access</b><p>Confirm garage, driveway, alley-access, and parking configurations.</p></article>
+        <article><b>Utilities and expenses</b><p>Verify metering, payment responsibilities, service levels, and operating costs.</p></article>
+        <article><b>Zoning and development</b><p>Confirm legal-nonconforming status, ADU eligibility, parking treatment, and development options.</p></article>
+        <article><b>Title and site</b><p>Review easements, setbacks, alley dedication, drainage, and utility capacity.</p></article>
+        <article><b>Tenant protections</b><p>Confirm applicable rent-cap, just-cause, relocation, notice, and tenant-protection requirements.</p></article>
+      </div>
       <div class="container value-add"><div><p class="eyebrow">Zoning and Site Potential</p><h3>Independent ADU and Site-Planning Study</h3></div><div><p>The 2025 Old Town Newhall Specific Plan applies Corridor zoning with a baseline maximum of three stories and 35 feet. Stacked residential in COR is generally tied to a vertical mixed-use commercial-building form. Proximity to rail may affect minimum-parking treatment under AB 2097.</p><p>No additional unit count, building area, or entitlement is represented as approved. Buyers should confirm legal-nonconforming status, ADU eligibility, parking, setbacks, alley dedication, and any development path directly with the City of Santa Clarita and qualified counsel.</p><div class="source-links"><a href="https://filecenter.santa-clarita.com/Planning/OldTownNewhallSpecificPlanUpdate/2025%20OTNSP%20FINAL.pdf" target="_blank" rel="noopener">2025 Old Town Newhall Specific Plan<span aria-hidden="true">↗</span></a><a href="https://www.hcd.ca.gov/sites/default/files/docs/planning-and-community/min-parking-requirements-ab-2097.pdf" target="_blank" rel="noopener">HCD AB 2097 fact sheet<span aria-hidden="true">↗</span></a></div></div></div>
     </section>
 
     <section class="section contact-section" id="contact">
-      <div class="container contact-intro"><div class="section-marker"><span>08</span><p>Listing Agents</p></div><div><h2>Speak directly with the LAAA Team.</h2></div><p>Contact Glen Scher or Filip Niculete for tour coordination, operating information, and offering procedures. Please do not disturb occupants.</p></div>
+      <div class="container contact-intro"><div class="section-marker"><span>08</span><p>Listing Agents</p></div><div><h2>Speak Directly with the LAAA Team</h2></div><p>All property tours are by appointment through Glen Scher or Filip Niculete. Contact the team for operating information and offering procedures. Please do not disturb occupants or enter without a confirmed appointment.</p></div>
       <div class="container agent-grid">{{CONTACT_CARDS}}</div>
     </section>
   </main>

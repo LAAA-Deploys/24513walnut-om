@@ -128,6 +128,7 @@ async function inspectViewport(browser, width, height, options = {}) {
       overviewParagraphs: document.querySelectorAll('#overview .narrative-paragraph').length,
       locationParagraphs: document.querySelectorAll('#location .narrative-paragraph').length,
       highlightCount: document.querySelectorAll('.highlight-ledger article').length,
+      diligenceCount: document.querySelectorAll('.diligence-grid article').length,
       sectionMarkers: Array.from(document.querySelectorAll('.section-marker')).map(marker => ({
         number: marker.querySelector('span')?.textContent.trim(),
         label: marker.querySelector('p')?.textContent.trim(),
@@ -165,6 +166,7 @@ async function inspectViewport(browser, width, height, options = {}) {
   check(result.agentCount === 2 && result.hasHeadshots, `${key}: Glen/Filip profiles or headshots missing`);
   check(result.overviewParagraphs === 3 && result.locationParagraphs === 3, `${key}: narrative paragraph contract failed`);
   check(result.highlightCount === 6, `${key}: expected six investment highlights, found ${result.highlightCount}`);
+  check(result.diligenceCount === 8, `${key}: expected eight buyer-diligence categories, found ${result.diligenceCount}`);
   check(result.financialVisualCount === 2 && result.financialMobilePanelCount === 4, `${key}: M&M financial structures missing visuals=${result.financialVisualCount} mobilePanels=${result.financialMobilePanelCount}`);
   check(result.financialNotesCount === 2 && result.financialAssumptionsCount === 1, `${key}: financial notes/basis structures missing notes=${result.financialNotesCount} basis=${result.financialAssumptionsCount}`);
   check(result.legacyFinancialInfoCount === 0, `${key}: legacy app-style financial information widgets remain`);

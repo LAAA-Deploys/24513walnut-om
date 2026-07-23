@@ -139,7 +139,10 @@ required_strings = [
     "4.27%", "5.24%", "15.47x", "13.45x", "CA 01962976", "CA 01905352",
     "$821,250", "$273,750", "6.50%", "30 Years", "0.75x", "0.92x",
     "noindex, nofollow, noarchive",
-    "The LAAA Team of Marcus &amp; Millichap is proud to present", "Same rent rules"
+    "The LAAA Team of Marcus &amp; Millichap is proud to present", "Same rent rules",
+    "Three-Unit Residential Investment in Old Town Newhall", "228,430",
+    "Pro Forma Below Survey Benchmarks", "AB 1482 Rent Framework",
+    "Please do not disturb occupants or enter without a confirmed appointment"
 ]
 for value in required_strings:
     if value not in HTML:
@@ -151,6 +154,9 @@ for stale in [
     "Interactive Prototype", "buyers can audit", "responsive screen", "continuous table",
     "invented financing", "evidence tool", "false precision", "no unapproved assumption",
     "until Glen approves", "Financing assumptions forthcoming.",
+    "229,159", "approximately 788 square feet", "788 SF per residence",
+    "three one-car garages", "1 detached and 2 attached",
+    "credible three-unit pricing", "meaningful differences",
 ]:
     if stale.lower() in HTML.lower():
         errors.append(f"Stale or seller-facing phrase present: {stale}")
@@ -225,6 +231,10 @@ if len(DATA.get("investment_highlights", [])) not in {5, 6}:
 for item in DATA.get("investment_highlights", []):
     if len(item.get("headline", "").split()) > 8 or len(item.get("detail", "").split()) > 40:
         errors.append(f"Investment highlight exceeds word limit: {item.get('headline')}")
+
+diligence_cards = re.findall(r'<div class="container diligence-grid">(.*?)</div>', HTML, re.S)
+if len(diligence_cards) != 1 or len(re.findall(r"<article>", diligence_cards[0])) != 8:
+    errors.append("Buyer Due Diligence must render exactly eight verification categories")
 
 if len(DATA["sale_comps"]) != 6:
     errors.append(f"Expected six sale comparables, got {len(DATA['sale_comps'])}")
