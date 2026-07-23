@@ -300,8 +300,9 @@ async function inspectDelayedMapsKey(browser) {
   await page.locator('[data-location-map]').scrollIntoViewIfNeeded();
   await page.locator('[data-location-view="satellite"]').click();
   await page.waitForFunction(() => document.querySelector('[data-map-status="location"]')?.textContent.includes('Google map data'));
-  await page.waitForFunction(() => window.__fakeMaps?.length === 2);
+  await page.waitForFunction(() => window.__fakeMaps?.length === 1);
   await page.locator('[data-comp-view="map"]').click();
+  await page.waitForFunction(() => window.__fakeMaps?.length === 2);
   await page.evaluate(selector => {
     const panel = document.querySelector(selector);
     const start = new Event('touchstart', { bubbles: true });

@@ -165,6 +165,9 @@
   var locationMap = null;
   var locationTransitLayer = null;
   var compGoogleMap = null;
+  var googleMapConstructor = null;
+  var googleMarkerConstructor = null;
+  var compGoogleBounds = null;
   var compMarkerById = {};
   var googleMapsRequested = false;
   var googleMapsScript = null;
@@ -232,7 +235,17 @@
     googleMapsRequested = false;
     if (googleMapsScript) googleMapsScript.remove();
     googleMapsScript = null;
-    document.querySelectorAll('[data-google-map]').forEach(function (canvas) { canvas.hidden = true; });
+    locationMap = null;
+    locationTransitLayer = null;
+    compGoogleMap = null;
+    googleMapConstructor = null;
+    googleMarkerConstructor = null;
+    compGoogleBounds = null;
+    compMarkerById = {};
+    document.querySelectorAll('[data-google-map]').forEach(function (canvas) {
+      canvas.replaceChildren();
+      canvas.hidden = true;
+    });
     document.querySelectorAll('[data-map-fallback]').forEach(function (fallback) { fallback.hidden = false; });
     var compCanvas = document.querySelector('[data-google-map="comps"]');
     if (compCanvas) compCanvas.closest('.comp-map-canvas').classList.remove('maps-active');
@@ -253,20 +266,64 @@
     return element;
   }
 
+  function initCompGoogleMap() {
+    var compCanvas = document.querySelector('[data-google-map="comps"]');
+    var compPanel = compCanvas ? compCanvas.closest('.comp-map-panel') : null;
+    if (!compCanvas || !googleMapConstructor || !googleMarkerConstructor || compGoogleMap) return;
+    if (compPanel && window.getComputedStyle(compPanel).display === 'none') return;
+
+    compCanvas.hidden = false;
+    compGoogleMap = new googleMapConstructor(compCanvas, {
+      center: { lat: 34.31, lng: -118.43 },
+      zoom: 10,
+      mapId: 'DEMO_MAP_ID',
+      mapTypeControl: true,
+      streetViewControl: false,
+      fullscreenControl: true,
+      zoomControl: true,
+      clickableIcons: false
+    });
+    compGoogleBounds = new google.maps.LatLngBounds();
+    compGoogleBounds.extend(mapConfig.subject);
+    var subjectMarker = new googleMarkerConstructor({
+      map: compGoogleMap,
+      position: mapConfig.subject,
+      title: mapConfig.subject.title,
+      content: markerContent('S', true),
+      gmpClickable: true
+    });
+    subjectMarker.addListener('click', function () { compGoogleMap.panTo(mapConfig.subject); });
+    mapConfig.comps.forEach(function (point) {
+      compGoogleBounds.extend(point);
+      var content = markerContent(point.label, false);
+      var marker = new googleMarkerConstructor({
+        map: compGoogleMap,
+        position: point,
+        title: point.title,
+        content: content,
+        gmpClickable: true
+      });
+      marker.addListener('click', function () { selectComp(point.id, 'pin'); });
+      compMarkerById[point.id] = { marker: marker, content: content, point: point };
+    });
+    compCanvas.closest('.comp-map-canvas').classList.add('maps-active');
+    compGoogleMap.fitBounds(compGoogleBounds, 42);
+    if (compIds.length) selectComp(compIds[selectedCompIndex]);
+  }
+
   function initGoogleMaps() {
     if (!mapConfig || !window.google || !google.maps || !google.maps.importLibrary) {
       handleGoogleMapsFailure();
       return;
     }
     Promise.all([google.maps.importLibrary('maps'), google.maps.importLibrary('marker')]).then(function (libraries) {
-      var Map = libraries[0].Map;
-      var AdvancedMarkerElement = libraries[1].AdvancedMarkerElement;
+      googleMapConstructor = libraries[0].Map;
+      googleMarkerConstructor = libraries[1].AdvancedMarkerElement;
       var locationCanvas = document.querySelector('[data-google-map="location"]');
-      var compCanvas = document.querySelector('[data-google-map="comps"]');
 
       if (locationCanvas) {
         locationCanvas.hidden = false;
-        locationMap = new Map(locationCanvas, {
+        locationMap = new googleMapConstructor(locationCanvas, {
           center: mapConfig.subject,
           zoom: 15,
           mapId: 'DEMO_MAP_ID',
@@ -279,7 +336,7 @@
         locationTransitLayer = new google.maps.TransitLayer();
         mapConfig.locations.forEach(function (point) {
           var content = markerContent(point.label, point.id === 'subject');
-          var marker = new AdvancedMarkerElement({
+          var marker = new googleMarkerConstructor({
             map: locationMap,
             position: point,
             title: point.title,
@@ -297,46 +354,8 @@
         if (locationStatus) locationStatus.textContent = 'Interactive Google map · select a labeled marker for its location.';
       }
 
-      if (compCanvas) {
-        compCanvas.hidden = false;
-        compGoogleMap = new Map(compCanvas, {
-          center: { lat: 34.31, lng: -118.43 },
-          zoom: 10,
-          mapId: 'DEMO_MAP_ID',
-          mapTypeControl: true,
-          streetViewControl: false,
-          fullscreenControl: true,
-          zoomControl: true,
-          clickableIcons: false
-        });
-        var compBounds = new google.maps.LatLngBounds();
-        compBounds.extend(mapConfig.subject);
-        var subjectMarker = new AdvancedMarkerElement({
-          map: compGoogleMap,
-          position: mapConfig.subject,
-          title: mapConfig.subject.title,
-          content: markerContent('S', true),
-          gmpClickable: true
-        });
-        subjectMarker.addListener('click', function () { compGoogleMap.panTo(mapConfig.subject); });
-        mapConfig.comps.forEach(function (point) {
-          compBounds.extend(point);
-          var content = markerContent(point.label, false);
-          var marker = new AdvancedMarkerElement({
-            map: compGoogleMap,
-            position: point,
-            title: point.title,
-            content: content,
-            gmpClickable: true
-          });
-          marker.addListener('click', function () { selectComp(point.id, 'pin'); });
-          compMarkerById[point.id] = { marker: marker, content: content, point: point };
-        });
-        compCanvas.closest('.comp-map-canvas').classList.add('maps-active');
-        compGoogleMap.fitBounds(compBounds, 42);
-      }
+      initCompGoogleMap();
       activateLocationView(activeLocationView);
-      if (compIds.length) selectComp(compIds[selectedCompIndex]);
       if (googleMapsRetryTimer) window.clearTimeout(googleMapsRetryTimer);
       googleMapsRetryTimer = null;
       if (mapObserver) mapObserver.disconnect();
@@ -449,6 +468,15 @@
         candidate.setAttribute('aria-pressed', String(active));
       });
       if (compExplorer) compExplorer.dataset.mobileView = view;
+      if (view === 'map') {
+        window.requestAnimationFrame(function () {
+          initCompGoogleMap();
+          if (compGoogleMap && compGoogleBounds) {
+            if (window.google && google.maps && google.maps.event) google.maps.event.trigger(compGoogleMap, 'resize');
+            compGoogleMap.fitBounds(compGoogleBounds, 42);
+          }
+        });
+      }
     });
   });
   if (compExplorer) compExplorer.dataset.mobileView = 'list';
