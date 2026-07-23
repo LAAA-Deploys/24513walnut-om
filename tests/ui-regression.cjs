@@ -181,6 +181,14 @@ async function inspectViewport(browser, width, height, options = {}) {
     }));
     check(Math.abs(menuGeometry.navTop - menuGeometry.headerBottom) <= 1, `${key}: menu top ${menuGeometry.navTop} does not match header bottom ${menuGeometry.headerBottom}`);
     check(Math.abs(menuGeometry.backdropTop - menuGeometry.headerBottom) <= 1, `${key}: backdrop top ${menuGeometry.backdropTop} does not match header bottom ${menuGeometry.headerBottom}`);
+    const firstMenuLink = page.locator('#primary-nav a').first();
+    const firstTargetId = (await firstMenuLink.getAttribute('href')).slice(1);
+    await firstMenuLink.click();
+    await page.waitForFunction(targetId => document.activeElement?.id === targetId, firstTargetId);
+    check(await toggle.getAttribute('aria-expanded') === 'false', `${key}: selecting a destination did not close the menu`);
+    check(await page.evaluate(targetId => document.activeElement?.id === targetId, firstTargetId), `${key}: menu destination did not receive focus`);
+    await toggle.click();
+    check(await page.evaluate(() => document.activeElement === document.querySelector('#primary-nav a')), `${key}: first menu link was not refocused`);
     await page.keyboard.press('Escape');
     check(await toggle.getAttribute('aria-expanded') === 'false', `${key}: Escape did not close menu`);
     check(await page.evaluate(() => document.activeElement === document.querySelector('.menu-toggle')), `${key}: focus was not restored after Escape`);
@@ -221,12 +229,91 @@ async function inspectViewport(browser, width, height, options = {}) {
   await context.close();
 }
 
+async function inspectDelayedMapsKey(browser) {
+  const context = await browser.newContext({ viewport: { width: 390, height: 844 } });
+  let mapsRequests = 0;
+  const fakeMapsApi = `
+    (() => {
+      class FakeStreetView {
+        setVisible(value) { this.visible = value; }
+        setPosition(value) { this.position = value; }
+        setPov(value) { this.pov = value; }
+      }
+      class FakeMap {
+        constructor(element, options) {
+          this.element = element;
+          this.options = options;
+          this.mapTypeId = 'roadmap';
+          this.streetView = new FakeStreetView();
+          window.__fakeMaps.push(this);
+        }
+        getStreetView() { return this.streetView; }
+        setMapTypeId(value) { this.mapTypeId = value; }
+        setZoom(value) { this.zoom = value; }
+        panTo(value) { this.center = value; }
+        fitBounds() {}
+      }
+      class FakeTransitLayer { setMap(value) { this.map = value; } }
+      class FakeBounds { extend() {} }
+      class FakeMarker {
+        constructor(options) { Object.assign(this, options); }
+        addListener() {}
+      }
+      window.__fakeMaps = [];
+      window.google = {
+        maps: {
+          importLibrary: async name => name === 'maps' ? { Map: FakeMap } : { AdvancedMarkerElement: FakeMarker },
+          TransitLayer: FakeTransitLayer,
+          LatLngBounds: FakeBounds
+        }
+      };
+      window.LAAAInitGoogleMaps();
+    })();
+  `;
+  await context.route('**/*', async route => {
+    const requestUrl = new URL(route.request().url());
+    if (requestUrl.hostname === 'maps.googleapis.com') {
+      mapsRequests += 1;
+      await new Promise(resolve => setTimeout(resolve, 250));
+      await route.fulfill({ status: 200, contentType: 'application/javascript', body: fakeMapsApi });
+    } else if (/^https?:$/.test(requestUrl.protocol) && requestUrl.origin !== baseOrigin) {
+      await route.abort('blockedbyclient');
+    } else {
+      await route.continue();
+    }
+  });
+
+  const page = await context.newPage();
+  await page.goto(baseUrl, { waitUntil: 'domcontentloaded' });
+  await page.locator('[data-location-map]').scrollIntoViewIfNeeded();
+  await page.waitForTimeout(100);
+  check(mapsRequests === 0, `delayed-maps-key: map requested before a browser key existed`);
+
+  await page.evaluate(() => { window.LAAA_GOOGLE_MAPS_BROWSER_KEY = 'test-browser-key'; });
+  await page.evaluate(() => window.scrollTo(0, 0));
+  await page.waitForTimeout(100);
+  await page.locator('[data-location-map]').scrollIntoViewIfNeeded();
+  await page.locator('[data-location-view="satellite"]').click();
+  await page.waitForFunction(() => window.__fakeMaps?.length === 2);
+
+  const result = await page.evaluate(() => ({
+    activeView: document.querySelector('[data-location-view][aria-pressed="true"]')?.dataset.locationView,
+    mapTypeId: window.__fakeMaps[0].mapTypeId,
+    zoom: window.__fakeMaps[0].zoom,
+  }));
+  check(mapsRequests === 1, `delayed-maps-key: expected one Maps API request, found ${mapsRequests}`);
+  check(result.activeView === 'satellite', `delayed-maps-key: active view reset to ${result.activeView}`);
+  check(result.mapTypeId === 'satellite' && result.zoom === 19, `delayed-maps-key: Google map did not preserve Satellite (${result.mapTypeId}, zoom ${result.zoom})`);
+  await context.close();
+}
+
 (async () => {
   const chrome = await chromium.launch({ headless: true });
   for (const [width, height] of viewports) await inspectViewport(chrome, width, height);
   await inspectViewport(chrome, 390, 844, { reducedMotion: 'reduce', suffix: '-reduced-motion', skipMenu: true });
   await inspectViewport(chrome, 390, 844, { forcedColors: 'active', suffix: '-forced-colors', skipMenu: true });
   await inspectViewport(chrome, 390, 844, { isMobile: true, hasTouch: true, suffix: '-android-chrome' });
+  await inspectDelayedMapsKey(chrome);
   await chrome.close();
 
   const safari = await webkit.launch({ headless: true });
@@ -238,7 +325,7 @@ async function inspectViewport(browser, width, height, options = {}) {
     failures.forEach(failure => console.error(`- ${failure}`));
     process.exit(1);
   }
-  console.log(`UI REGRESSION PASSED (${viewports.length + 4} browser/viewport runs)`);
+  console.log(`UI REGRESSION PASSED (${viewports.length + 4} browser/viewport runs + delayed Maps-key race)`);
   console.log(`Artifacts: ${outputDir}`);
 })().catch(error => {
   console.error(error);

@@ -53,8 +53,18 @@
     menuButton.addEventListener('click', function () { menuOpen ? closeMenu(true) : openMenu(); });
     nav.querySelectorAll('a').forEach(function (link) {
       link.addEventListener('click', function () {
+        var target = link.hash ? document.getElementById(link.hash.slice(1)) : null;
         closeMenu(false);
-        window.requestAnimationFrame(function () { menuButton.focus(); });
+        if (target) {
+          var hadTabindex = target.hasAttribute('tabindex');
+          if (!hadTabindex) target.setAttribute('tabindex', '-1');
+          window.requestAnimationFrame(function () {
+            target.focus({ preventScroll: true });
+            if (!hadTabindex) {
+              target.addEventListener('blur', function () { target.removeAttribute('tabindex'); }, { once: true });
+            }
+          });
+        }
       });
     });
     if (backdrop) backdrop.addEventListener('click', function () { closeMenu(true); });
@@ -157,6 +167,10 @@
   var compGoogleMap = null;
   var compMarkerById = {};
   var googleMapsRequested = false;
+  var activeLocationButton = locationButtons.find(function (button) {
+    return button.getAttribute('aria-pressed') === 'true';
+  });
+  var activeLocationView = activeLocationButton ? activeLocationButton.dataset.locationView : 'district';
 
   try {
     mapConfig = mapConfigElement ? JSON.parse(mapConfigElement.textContent) : null;
@@ -177,6 +191,7 @@
   }
 
   function activateLocationView(view) {
+    activeLocationView = view;
     setLocationButtonState(view);
     if (!locationMap || !mapConfig) {
       showLocationFallback(view);
@@ -295,7 +310,7 @@
         compCanvas.closest('.comp-map-canvas').classList.add('maps-active');
         compGoogleMap.fitBounds(compBounds, 42);
       }
-      activateLocationView('district');
+      activateLocationView(activeLocationView);
       if (compIds.length) selectComp(compIds[selectedCompIndex]);
     }).catch(function () {
       var locationStatus = document.querySelector('[data-map-status="location"]');
@@ -304,11 +319,11 @@
   }
 
   function requestGoogleMaps() {
-    if (googleMapsRequested) return;
-    googleMapsRequested = true;
+    if (googleMapsRequested) return true;
     var keyMeta = document.querySelector('meta[name="google-maps-browser-key"]');
     var key = String(window.LAAA_GOOGLE_MAPS_BROWSER_KEY || (keyMeta && keyMeta.content) || '').trim();
-    if (!key) return;
+    if (!key) return false;
+    googleMapsRequested = true;
     window.LAAAInitGoogleMaps = initGoogleMaps;
     var script = document.createElement('script');
     script.src = 'https://maps.googleapis.com/maps/api/js?key=' + encodeURIComponent(key) + '&loading=async&v=weekly&libraries=marker&callback=LAAAInitGoogleMaps&auth_referrer_policy=origin';
@@ -318,14 +333,14 @@
       if (locationStatus) locationStatus.textContent = 'Location overview · Google map data.';
     };
     document.head.appendChild(script);
+    return true;
   }
 
   var mapSections = Array.from(document.querySelectorAll('[data-location-map], .comp-map-panel'));
   if ('IntersectionObserver' in window && mapSections.length) {
     var mapObserver = new IntersectionObserver(function (entries, observer) {
       if (entries.some(function (entry) { return entry.isIntersecting; })) {
-        requestGoogleMaps();
-        observer.disconnect();
+        if (requestGoogleMaps()) observer.disconnect();
       }
     }, { rootMargin: '500px 0px' });
     mapSections.forEach(function (section) { mapObserver.observe(section); });
