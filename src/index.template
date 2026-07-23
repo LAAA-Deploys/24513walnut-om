@@ -11,8 +11,8 @@
   <meta property="og:type" content="website">
   <meta property="og:image" content="assets/images/hero-front-aerial.jpg">
   <meta name="google-maps-browser-key" content="">
-  <link rel="stylesheet" href="assets/styles.css?v=20260723-1">
-  <script defer src="assets/site.js?v=20260723-1"></script>
+  <link rel="stylesheet" href="assets/styles.css?v=20260723-2">
+  <script defer src="assets/site.js?v=20260723-2"></script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to offering details</a>
@@ -100,7 +100,7 @@
       <div class="container rent-roll-block">
         <div class="subsection-heading"><div><p class="eyebrow">Rent Roll</p><h3>Current and Pro Forma Rent Roll</h3></div><p>Unit areas are assessor-reported and subject to walkthrough verification. Rent per square foot is calculated from the reported unit areas.</p></div>
         <div class="table-region"><div class="table-shell" data-laaa-scroll-region tabindex="0" role="region" aria-label="Rent roll table">
-          <table class="rent-roll-table"><caption>Current and pro forma rent roll</caption><thead><tr><th>Residence</th><th class="desktop-unit-type">Unit Type</th><th class="desktop-unit-sf">Unit SF</th><th>Current Rent</th><th class="desktop-rent-rate">Current Rent / SF</th><th>Pro Forma Rent</th><th class="desktop-rent-rate">Pro Forma Rent / SF</th><th>Upside</th></tr></thead><tbody>{{UNIT_ROWS}}</tbody><tfoot><tr><th scope="row">Monthly total</th><td class="desktop-unit-type"></td><td class="desktop-unit-sf"></td><td><strong>$5,700</strong></td><td class="desktop-rent-rate"></td><td><strong>$6,950</strong></td><td class="desktop-rent-rate"></td><td><strong>$1,250</strong><small>21.9%</small></td></tr></tfoot></table>
+          <table class="rent-roll-table"><caption>Current and pro forma rent roll</caption><thead><tr><th>Residence</th><th class="desktop-unit-type">Unit Type</th><th class="desktop-unit-sf">Unit SF</th><th>Current Rent</th><th class="desktop-rent-rate">Current Rent / SF</th><th>Pro Forma Rent</th><th class="desktop-rent-rate">Pro Forma Rent / SF</th><th>Upside</th></tr></thead><tbody>{{UNIT_ROWS}}</tbody><tfoot><tr><th scope="row">Monthly total</th><td class="desktop-unit-type"></td><td class="desktop-unit-sf"></td><td><strong>{{CURRENT_MONTHLY_RENT}}</strong></td><td class="desktop-rent-rate"></td><td><strong>{{PROFORMA_MONTHLY_RENT}}</strong></td><td class="desktop-rent-rate"></td><td><strong>{{MONTHLY_RENT_UPSIDE}}</strong><small>{{MONTHLY_RENT_UPSIDE_PERCENT}}</small></td></tr></tfoot></table>
         </div><p class="table-scroll-cue" hidden>Scroll horizontally to review all columns.</p></div>
       </div>
 

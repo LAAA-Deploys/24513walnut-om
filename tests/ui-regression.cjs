@@ -274,6 +274,10 @@ async function inspectDelayedMapsKey(browser) {
     const requestUrl = new URL(route.request().url());
     if (requestUrl.hostname === 'maps.googleapis.com') {
       mapsRequests += 1;
+      if (mapsRequests === 1) {
+        await route.abort('failed');
+        return;
+      }
       await new Promise(resolve => setTimeout(resolve, 250));
       await route.fulfill({ status: 200, contentType: 'application/javascript', body: fakeMapsApi });
     } else if (/^https?:$/.test(requestUrl.protocol) && requestUrl.origin !== baseOrigin) {
@@ -294,16 +298,34 @@ async function inspectDelayedMapsKey(browser) {
   await page.waitForTimeout(100);
   await page.locator('[data-location-map]').scrollIntoViewIfNeeded();
   await page.locator('[data-location-view="satellite"]').click();
+  await page.waitForFunction(() => document.querySelector('[data-map-status="location"]')?.textContent.includes('Google map data'));
+  await page.evaluate(() => window.scrollTo(0, 0));
+  await page.waitForTimeout(100);
+  await page.locator('[data-location-map]').scrollIntoViewIfNeeded();
   await page.waitForFunction(() => window.__fakeMaps?.length === 2);
+  await page.locator('[data-comp-view="map"]').click();
+  await page.evaluate(() => {
+    const panel = document.querySelector('.comp-map-panel');
+    const start = new Event('touchstart', { bubbles: true });
+    const end = new Event('touchend', { bubbles: true });
+    Object.defineProperty(start, 'changedTouches', { value: [{ clientX: 300 }] });
+    Object.defineProperty(end, 'changedTouches', { value: [{ clientX: 180 }] });
+    panel.dispatchEvent(start);
+    panel.dispatchEvent(end);
+  });
 
   const result = await page.evaluate(() => ({
     activeView: document.querySelector('[data-location-view][aria-pressed="true"]')?.dataset.locationView,
     mapTypeId: window.__fakeMaps[0].mapTypeId,
     zoom: window.__fakeMaps[0].zoom,
+    selectedComp: document.querySelector('.comp-summary[aria-pressed="true"]')?.dataset.compSelect,
+    compCenter: window.__fakeMaps[1].center,
   }));
-  check(mapsRequests === 1, `delayed-maps-key: expected one Maps API request, found ${mapsRequests}`);
+  check(mapsRequests === 2, `delayed-maps-key: expected one failed request and one retry, found ${mapsRequests}`);
   check(result.activeView === 'satellite', `delayed-maps-key: active view reset to ${result.activeView}`);
   check(result.mapTypeId === 'satellite' && result.zoom === 19, `delayed-maps-key: Google map did not preserve Satellite (${result.mapTypeId}, zoom ${result.zoom})`);
+  check(result.selectedComp === 'coronel', `delayed-maps-key: swipe selected ${result.selectedComp} instead of Coronel`);
+  check(result.compCenter?.lat === 34.2837309 && result.compCenter?.lng === -118.4456534, `delayed-maps-key: swipe did not pan the live comp map`);
   await context.close();
 }
 

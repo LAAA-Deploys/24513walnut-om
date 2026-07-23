@@ -167,6 +167,8 @@
   var compGoogleMap = null;
   var compMarkerById = {};
   var googleMapsRequested = false;
+  var googleMapsScript = null;
+  var mapObserver = null;
   var activeLocationButton = locationButtons.find(function (button) {
     return button.getAttribute('aria-pressed') === 'true';
   });
@@ -312,7 +314,11 @@
       }
       activateLocationView(activeLocationView);
       if (compIds.length) selectComp(compIds[selectedCompIndex]);
+      if (mapObserver) mapObserver.disconnect();
     }).catch(function () {
+      googleMapsRequested = false;
+      if (googleMapsScript) googleMapsScript.remove();
+      googleMapsScript = null;
       var locationStatus = document.querySelector('[data-map-status="location"]');
       if (locationStatus) locationStatus.textContent = 'Location overview · Google map data.';
     });
@@ -325,22 +331,25 @@
     if (!key) return false;
     googleMapsRequested = true;
     window.LAAAInitGoogleMaps = initGoogleMaps;
-    var script = document.createElement('script');
-    script.src = 'https://maps.googleapis.com/maps/api/js?key=' + encodeURIComponent(key) + '&loading=async&v=weekly&libraries=marker&callback=LAAAInitGoogleMaps&auth_referrer_policy=origin';
-    script.async = true;
-    script.onerror = function () {
+    googleMapsScript = document.createElement('script');
+    googleMapsScript.src = 'https://maps.googleapis.com/maps/api/js?key=' + encodeURIComponent(key) + '&loading=async&v=weekly&libraries=marker&callback=LAAAInitGoogleMaps&auth_referrer_policy=origin';
+    googleMapsScript.async = true;
+    googleMapsScript.onerror = function () {
+      googleMapsRequested = false;
+      googleMapsScript.remove();
+      googleMapsScript = null;
       var locationStatus = document.querySelector('[data-map-status="location"]');
       if (locationStatus) locationStatus.textContent = 'Location overview · Google map data.';
     };
-    document.head.appendChild(script);
+    document.head.appendChild(googleMapsScript);
     return true;
   }
 
   var mapSections = Array.from(document.querySelectorAll('[data-location-map], .comp-map-panel'));
   if ('IntersectionObserver' in window && mapSections.length) {
-    var mapObserver = new IntersectionObserver(function (entries, observer) {
+    mapObserver = new IntersectionObserver(function (entries) {
       if (entries.some(function (entry) { return entry.isIntersecting; })) {
-        if (requestGoogleMaps()) observer.disconnect();
+        requestGoogleMaps();
       }
     }, { rootMargin: '500px 0px' });
     mapSections.forEach(function (section) { mapObserver.observe(section); });
@@ -410,7 +419,7 @@
     compMapPanel.addEventListener('touchend', function (event) {
       if (compTouchStart === null) return;
       var delta = event.changedTouches[0].clientX - compTouchStart;
-      if (Math.abs(delta) > 55) selectComp(compIds[(selectedCompIndex + (delta < 0 ? 1 : -1) + compIds.length) % compIds.length]);
+      if (Math.abs(delta) > 55) selectComp(compIds[(selectedCompIndex + (delta < 0 ? 1 : -1) + compIds.length) % compIds.length], 'swipe');
       compTouchStart = null;
     }, { passive: true });
   }

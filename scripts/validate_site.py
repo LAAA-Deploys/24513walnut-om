@@ -81,8 +81,11 @@ for candidate in ROOT.rglob("*"):
         if relative not in APPROVED_LOGOS:
             errors.append(f"Unknown logo-like asset: {relative}")
 price = DATA["meta"]["offering_price"]
-current_gsr = sum(unit["current_rent"] for unit in DATA["units"]) * 12
-proforma_gsr = sum(unit["market_rent"] for unit in DATA["units"]) * 12
+current_monthly_rent = sum(unit["current_rent"] for unit in DATA["units"])
+proforma_monthly_rent = sum(unit["market_rent"] for unit in DATA["units"])
+monthly_rent_upside = proforma_monthly_rent - current_monthly_rent
+current_gsr = current_monthly_rent * 12
+proforma_gsr = proforma_monthly_rent * 12
 current_expenses = sum(item["current"] for item in DATA["expenses"])
 proforma_expenses = sum(item["pro_forma"] for item in DATA["expenses"])
 current_noi = current_gsr - current_expenses
@@ -143,6 +146,17 @@ for unit in DATA["units"]:
     proforma_psf = f"${unit['market_rent'] / unit['unit_sf']:.2f}"
     if current_psf not in HTML or proforma_psf not in HTML:
         errors.append(f"Missing calculated rent/SF for {unit['label']}: {current_psf} / {proforma_psf}")
+rent_footer = re.search(r'<table class="rent-roll-table">.*?<tfoot>(.*?)</tfoot>', HTML, re.S)
+expected_rent_footer_values = [
+    f"${current_monthly_rent:,.0f}",
+    f"${proforma_monthly_rent:,.0f}",
+    f"${monthly_rent_upside:,.0f}",
+    f"{monthly_rent_upside / current_monthly_rent * 100:.1f}%",
+]
+if not rent_footer:
+    errors.append("Rent roll footer is missing")
+elif any(value not in rent_footer.group(1) for value in expected_rent_footer_values):
+    errors.append(f"Rent roll footer totals do not match source data: {expected_rent_footer_values}")
 
 for narrative in ["investment_overview", "location_overview"]:
     paragraphs = DATA.get(narrative, [])
