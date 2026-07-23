@@ -202,8 +202,8 @@
     },
     {
       "path": "scripts/validate_site.py",
-      "sha256": "3cbf79d294b406d5825783ca8ffa9e8e50c2214fe042c314e0785be06eb8fe93",
-      "bytes": 14684
+      "sha256": "193745e7f948fc1a78da461ef968cbf7d89c2907732536eb6bb4aeeccd35c692",
+      "bytes": 14757
     },
     {
       "path": "src/index.template",

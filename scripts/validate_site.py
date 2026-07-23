@@ -285,7 +285,7 @@ for forbidden in ["voicemail", "human review packet", "internal evaluation memo"
         errors.append(f"Confidential reference present: {forbidden}")
 
 files = []
-for path in sorted(ROOT.rglob("*")):
+for path in sorted(ROOT.rglob("*"), key=lambda candidate: candidate.relative_to(ROOT).as_posix().casefold()):
     if (
         not path.is_file()
         or any(part in IGNORED_PARTS for part in path.parts)
