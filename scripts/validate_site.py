@@ -282,6 +282,9 @@ for contact in DATA.get("contacts", []):
 for required_markup in [
     "data-fin-basis=\"total\"", "data-fin-basis=\"unit\"", "data-fin-basis=\"sf\"",
     "class=\"financial-overview-grid\"", "class=\"financial-ledger financial-expense-ledger\"",
+    "financial-visuals", "class=\"rent-roll-groups\"", "class=\"rent-roll-mobile-head\"",
+    "class=\"financial-ledger financial-expense-summary-ledger\"", "class='financial-mobile-panel'",
+    "class=\"financial-notes\"", "class=\"container financial-assumptions\"",
     "<abbr title='Gross Scheduled Rent'>GSR</abbr>", "<abbr title='Net Operating Income'>NOI</abbr>",
     "<abbr title='Repairs and Maintenance'>R&amp;M</abbr>", "<abbr title='General and Administrative'>G&amp;A</abbr>",
     "<abbr title='Debt Service Coverage Ratio'>DSCR</abbr>", "<abbr title=\"Per Square Foot\">/ SF</abbr>",
@@ -298,6 +301,13 @@ for required_markup in [
 ]:
     if required_markup not in HTML:
         errors.append(f"Missing required responsive feature: {required_markup}")
+
+if HTML.count("class='financial-mobile-panel'") != 4:
+    errors.append("Mobile financial presentation must contain four expandable sections")
+if HTML.count("class='financial-visual-panel'") != 2:
+    errors.append("Financial presentation must contain exactly two restrained analytical visuals")
+if "class='row-note'" in HTML:
+    errors.append("Legacy per-row information widgets remain in the financial presentation")
 
 for verbose_financial_header in ["Pro Forma / Unit", "Pro Forma / SF"]:
     if verbose_financial_header in HTML:

@@ -66,7 +66,7 @@ async function inspectViewport(browser, width, height, options = {}) {
     const heroCard = document.querySelector('.hero-card').getBoundingClientRect();
     const kpiRail = document.querySelector('.hero-kpi-rail').getBoundingClientRect();
     const heroCollision = Math.max(0, Math.min(heroCard.bottom, kpiRail.bottom) - Math.max(heroCard.top, kpiRail.top));
-    const controlSelector = '.button,.source-links a,.menu-toggle,#primary-nav a,.mobile-cta a,.gallery-item a,.lightbox button,.map-toolbar button,.map-toolbar a,.basis-tabs button,.comp-view-tabs button,.comp-summary,.map-pin,.comp-map-toolbar button,.comp-stepper button,.comparison-metric-tabs button,.comparison-bar:not(.subject-row),.subject-map-action,.subject-baseline-strip>a,.selected-actions a,.comp-profile-disclosures summary,.rent-evidence-details summary,.agent-actions a,.row-note summary';
+    const controlSelector = '.button,.source-links a,.menu-toggle,#primary-nav a,.mobile-cta a,.gallery-item a,.lightbox button,.map-toolbar button,.map-toolbar a,.basis-tabs button,.comp-view-tabs button,.comp-summary,.map-pin,.comp-map-toolbar button,.comp-stepper button,.comparison-metric-tabs button,.comparison-bar:not(.subject-row),.subject-map-action,.subject-baseline-strip>a,.selected-actions a,.comp-profile-disclosures summary,.rent-evidence-details summary,.agent-actions a,.financial-mobile-panel>summary,.financial-notes>summary,.financial-assumptions>summary';
     const controls = Array.from(document.querySelectorAll(controlSelector)).filter(visible).map(element => ({
       text: element.getAttribute('aria-label') || element.textContent.trim().replace(/\s+/g, ' '),
       width: Math.round(element.getBoundingClientRect().width * 10) / 10,
@@ -108,6 +108,11 @@ async function inspectViewport(browser, width, height, options = {}) {
         rowCount: rentRows.length,
         distinctRowTops: new Set(rentRows.map(row => Math.round(row.getBoundingClientRect().top))).size,
       },
+      financialVisualCount: document.querySelectorAll('.financial-visual-panel').length,
+      financialMobilePanelCount: document.querySelectorAll('.financial-mobile-panel').length,
+      financialNotesCount: document.querySelectorAll('.financial-notes').length,
+      financialAssumptionsCount: document.querySelectorAll('.financial-assumptions').length,
+      legacyFinancialInfoCount: document.querySelectorAll('.row-note').length,
       images,
       compCount: document.querySelectorAll('[data-comp-card]').length,
       compSummaryCount: document.querySelectorAll('.comp-summary').length,
@@ -160,6 +165,9 @@ async function inspectViewport(browser, width, height, options = {}) {
   check(result.agentCount === 2 && result.hasHeadshots, `${key}: Glen/Filip profiles or headshots missing`);
   check(result.overviewParagraphs === 3 && result.locationParagraphs === 3, `${key}: narrative paragraph contract failed`);
   check(result.highlightCount === 6, `${key}: expected six investment highlights, found ${result.highlightCount}`);
+  check(result.financialVisualCount === 2 && result.financialMobilePanelCount === 4, `${key}: M&M financial structures missing visuals=${result.financialVisualCount} mobilePanels=${result.financialMobilePanelCount}`);
+  check(result.financialNotesCount === 2 && result.financialAssumptionsCount === 1, `${key}: financial notes/basis structures missing notes=${result.financialNotesCount} basis=${result.financialAssumptionsCount}`);
+  check(result.legacyFinancialInfoCount === 0, `${key}: legacy app-style financial information widgets remain`);
   check(result.sectionMarkers.length === 8, `${key}: expected eight unified section markers, found ${result.sectionMarkers.length}`);
   check(result.sectionMarkers.map(marker => marker.number).join(',') === '01,02,03,04,05,06,07,08', `${key}: section marker sequence is ${result.sectionMarkers.map(marker => marker.number).join(',')}`);
   check(result.sectionMarkers.every(marker => marker.label && marker.border === 'solid'), `${key}: incomplete or visually inconsistent section marker ${JSON.stringify(result.sectionMarkers)}`);

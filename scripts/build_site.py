@@ -24,7 +24,8 @@ def accounting_money(value: float | int, decimals: int = 0) -> str:
 
 
 def metric(value: float, suffix: str = "") -> str:
-    return f"{value:,.2f}{suffix}"
+    formatted = f"{abs(value):,.2f}{suffix}"
+    return f"({formatted})" if value < 0 else formatted
 
 
 def date_label(value: str) -> str:
@@ -162,26 +163,19 @@ def financial_definition() -> list[dict[str, object]]:
         {"label": "LTV", "kind": "percent", "current": financing["ltv"] * 100, "proforma": financing["ltv"] * 100, "static_basis": True, "note": "Loan-to-value ratio."},
         {"label": "Interest Rate", "kind": "percent", "current": financing["interest_rate"] * 100, "proforma": financing["interest_rate"] * 100, "static_basis": True, "note": "Illustrative annual interest rate."},
         {"label": "Amortization", "kind": "years", "current": financing["amortization_years"], "proforma": financing["amortization_years"], "static_basis": True, "note": "Illustrative amortization period."},
+        {"label": "Annual Debt Service", "kind": "currency", "current": financing["annual_debt_service"], "proforma": financing["annual_debt_service"], "static_basis": True, "note": "Illustrative annual principal and interest."},
         {"label": "Year Due", "kind": "text", "current": financing["maturity_year"], "proforma": financing["maturity_year"], "static_basis": True, "note": "Illustrative maturity year."},
     ])
     return rows
 
 
-def info_control(label: str, note: str | None) -> str:
-    display = compact_financial_label(label)
-    if not note:
-        return display
-    return (
-        f"<span>{display}</span><details class='row-note'><summary aria-label='Calculation note for {esc(label)}'>i</summary>"
-        f"<p>{esc(note)}</p></details>"
-    )
-
-
 def financial_summary_rows() -> str:
     price = DATA["meta"]["offering_price"]
     property_data = DATA["property"]
+    financing = DATA["financing"]
     rows = [
         ("Price", money(price)),
+        ("Down Payment", f"{money(financing['down_payment'])} · {metric((1 - financing['ltv']) * 100, '%')}"),
         ("Units", f"{property_data['units']:,}"),
         ("Building SF", f"{property_data['building_sf']:,}"),
         ("Lot SF", f"{property_data['lot_sf']:,}"),
@@ -221,7 +215,7 @@ def financial_operating_rows() -> str:
         ("Total Return", financing["current"]["total_return"], financing["pro_forma"]["total_return"], "subtotal", "Cash flow after debt service plus modeled principal reduction.", True),
     ]
     return "".join(
-        f"<tr class='financial-row {css}'><th scope='row'>{info_control(label, note)}</th>"
+        f"<tr class='financial-row {css}'><th scope='row'>{compact_financial_label(label)}</th>"
         f"<td>{accounting_money(current) if signed else money(current)}</td><td>{accounting_money(proforma) if signed else money(proforma)}</td></tr>"
         for label, current, proforma, css, note, signed in rows
     )
@@ -242,46 +236,162 @@ def financial_financing_rows() -> str:
     return "".join(f"<tr><th scope='row'>{esc(label)}</th><td>{value}</td></tr>" for label, value in rows)
 
 
+def financial_expense_summary_rows() -> str:
+    values = financial_metrics()
+    rows = [
+        ("Total Expenses", money(values["current_expenses"]), money(values["proforma_expenses"])),
+        ("Expense Ratio", metric(values["current_expenses"] / values["current_gsr"] * 100, "%"), metric(values["proforma_expenses"] / values["proforma_gsr"] * 100, "%")),
+        ("/ Unit", format_financial(values["current_expenses"], "currency", "unit"), format_financial(values["proforma_expenses"], "currency", "unit")),
+        ("/ SF", format_financial(values["current_expenses"], "currency", "sf"), format_financial(values["proforma_expenses"], "currency", "sf")),
+    ]
+    return "".join(
+        f"<tr><th scope='row'>{esc(label)}</th><td>{current}</td><td>{proforma}</td></tr>"
+        for label, current, proforma in rows
+    )
+
+
 def financial_expense_rows() -> str:
-    rows = []
-    for item in DATA["expenses"]:
+    values = financial_metrics()
+    rows = [
+        "<tr class='financial-band'><th colspan='6' scope='colgroup'>Income</th></tr>",
+        "<tr class='financial-row'><th scope='row'><abbr title='Gross Scheduled Rent'>GSR</abbr></th>"
+        f"<td>{money(values['current_gsr'])}</td><td>{money(values['proforma_gsr'])}</td><td>—</td>"
+        f"<td>{format_financial(values['proforma_gsr'], 'currency', 'unit')}</td>"
+        f"<td>{format_financial(values['proforma_gsr'], 'currency', 'sf')}</td></tr>",
+        "<tr class='financial-band'><th colspan='6' scope='colgroup'>Expenses</th></tr>",
+    ]
+    for index, item in enumerate(DATA["expenses"], start=1):
         rows.append(
             "<tr class='financial-row'>"
-            f"<th scope='row'>{info_control(str(item['label']), str(item['basis']))}</th>"
+            f"<th scope='row'>{compact_financial_label(str(item['label']))}</th>"
             f"<td>{money(item['current'])}</td>"
             f"<td>{money(item['pro_forma'])}</td>"
+            f"<td><a class='note-reference' href='#financial-note-{index}' aria-label='Review note {index}'>[{index}]</a></td>"
             f"<td>{format_financial(item['pro_forma'], 'currency', 'unit')}</td>"
             f"<td>{format_financial(item['pro_forma'], 'currency', 'sf')}</td>"
             "</tr>"
         )
-    values = financial_metrics()
     rows.append(
-        "<tr class='financial-row noi'><th scope='row'>Total Expenses</th>"
+        "<tr class='financial-row subtotal'><th scope='row'>Total Expenses</th>"
         f"<td>{money(values['current_expenses'])}</td>"
         f"<td>{money(values['proforma_expenses'])}</td>"
+        "<td>—</td>"
         f"<td>{format_financial(values['proforma_expenses'], 'currency', 'unit')}</td>"
         f"<td>{format_financial(values['proforma_expenses'], 'currency', 'sf')}</td></tr>"
+    )
+    rows.append(
+        "<tr class='financial-row'><th scope='row'>Expense Ratio</th>"
+        f"<td>{metric(values['current_expenses'] / values['current_gsr'] * 100, '%')}</td>"
+        f"<td>{metric(values['proforma_expenses'] / values['proforma_gsr'] * 100, '%')}</td>"
+        "<td>—</td><td>—</td><td>—</td></tr>"
+    )
+    rows.append(
+        "<tr class='financial-row noi'><th scope='row'><abbr title='Net Operating Income'>NOI</abbr></th>"
+        f"<td>{money(values['current_noi'])}</td>"
+        f"<td>{money(values['proforma_noi'])}</td>"
+        "<td>—</td>"
+        f"<td>{format_financial(values['proforma_noi'], 'currency', 'unit')}</td>"
+        f"<td>{format_financial(values['proforma_noi'], 'currency', 'sf')}</td></tr>"
     )
     return "".join(rows)
 
 
+def financial_notes() -> str:
+    notes = []
+    for index, item in enumerate(DATA["expenses"], start=1):
+        notes.append(
+            f"<li id='financial-note-{index}'><span>[{index}]</span><p><b>{compact_financial_label(str(item['label']))}.</b> {esc(item['basis'])}</p></li>"
+        )
+    return "".join(notes)
+
+
+def financial_visuals() -> str:
+    groups: dict[str, list[dict[str, object]]] = {}
+    for unit in DATA["units"]:
+        groups.setdefault(str(unit["type"]), []).append(unit)
+    total_units = DATA["property"]["units"]
+    mix_segments = []
+    rent_rows = []
+    max_rent = max(float(unit["market_rent"]) for unit in DATA["units"])
+    for index, (unit_type, units) in enumerate(sorted(groups.items(), key=lambda item: -len(item[1]))):
+        count = len(units)
+        share = count / total_units * 100
+        current = sum(float(unit["current_rent"]) for unit in units) / count
+        proforma = sum(float(unit["market_rent"]) for unit in units) / count
+        mix_segments.append(
+            f"<span class='mix-segment mix-{index + 1}' style='--share:{share:.2f}%' "
+            f"aria-label='{count} {esc(unit_type)} units, {share:.0f} percent of the property'></span>"
+        )
+        rent_rows.append(
+            "<div class='rent-visual-row'>"
+            f"<div><b>{esc(unit_type)}</b><small>{count} {'unit' if count == 1 else 'units'}</small></div>"
+            "<div class='rent-visual-bars'>"
+            f"<span class='rent-current' style='--bar:{current / max_rent * 100:.2f}%'><i></i><b>{money(current)}</b><small>Current</small></span>"
+            f"<span class='rent-proforma' style='--bar:{proforma / max_rent * 100:.2f}%'><i></i><b>{money(proforma)}</b><small>Pro Forma</small></span>"
+            "</div></div>"
+        )
+    mix_labels = "".join(
+        f"<li><span class='mix-key mix-{index + 1}'></span><b>{len(units)} × {esc(unit_type)}</b><small>{len(units) / total_units * 100:.0f}%</small></li>"
+        for index, (unit_type, units) in enumerate(sorted(groups.items(), key=lambda item: -len(item[1])))
+    )
+    return (
+        "<section class='financial-visual-panel'><h4>Unit Mix</h4>"
+        f"<div class='unit-mix-bar' role='img' aria-label='Unit mix: {', '.join(f'{len(units)} {unit_type}' for unit_type, units in groups.items())}'>{''.join(mix_segments)}</div>"
+        f"<ul class='unit-mix-legend'>{mix_labels}</ul></section>"
+        "<section class='financial-visual-panel'><h4>Average Monthly Rent</h4>"
+        f"<div class='rent-visual'>{''.join(rent_rows)}</div></section>"
+    )
+
+
 def financial_mobile_rows() -> str:
-    output = []
+    sections: list[dict[str, object]] = []
+    current_section: dict[str, object] | None = None
     for row in financial_definition():
         if "section" in row:
-            output.append(f"<tr class='financial-band'><th colspan='3' scope='colgroup'>{esc(row['section'])}</th></tr>")
+            current_section = {"title": str(row["section"]), "rows": []}
+            sections.append(current_section)
             continue
-        label = info_control(str(row["label"]), row.get("note"))
-        current_values = {basis: format_financial(row["current"], str(row["kind"]), basis) for basis in ("total", "unit", "sf")}
-        proforma_values = {basis: format_financial(row["proforma"], str(row["kind"]), basis) for basis in ("total", "unit", "sf")}
-        if row["kind"] in {"percent", "multiple", "years"} or row.get("static_basis"):
-            current_values["unit"] = current_values["sf"] = current_values["total"]
-            proforma_values["unit"] = proforma_values["sf"] = proforma_values["total"]
-        css = f"financial-row {row.get('emphasis', '')}".strip()
+        if current_section is None:
+            continue
+        current_section["rows"].append(row)
+
+    output = []
+    for section in sections:
+        title = str(section["title"])
+        rows = section["rows"]
+        expanded = " open" if title in {"Operating Data", "Returns"} else ""
+        if title == "Financing":
+            body = "".join(
+                f"<tr><th scope='row'>{compact_financial_label(str(row['label']))}</th>"
+                f"<td>{format_financial(row['current'], str(row['kind']), 'total')}</td></tr>"
+                for row in rows
+            )
+            table = (
+                "<table class='financial-mobile-assumptions'><caption>Illustrative financing assumptions</caption>"
+                f"<thead><tr><th>Term</th><th>Assumption</th></tr></thead><tbody>{body}</tbody></table>"
+            )
+        else:
+            body_rows = []
+            for row in rows:
+                label = compact_financial_label(str(row["label"]))
+                current_values = {basis: format_financial(row["current"], str(row["kind"]), basis) for basis in ("total", "unit", "sf")}
+                proforma_values = {basis: format_financial(row["proforma"], str(row["kind"]), basis) for basis in ("total", "unit", "sf")}
+                if row["kind"] in {"percent", "multiple", "years"} or row.get("static_basis"):
+                    current_values["unit"] = current_values["sf"] = current_values["total"]
+                    proforma_values["unit"] = proforma_values["sf"] = proforma_values["total"]
+                css = f"financial-row {row.get('emphasis', '')}".strip()
+                body_rows.append(
+                    f"<tr class='{css}'><th scope='row'>{label}</th>"
+                    f"<td data-fin-value data-total='{esc(current_values['total'])}' data-unit='{esc(current_values['unit'])}' data-sf='{esc(current_values['sf'])}'>{current_values['total']}</td>"
+                    f"<td data-fin-value data-total='{esc(proforma_values['total'])}' data-unit='{esc(proforma_values['unit'])}' data-sf='{esc(proforma_values['sf'])}'>{proforma_values['total']}</td></tr>"
+                )
+            table = (
+                f"<table class='financial-table mobile-financial-table'><caption>{esc(title)} by selected basis</caption>"
+                f"<thead><tr><th>{esc(title)}</th><th>Current</th><th>Pro Forma</th></tr></thead><tbody>{''.join(body_rows)}</tbody></table>"
+            )
         output.append(
-            f"<tr class='{css}'><th scope='row'>{label}</th>"
-            f"<td data-fin-value data-total='{esc(current_values['total'])}' data-unit='{esc(current_values['unit'])}' data-sf='{esc(current_values['sf'])}'>{current_values['total']}</td>"
-            f"<td data-fin-value data-total='{esc(proforma_values['total'])}' data-unit='{esc(proforma_values['unit'])}' data-sf='{esc(proforma_values['sf'])}'>{proforma_values['total']}</td></tr>"
+            f"<details class='financial-mobile-panel'{expanded}><summary>{esc(title)}<span aria-hidden='true'></span></summary>"
+            f"<div class='financial-mobile-panel-body'>{table}</div></details>"
         )
     return "".join(output)
 
@@ -583,7 +693,10 @@ replacements = {
     "{{FINANCIAL_RETURNS_ROWS}}": financial_returns_rows(),
     "{{FINANCIAL_FINANCING_ROWS}}": financial_financing_rows(),
     "{{FINANCIAL_OPERATING_ROWS}}": financial_operating_rows(),
+    "{{FINANCIAL_EXPENSE_SUMMARY_ROWS}}": financial_expense_summary_rows(),
     "{{FINANCIAL_EXPENSE_ROWS}}": financial_expense_rows(),
+    "{{FINANCIAL_NOTES}}": financial_notes(),
+    "{{FINANCIAL_VISUALS}}": financial_visuals(),
     "{{FINANCIAL_MOBILE_ROWS}}": financial_mobile_rows(),
     "{{SALE_COMPARABLE_CONCLUSION}}": copy_paragraphs(DATA["comparables_analysis"]["sale_conclusion"], "comparison-narrative"),
     "{{SUBJECT_BASELINE}}": subject_baseline(),
