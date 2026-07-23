@@ -225,7 +225,7 @@ th, td { text-align: left; }
 .map-pin { position: absolute; left: var(--x); top: var(--y); width: 52px; height: 52px; transform: translate(-50%,-50%); border: 0; border-radius: 50%; background: transparent; color: transparent; box-shadow: none; font-weight: 900; cursor: pointer; }
 .map-pin:hover, .map-pin:focus, .map-pin.is-selected { z-index: 4; width: 58px; height: 58px; background: rgba(197,162,88,.16); color: transparent; border: 4px solid var(--navy); }
 .map-pin.pin-6 { width: 44px; height: 44px; border: 3px solid #fff; background: var(--orange); color: #fff; box-shadow: 0 4px 12px rgba(0,0,0,.35); }
-.map-pin.pin-6::after { content: ""; position: absolute; right: 34px; top: 34px; width: 34px; height: 2px; transform: rotate(35deg); transform-origin: right center; background: var(--navy); pointer-events: none; }
+.map-pin.pin-6::after { content: ""; position: absolute; left: -33px; top: 48px; width: 64px; height: 2px; transform: rotate(112deg); transform-origin: right center; background: var(--navy); pointer-events: none; }
 .map-pin.pin-6:hover, .map-pin.pin-6:focus, .map-pin.pin-6.is-selected { z-index: 5; width: 52px; height: 52px; background: var(--gold); color: var(--navy); border: 4px solid var(--navy); }
 .comp-preview { min-height: 124px; display: grid; grid-template-columns: 150px 1fr; gap: 16px; padding: 12px; border-top: 1px solid var(--rule); }
 .comp-preview img { width: 150px; height: 100px; object-fit: cover; }

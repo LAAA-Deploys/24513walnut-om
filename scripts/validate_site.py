@@ -208,6 +208,7 @@ for required_markup in [
     "data-comp-view=\"list\"", "data-comp-view=\"map\"", "data-location-view=\"district\"",
     "data-location-view=\"satellite\"", "data-location-view=\"transit\"", "data-location-view=\"street\"",
     "data-google-map=\"location\"", "data-google-map=\"comps\"", "id=\"map-config\"",
+    "class=\"map-pin pin-6\" style=\"--x:51%;--y:43%\"",
     "table-scroll-cue", "assets/images/glen-scher.jpg", "assets/images/filip-niculete.jpg",
 ]:
     if required_markup not in HTML:

@@ -241,6 +241,7 @@ async function inspectDelayedMapsKey(browser) {
       }
       class FakeMap {
         constructor(element, options) {
+          if (element.hidden) throw new Error('Map canvas was hidden during construction');
           this.element = element;
           this.options = options;
           this.mapTypeId = 'roadmap';

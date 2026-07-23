@@ -228,6 +228,24 @@
     button.addEventListener('click', function () { activateLocationView(button.dataset.locationView); });
   });
 
+  function handleGoogleMapsFailure() {
+    googleMapsRequested = false;
+    if (googleMapsScript) googleMapsScript.remove();
+    googleMapsScript = null;
+    document.querySelectorAll('[data-google-map]').forEach(function (canvas) { canvas.hidden = true; });
+    document.querySelectorAll('[data-map-fallback]').forEach(function (fallback) { fallback.hidden = false; });
+    var compCanvas = document.querySelector('[data-google-map="comps"]');
+    if (compCanvas) compCanvas.closest('.comp-map-canvas').classList.remove('maps-active');
+    if (googleMapsAttempts < 2 && !googleMapsRetryTimer) {
+      googleMapsRetryTimer = window.setTimeout(function () {
+        googleMapsRetryTimer = null;
+        requestGoogleMaps();
+      }, 1000);
+    }
+    var locationStatus = document.querySelector('[data-map-status="location"]');
+    if (locationStatus) locationStatus.textContent = 'Location overview · Google map data.';
+  }
+
   function markerContent(label, subject) {
     var element = document.createElement('span');
     element.className = 'google-marker' + (subject ? ' google-marker-subject' : '');
@@ -236,7 +254,10 @@
   }
 
   function initGoogleMaps() {
-    if (!mapConfig || !window.google || !google.maps || !google.maps.importLibrary) return;
+    if (!mapConfig || !window.google || !google.maps || !google.maps.importLibrary) {
+      handleGoogleMapsFailure();
+      return;
+    }
     Promise.all([google.maps.importLibrary('maps'), google.maps.importLibrary('marker')]).then(function (libraries) {
       var Map = libraries[0].Map;
       var AdvancedMarkerElement = libraries[1].AdvancedMarkerElement;
@@ -244,6 +265,7 @@
       var compCanvas = document.querySelector('[data-google-map="comps"]');
 
       if (locationCanvas) {
+        locationCanvas.hidden = false;
         locationMap = new Map(locationCanvas, {
           center: mapConfig.subject,
           zoom: 15,
@@ -269,7 +291,6 @@
             locationMap.setZoom(point.id === 'subject' ? 18 : 16);
           });
         });
-        locationCanvas.hidden = false;
         var locationFallback = document.querySelector('[data-map-fallback="location"]');
         if (locationFallback) locationFallback.hidden = true;
         var locationStatus = document.querySelector('[data-map-status="location"]');
@@ -277,6 +298,7 @@
       }
 
       if (compCanvas) {
+        compCanvas.hidden = false;
         compGoogleMap = new Map(compCanvas, {
           center: { lat: 34.31, lng: -118.43 },
           zoom: 10,
@@ -310,7 +332,6 @@
           marker.addListener('click', function () { selectComp(point.id, 'pin'); });
           compMarkerById[point.id] = { marker: marker, content: content, point: point };
         });
-        compCanvas.hidden = false;
         compCanvas.closest('.comp-map-canvas').classList.add('maps-active');
         compGoogleMap.fitBounds(compBounds, 42);
       }
@@ -319,19 +340,7 @@
       if (googleMapsRetryTimer) window.clearTimeout(googleMapsRetryTimer);
       googleMapsRetryTimer = null;
       if (mapObserver) mapObserver.disconnect();
-    }).catch(function () {
-      googleMapsRequested = false;
-      if (googleMapsScript) googleMapsScript.remove();
-      googleMapsScript = null;
-      if (googleMapsAttempts < 2 && !googleMapsRetryTimer) {
-        googleMapsRetryTimer = window.setTimeout(function () {
-          googleMapsRetryTimer = null;
-          requestGoogleMaps();
-        }, 1000);
-      }
-      var locationStatus = document.querySelector('[data-map-status="location"]');
-      if (locationStatus) locationStatus.textContent = 'Location overview · Google map data.';
-    });
+    }).catch(handleGoogleMapsFailure);
   }
 
   function requestGoogleMaps() {
@@ -346,19 +355,7 @@
     googleMapsScript = document.createElement('script');
     googleMapsScript.src = 'https://maps.googleapis.com/maps/api/js?key=' + encodeURIComponent(key) + '&loading=async&v=weekly&libraries=marker&callback=LAAAInitGoogleMaps&auth_referrer_policy=origin';
     googleMapsScript.async = true;
-    googleMapsScript.onerror = function () {
-      googleMapsRequested = false;
-      googleMapsScript.remove();
-      googleMapsScript = null;
-      if (googleMapsAttempts < 2 && !googleMapsRetryTimer) {
-        googleMapsRetryTimer = window.setTimeout(function () {
-          googleMapsRetryTimer = null;
-          requestGoogleMaps();
-        }, 1000);
-      }
-      var locationStatus = document.querySelector('[data-map-status="location"]');
-      if (locationStatus) locationStatus.textContent = 'Location overview · Google map data.';
-    };
+    googleMapsScript.onerror = handleGoogleMapsFailure;
     document.head.appendChild(googleMapsScript);
     return true;
   }
