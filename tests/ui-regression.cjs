@@ -123,6 +123,12 @@ async function inspectViewport(browser, width, height, options = {}) {
       overviewParagraphs: document.querySelectorAll('#overview .narrative-paragraph').length,
       locationParagraphs: document.querySelectorAll('#location .narrative-paragraph').length,
       highlightCount: document.querySelectorAll('.highlight-ledger article').length,
+      sectionMarkers: Array.from(document.querySelectorAll('.section-marker')).map(marker => ({
+        number: marker.querySelector('span')?.textContent.trim(),
+        label: marker.querySelector('p')?.textContent.trim(),
+        border: getComputedStyle(marker).borderBottomStyle,
+      })),
+      numberedEyebrows: Array.from(document.querySelectorAll('.eyebrow')).filter(eyebrow => /^\d{2}\s*·/.test(eyebrow.textContent.trim())).length,
       forbiddenFocus: document.body.textContent.includes('FOCUS THE EVIDENCE') || document.body.textContent.includes('Focus the evidence'),
       hasGalleryDialog: Boolean(document.querySelector('[data-gallery-dialog]')),
       hasHeadshots: Boolean(document.querySelector('img[src="assets/images/glen-scher.jpg"]')) && Boolean(document.querySelector('img[src="assets/images/filip-niculete.jpg"]')),
@@ -154,6 +160,10 @@ async function inspectViewport(browser, width, height, options = {}) {
   check(result.agentCount === 2 && result.hasHeadshots, `${key}: Glen/Filip profiles or headshots missing`);
   check(result.overviewParagraphs === 3 && result.locationParagraphs === 3, `${key}: narrative paragraph contract failed`);
   check(result.highlightCount === 6, `${key}: expected six investment highlights, found ${result.highlightCount}`);
+  check(result.sectionMarkers.length === 8, `${key}: expected eight unified section markers, found ${result.sectionMarkers.length}`);
+  check(result.sectionMarkers.map(marker => marker.number).join(',') === '01,02,03,04,05,06,07,08', `${key}: section marker sequence is ${result.sectionMarkers.map(marker => marker.number).join(',')}`);
+  check(result.sectionMarkers.every(marker => marker.label && marker.border === 'solid'), `${key}: incomplete or visually inconsistent section marker ${JSON.stringify(result.sectionMarkers)}`);
+  check(result.numberedEyebrows === 0, `${key}: legacy numbered eyebrow headings remain`);
   check(!result.forbiddenFocus, `${key}: removed Focus the evidence language is still present`);
   check(result.hasMapFallbacks, `${key}: accessible local map fallbacks missing`);
   result.images.forEach(image => {

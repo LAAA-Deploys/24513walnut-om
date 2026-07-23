@@ -48,14 +48,14 @@
 
     <section class="section narrative-section" id="overview">
       <div class="container editorial-grid">
-        <div class="section-number"><span>01</span><p>Investment Overview</p></div>
+        <div class="section-marker"><span>01</span><p>Investment Overview</p></div>
         <div class="editorial-copy"><p class="eyebrow">The Opportunity</p><h2>Three Residential Units in Old Town Newhall</h2>{{INVESTMENT_OVERVIEW}}</div>
       </div>
     </section>
 
     <section class="section location-section" id="location">
       <div class="container editorial-grid">
-        <div class="section-number"><span>02</span><p>Location Overview</p></div>
+        <div class="section-marker"><span>02</span><p>Location Overview</p></div>
         <div class="editorial-copy"><p class="eyebrow">Old Town Newhall</p><h2>Historic Main Street with Regional Rail Access</h2>{{LOCATION_OVERVIEW}}</div>
       </div>
       <div class="container location-studio">
@@ -77,12 +77,12 @@
     </section>
 
     <section class="section highlight-section" id="highlights">
-      <div class="container section-heading"><div><p class="eyebrow">03 · Investment Highlights</p><h2>Occupied Income with Defined Rent Upside</h2></div><p>Three residences, Old Town Newhall access, and a 9,379-square-foot COR-zoned lot.</p></div>
+      <div class="container section-heading"><div class="section-marker"><span>03</span><p>Investment Highlights</p></div><div><h2>Occupied Income with Defined Rent Upside</h2></div><p>Three residences, Old Town Newhall access, and a 9,379-square-foot COR-zoned lot.</p></div>
       <div class="container highlight-ledger">{{HIGHLIGHTS}}</div>
     </section>
 
     <section class="section property-section" id="property">
-      <div class="container section-heading"><div><p class="eyebrow">04 · Property Details</p><h2>Duplex and Detached Rear Residence on 9,379 SF</h2></div><p>Public records and MLS information indicate five bedrooms across three residences, with improvements dating to 1926 and 1954. Buyers should independently verify configuration, square footage, parking, permits, and legal status.</p></div>
+      <div class="container section-heading"><div class="section-marker"><span>04</span><p>Property Details</p></div><div><h2>Duplex and Detached Rear Residence on 9,379 SF</h2></div><p>Public records and MLS information indicate five bedrooms across three residences, with improvements dating to 1926 and 1954. Buyers should independently verify configuration, square footage, parking, permits, and legal status.</p></div>
       <div class="container fact-grid"><div><span>APN</span><b>2831-005-003</b></div><div><span>Unit mix</span><b>2 × 2BR + 1 × 1BR</b></div><div><span>Bathrooms</span><b>3 total</b></div><div><span>Year built</span><b>1926 / 1954</b></div><div><span>Zoning</span><b>OTNSP — COR</b></div><div><span>Flood</span><b>Zone X</b></div></div>
       <div class="container gallery-intro"><p><b>12-image property gallery</b><span>Select any image for the accessible full-screen viewer.</span></p></div>
       <div class="container gallery" aria-label="Property photo gallery">{{GALLERY_ITEMS}}</div>
@@ -95,7 +95,7 @@
     </section>
 
     <section class="section financial-section" id="financials">
-      <div class="container financial-title"><div><p class="eyebrow">05 · Financial Details</p><h2>Current and Pro Forma Financial Analysis</h2></div><div><span>24513–24519 Walnut Street</span><small>As of July 2026 · buyer to verify</small></div></div>
+      <div class="container financial-title"><div class="section-marker"><span>05</span><p>Financial Details</p></div><div><h2>Current and Pro Forma Financial Analysis</h2></div><div><span>24513–24519 Walnut Street</span><small>As of July 2026 · buyer to verify</small></div></div>
 
       <div class="container rent-roll-block">
         <div class="subsection-heading"><div><p class="eyebrow">Rent Roll</p><h3>Current and Pro Forma Rent Roll</h3></div><p>Unit areas are assessor-reported and subject to walkthrough verification. Rent per square foot is calculated from the reported unit areas.</p></div>
@@ -119,7 +119,7 @@
     </section>
 
     <section class="section market-section" id="comps">
-      <div class="container section-heading"><div><p class="eyebrow">06 · Sale and Rent Comparables</p><h2>Comparable Evidence for Walnut Street</h2></div><p>Six selected sales and the approved rent survey frame the offering through location, physical characteristics, rent rules, condition, and income.</p></div>
+      <div class="container section-heading"><div class="section-marker"><span>06</span><p>Sale and Rent Comparables</p></div><div><h2>Comparable Evidence for Walnut Street</h2></div><p>Six selected sales and the approved rent survey frame the offering through location, physical characteristics, rent rules, condition, and income.</p></div>
 
       <div class="container comparison-thesis">
         <div><p class="eyebrow">Sale Comparison</p><h3>How the Sales Frame Walnut</h3></div>
@@ -189,13 +189,13 @@
     </section>
 
     <section class="section diligence-section" id="diligence">
-      <div class="container section-heading"><div><p class="eyebrow">07 · Diligence and Disclosures</p><h2>Buyer Due Diligence</h2></div><p>Prospective purchasers should independently verify tenancy, physical condition, public records, operating expenses, and any development potential.</p></div>
+      <div class="container section-heading"><div class="section-marker"><span>07</span><p>Diligence and Disclosures</p></div><div><h2>Buyer Due Diligence</h2></div><p>Prospective purchasers should independently verify tenancy, physical condition, public records, operating expenses, and any development potential.</p></div>
       <div class="container diligence-grid"><article><b>Income and tenancy</b><p>Obtain and review leases, deposits, payment history, tenancy dates, concessions, and current rent notices.</p></article><article><b>Physical condition</b><p>Inspect roofs, structure, electrical, plumbing, mechanical systems, drainage, parking, and all interior areas.</p></article><article><b>Public records</b><p>Confirm permitted unit count, bedroom configuration, square footage, legal-nonconforming status, and code history.</p></article><article><b>Development</b><p>Complete independent zoning, ADU, parking, title, utility, design, and entitlement analysis.</p></article></div>
       <div class="container value-add"><div><p class="eyebrow">Zoning and Site Potential</p><h3>Independent ADU and Site-Planning Study</h3></div><div><p>The 2025 Old Town Newhall Specific Plan applies Corridor zoning with a baseline maximum of three stories and 35 feet. Stacked residential in COR is generally tied to a vertical mixed-use commercial-building form. Proximity to rail may affect minimum-parking treatment under AB 2097.</p><p>No additional unit count, building area, or entitlement is represented as approved. Buyers should confirm legal-nonconforming status, ADU eligibility, parking, setbacks, alley dedication, and any development path directly with the City of Santa Clarita and qualified counsel.</p><div class="source-links"><a href="https://filecenter.santa-clarita.com/Planning/OldTownNewhallSpecificPlanUpdate/2025%20OTNSP%20FINAL.pdf" target="_blank" rel="noopener">2025 Old Town Newhall Specific Plan<span aria-hidden="true">↗</span></a><a href="https://www.hcd.ca.gov/sites/default/files/docs/planning-and-community/min-parking-requirements-ab-2097.pdf" target="_blank" rel="noopener">HCD AB 2097 fact sheet<span aria-hidden="true">↗</span></a></div></div></div>
     </section>
 
     <section class="section contact-section" id="contact">
-      <div class="container contact-intro"><div><p class="eyebrow">08 · Listing Agents</p><h2>Speak directly with the LAAA Team.</h2></div><p>Contact Glen Scher or Filip Niculete for tour coordination, operating information, and offering procedures. Please do not disturb occupants.</p></div>
+      <div class="container contact-intro"><div class="section-marker"><span>08</span><p>Listing Agents</p></div><div><h2>Speak directly with the LAAA Team.</h2></div><p>Contact Glen Scher or Filip Niculete for tour coordination, operating information, and offering procedures. Please do not disturb occupants.</p></div>
       <div class="container agent-grid">{{CONTACT_CARDS}}</div>
     </section>
   </main>

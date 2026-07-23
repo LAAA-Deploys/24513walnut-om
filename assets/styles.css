@@ -75,10 +75,11 @@ a { color: inherit; }
 .hero-kpi-rail span, .fact-grid span { display: block; color: var(--muted); font-size: 9px; font-weight: 900; letter-spacing: .13em; text-transform: uppercase; }
 .hero-kpi-rail b { display: block; margin-top: 5px; font-family: var(--serif); font-size: clamp(19px,2vw,27px); font-weight: 400; font-variant-numeric: tabular-nums; white-space: nowrap; }
 
-.editorial-grid { display: grid; grid-template-columns: 210px minmax(0, 820px); gap: clamp(50px,8vw,120px); align-items: start; }
-.section-number { position: sticky; top: 112px; color: var(--navy); }
-.section-number span { display: block; font-family: var(--serif); font-size: 82px; line-height: .9; color: var(--gold); }
-.section-number p { margin: 18px 0 0; padding-top: 14px; border-top: 2px solid var(--navy); font-size: 11px; font-weight: 900; letter-spacing: .14em; text-transform: uppercase; }
+.editorial-grid { display: grid; grid-template-columns: 210px minmax(0, 820px); column-gap: clamp(50px,8vw,120px); row-gap: 34px; align-items: start; }
+.section-marker { grid-column: 1 / -1; min-width: 0; display: flex; align-items: baseline; gap: 18px; padding-bottom: 9px; border-bottom: 2px solid var(--navy); color: var(--navy); }
+.section-marker span { flex: 0 0 auto; font-family: var(--serif); font-size: 58px; line-height: .78; color: var(--gold); }
+.section-marker p { min-width: 0; margin: 0; font-size: 11px; font-weight: 900; letter-spacing: .14em; text-transform: uppercase; }
+.editorial-copy { grid-column: 2; }
 .editorial-copy h2, .section-heading h2, .financial-title h2, .contact-intro h2 { margin: 0 0 30px; color: var(--navy); font-family: var(--serif); font-size: clamp(40px,4.5vw,62px); font-weight: 400; letter-spacing: -.035em; line-height: 1.04; }
 .narrative-paragraph { max-width: 770px; margin: 0 0 22px; font-family: var(--serif); font-size: 19px; line-height: 1.68; }
 .narrative-paragraph:first-of-type::first-letter { float: left; margin: 9px 8px 0 0; color: var(--gold); font-size: 62px; line-height: .72; }
@@ -113,7 +114,7 @@ a { color: inherit; }
 .location-evidence .button { width: 100%; border-color: #fff; color: #fff; }
 
 .highlight-section { background: #fff; }
-.section-heading, .financial-title, .contact-intro { display: grid; grid-template-columns: minmax(0,1.2fr) minmax(260px,.55fr); gap: 60px; align-items: end; margin-bottom: 50px; }
+.section-heading, .financial-title, .contact-intro { display: grid; grid-template-columns: minmax(0,1.2fr) minmax(260px,.55fr); column-gap: 60px; row-gap: 28px; align-items: end; margin-bottom: 50px; }
 .section-heading h2, .financial-title h2, .contact-intro h2 { margin-bottom: 0; }
 .section-heading > p, .contact-intro > p { color: var(--muted); font-size: 15px; }
 .highlight-ledger { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); border-top: 1px solid var(--navy); }
@@ -449,7 +450,7 @@ footer > .container > p:not(.disclosure) { color: #c6d0d9; font-size: 12px; }
   #primary-nav a { min-height: 50px; border-bottom: 1px solid var(--rule); }
   .hero-card { width: min(620px,75vw); }
   .editorial-grid { grid-template-columns: 145px minmax(0,1fr); gap: 50px; }
-  .section-number span { font-size: 65px; }
+  .section-marker span { font-size: 54px; }
   .fact-grid { grid-template-columns: repeat(3,1fr); }
   .gallery { grid-auto-rows: 180px; }
   .gallery-item-1, .gallery-item-2 { grid-column: span 6; }
@@ -493,9 +494,9 @@ footer > .container > p:not(.disclosure) { color: #c6d0d9; font-size: 12px; }
   .hero-kpi-rail b { font-size: 21px; }
   .narrative-section { padding-top: 86px; }
   .editorial-grid { grid-template-columns: 1fr; gap: 24px; }
-  .section-number { position: static; display: flex; align-items: baseline; gap: 14px; border-bottom: 2px solid var(--navy); }
-  .section-number span { font-size: 50px; }
-  .section-number p { margin: 0; padding: 0; border: 0; }
+  .section-marker { gap: 14px; padding-bottom: 8px; }
+  .section-marker span { font-size: 50px; }
+  .editorial-copy { grid-column: 1; }
   .editorial-copy h2, .section-heading h2, .financial-title h2, .contact-intro h2 { font-size: 38px; }
   .narrative-paragraph { font-size: 17px; line-height: 1.62; }
   .location-studio { margin-top: 44px; }

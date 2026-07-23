@@ -157,8 +157,8 @@
     },
     {
       "path": "assets/styles.css",
-      "sha256": "d1d02cdc7802723e43f399aed4343b5c91b9eb8356aec5e744e4944b481846b7",
-      "bytes": 62967
+      "sha256": "340c9f935a89385c9f58607da20cdfeb5c2315fb8ddbf110dbfa3c5e762a91d9",
+      "bytes": 63021
     },
     {
       "path": "data/site-data.json",
@@ -167,8 +167,8 @@
     },
     {
       "path": "index.html",
-      "sha256": "82f6e9a59f05bc49d1e547bf311986a7139657b1339ac16995a82b4041ab8204",
-      "bytes": 98577
+      "sha256": "dc3cd64b8aacafe4fc694d900b5aea2b97f43293e97b79bfc94993e400094b17",
+      "bytes": 98739
     },
     {
       "path": "package-lock.json",
@@ -207,13 +207,13 @@
     },
     {
       "path": "src/index.template",
-      "sha256": "e8a423fd79ae15920b2c6c8619331fa3f862b6cb9f37d9fb5e222478d57d73e3",
-      "bytes": 25436
+      "sha256": "1ba3f07ac95ff87484013f42a169955413cca5d4c543046a8607c7c47febb789",
+      "bytes": 25598
     },
     {
       "path": "tests/ui-regression.cjs",
-      "sha256": "223dc807eb2951d3adf41714d97486688011f10552af6401124d28abf50de212",
-      "bytes": 29792
+      "sha256": "7ed6b7a85c4e5e10eb41172ac00051248e047bba63d97929f78c3a99d23f1370",
+      "bytes": 30857
     }
   ]
 }
