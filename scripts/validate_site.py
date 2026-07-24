@@ -290,7 +290,7 @@ else:
         if str(expected_sample) not in row["sample"] or (row["percentile_25"], row["median"], row["selected"]) != (expected_p25, expected_median, expected_selected):
             errors.append(f"Rent evidence changed for {row['segment']}")
 
-for required_map in ["map-newhall.jpg", "map-transit.jpg", "map-subject-satellite.jpg", "map-sale-comps.jpg"]:
+for required_map in ["map-newhall.jpg", "map-transit.jpg", "map-subject-satellite.jpg", "map-sale-comps.jpg", "walnut-street-view.jpg"]:
     if not (ROOT / "assets" / "images" / required_map).exists():
         errors.append(f"Missing locally committed map: {required_map}")
 for required_comp in [
@@ -319,6 +319,8 @@ for required_markup in [
     "class=\"financial-mini-table financial-financing-table\"",
     "data-comp-view=\"list\"", "data-comp-view=\"map\"", "data-location-view=\"district\"",
     "data-location-view=\"satellite\"", "data-location-view=\"transit\"", "data-location-view=\"street\"",
+    "data-location-panel=\"street\"", "assets/images/walnut-street-view.jpg",
+    "Street-level view of the Walnut Street frontage", "Open Interactive Street View in Google Maps",
     "data-google-map=\"location\"", "data-google-map=\"comps\"", "data-google-map=\"rents\"", "id=\"map-config\"",
     "data-map-fallback=\"rents\"", "data-comp-map-type=\"roadmap\"", "data-comp-map-type=\"satellite\"",
     "data-comp-metric=\"price\"", "data-comp-metric=\"ppu\"", "data-comp-metric=\"ppsf\"",
