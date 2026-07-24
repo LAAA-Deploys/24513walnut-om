@@ -349,7 +349,10 @@ async function inspectDelayedMapsKey(browser) {
   await page.waitForTimeout(100);
   check(mapsRequests === 0, `delayed-maps-key: map requested before a browser key existed`);
 
-  await page.evaluate(() => { window.LAAA_GOOGLE_MAPS_BROWSER_KEY = 'test-browser-key'; });
+  await page.evaluate(() => {
+    window.LAAA_GOOGLE_MAPS_BROWSER_KEY = 'test-browser-key';
+    window.LAAA_GOOGLE_MAPS_BROWSER_MAP_ID = 'test-project-map-id';
+  });
   await page.evaluate(() => window.scrollTo(0, 0));
   await page.waitForTimeout(100);
   await page.locator('[data-location-map]').scrollIntoViewIfNeeded();
@@ -404,6 +407,7 @@ async function inspectDelayedMapsKey(browser) {
     compCenter: window.__fakeMaps.find(map => map.element.dataset.googleMap === 'comps')?.center,
     compMapTypeId: window.__fakeMaps.find(map => map.element.dataset.googleMap === 'comps')?.mapTypeId,
     rentCircleCount: window.__fakeCircles.length,
+    mapIds: window.__fakeMaps.map(map => map.options.mapId),
   }));
   check(mapsRequests === 3, `delayed-maps-key: user retry did not start a fresh bounded round (${mapsRequests} requests)`);
   check(result.activeView === 'satellite', `delayed-maps-key: active view reset to ${result.activeView}`);
@@ -412,6 +416,7 @@ async function inspectDelayedMapsKey(browser) {
   check(result.compCenter?.lat === 34.2837309 && result.compCenter?.lng === -118.4456534, `delayed-maps-key: swipe did not pan the live comp map`);
   check(result.compMapTypeId === 'satellite', `delayed-maps-key: live comparable map did not switch to Satellite`);
   check(result.rentCircleCount === 2, `delayed-maps-key: expected two rent-survey radii, found ${result.rentCircleCount}`);
+  check(result.mapIds.length >= 3 && result.mapIds.every(mapId => mapId === 'test-project-map-id'), `delayed-maps-key: project map ID was not applied ${JSON.stringify(result.mapIds)}`);
 
   const laterFailureState = await page.evaluate(() => {
     const script = document.querySelector('script[src*="maps.googleapis.com/maps/api/js"]');

@@ -169,6 +169,7 @@
   var rentSurveyCircles = [];
   var googleMapConstructor = null;
   var googleMarkerConstructor = null;
+  var googleMapsMapId = '';
   var compGoogleBounds = null;
   var compMarkerById = {};
   var googleMapsRequested = false;
@@ -259,6 +260,7 @@
     rentSurveyCircles = [];
     googleMapConstructor = null;
     googleMarkerConstructor = null;
+    googleMapsMapId = '';
     compGoogleBounds = null;
     compMarkerById = {};
     document.querySelectorAll('[data-google-map]').forEach(function (canvas) {
@@ -297,7 +299,7 @@
     compGoogleMap = new googleMapConstructor(compCanvas, {
       center: { lat: 34.31, lng: -118.43 },
       zoom: 10,
-      mapId: 'DEMO_MAP_ID',
+      mapId: googleMapsMapId,
       mapTypeControl: false,
       streetViewControl: false,
       fullscreenControl: true,
@@ -353,7 +355,7 @@
     rentGoogleMap = new googleMapConstructor(rentCanvas, {
       center: mapConfig.subject,
       zoom: 12,
-      mapId: 'DEMO_MAP_ID',
+      mapId: googleMapsMapId,
       mapTypeControl: false,
       streetViewControl: false,
       fullscreenControl: true,
@@ -404,7 +406,7 @@
         locationMap = new googleMapConstructor(locationCanvas, {
           center: mapConfig.subject,
           zoom: 15,
-          mapId: 'DEMO_MAP_ID',
+          mapId: googleMapsMapId,
           mapTypeControl: true,
           streetViewControl: true,
           fullscreenControl: true,
@@ -445,14 +447,17 @@
   function requestGoogleMaps(startNewRound) {
     if (googleMapsRequested) return true;
     var keyMeta = document.querySelector('meta[name="google-maps-browser-key"]');
+    var mapIdMeta = document.querySelector('meta[name="google-maps-browser-map-id"]');
     var key = String(window.LAAA_GOOGLE_MAPS_BROWSER_KEY || (keyMeta && keyMeta.content) || '').trim();
-    if (!key) return false;
+    var mapId = String(window.LAAA_GOOGLE_MAPS_BROWSER_MAP_ID || (mapIdMeta && mapIdMeta.content) || '').trim();
+    if (!key || !mapId) return false;
     if (googleMapsAttempts >= 2) {
       if (!startNewRound) return false;
       googleMapsAttempts = 0;
     }
     googleMapsAttempts += 1;
     googleMapsRequested = true;
+    googleMapsMapId = mapId;
     window.LAAAInitGoogleMaps = initGoogleMaps;
     googleMapsScript = document.createElement('script');
     googleMapsScript.src = 'https://maps.googleapis.com/maps/api/js?key=' + encodeURIComponent(key) + '&loading=async&v=weekly&libraries=marker&callback=LAAAInitGoogleMaps&auth_referrer_policy=origin';

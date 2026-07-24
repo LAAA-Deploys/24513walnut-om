@@ -157,6 +157,7 @@ for stale in [
     "229,159", "approximately 788 square feet", "788 SF per residence",
     "three one-car garages", "1 detached and 2 attached",
     "credible three-unit pricing", "meaningful differences",
+    "DEMO_MAP_ID",
 ]:
     if stale.lower() in HTML.lower():
         errors.append(f"Stale or seller-facing phrase present: {stale}")
@@ -235,6 +236,9 @@ for item in DATA.get("investment_highlights", []):
 diligence_cards = re.findall(r'<div class="container diligence-grid">(.*?)</div>', HTML, re.S)
 if len(diligence_cards) != 1 or len(re.findall(r"<article>", diligence_cards[0])) != 8:
     errors.append("Buyer Due Diligence must render exactly eight verification categories")
+
+if '<meta name="google-maps-browser-map-id" content="">' not in HTML:
+    errors.append("Blank project-owned Google Maps Map ID configuration hook is missing")
 
 rendered_ids = re.findall(r"""\bid=["']([^"']+)["']""", HTML, re.I)
 duplicate_ids = sorted({value for value in rendered_ids if rendered_ids.count(value) > 1})

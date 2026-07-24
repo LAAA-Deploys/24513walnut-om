@@ -4,7 +4,7 @@ Static buyer-facing Offering Memorandum website for 24513–24519 Walnut Street,
 
 The buyer experience includes a 12-image subject gallery, sourced investment and location narratives, current and pro forma financial analysis, two photo-backed listing-agent profiles, and six source-backed sale-comparable profiles synchronized with the comparable map.
 
-All substantive content and page assets load locally. The location and comparable sections support lazy-loaded Google Maps JavaScript API maps, including roadmap, satellite, transit, Street View, and synchronized comparable markers. A restricted browser key may be supplied through `window.LAAA_GOOGLE_MAPS_BROWSER_KEY` or the blank `google-maps-browser-key` meta value. High-resolution committed Google maps remain available when the API is blocked or unavailable. No server credential is included in the public site.
+All substantive content and page assets load locally. The location and comparable sections support lazy-loaded Google Maps JavaScript API maps, including roadmap, satellite, transit, Street View, and synchronized comparable markers. A restricted browser key and project-owned Maps Map ID must both be supplied through `window.LAAA_GOOGLE_MAPS_BROWSER_KEY` / `window.LAAA_GOOGLE_MAPS_BROWSER_MAP_ID` or the corresponding blank meta values. The site does not request the API unless both values exist. High-resolution committed Google maps remain available when the API is blocked, unavailable, or unconfigured. No server credential is included in the public site.
 
 ## Build and validate
 

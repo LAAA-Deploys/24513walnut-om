@@ -11,8 +11,9 @@
   <meta property="og:type" content="website">
   <meta property="og:image" content="assets/images/hero-front-aerial.jpg">
   <meta name="google-maps-browser-key" content="">
-  <link rel="stylesheet" href="assets/styles.css?v=20260723-7">
-  <script defer src="assets/site.js?v=20260723-7"></script>
+  <meta name="google-maps-browser-map-id" content="">
+  <link rel="stylesheet" href="assets/styles.css?v=20260723-8">
+  <script defer src="assets/site.js?v=20260723-8"></script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to offering details</a>
