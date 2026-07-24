@@ -266,7 +266,7 @@ def financial_expense_rows() -> str:
             f"<th scope='row'>{compact_financial_label(str(item['label']))}</th>"
             f"<td>{money(item['current'])}</td>"
             f"<td>{money(item['pro_forma'])}</td>"
-            f"<td><a class='note-reference' href='#financial-note-{index}' aria-label='Review note {index}'>[{index}]</a></td>"
+            f"<td><a class='note-reference' href='#financial-note-desktop-{index}' aria-label='Review note {index}'>[{index}]</a></td>"
             f"<td>{format_financial(item['pro_forma'], 'currency', 'unit')}</td>"
             f"<td>{format_financial(item['pro_forma'], 'currency', 'sf')}</td>"
             "</tr>"
@@ -296,11 +296,11 @@ def financial_expense_rows() -> str:
     return "".join(rows)
 
 
-def financial_notes() -> str:
+def financial_notes(scope: str) -> str:
     notes = []
     for index, item in enumerate(DATA["expenses"], start=1):
         notes.append(
-            f"<li id='financial-note-{index}'><span>[{index}]</span><p><b>{compact_financial_label(str(item['label']))}.</b> {esc(item['basis'])}</p></li>"
+            f"<li id='financial-note-{scope}-{index}'><span>[{index}]</span><p><b>{compact_financial_label(str(item['label']))}.</b> {esc(item['basis'])}</p></li>"
         )
     return "".join(notes)
 
@@ -695,7 +695,8 @@ replacements = {
     "{{FINANCIAL_OPERATING_ROWS}}": financial_operating_rows(),
     "{{FINANCIAL_EXPENSE_SUMMARY_ROWS}}": financial_expense_summary_rows(),
     "{{FINANCIAL_EXPENSE_ROWS}}": financial_expense_rows(),
-    "{{FINANCIAL_NOTES}}": financial_notes(),
+    "{{FINANCIAL_DESKTOP_NOTES}}": financial_notes("desktop"),
+    "{{FINANCIAL_MOBILE_NOTES}}": financial_notes("mobile"),
     "{{FINANCIAL_VISUALS}}": financial_visuals(),
     "{{FINANCIAL_MOBILE_ROWS}}": financial_mobile_rows(),
     "{{SALE_COMPARABLE_CONCLUSION}}": copy_paragraphs(DATA["comparables_analysis"]["sale_conclusion"], "comparison-narrative"),

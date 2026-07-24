@@ -236,6 +236,11 @@ diligence_cards = re.findall(r'<div class="container diligence-grid">(.*?)</div>
 if len(diligence_cards) != 1 or len(re.findall(r"<article>", diligence_cards[0])) != 8:
     errors.append("Buyer Due Diligence must render exactly eight verification categories")
 
+rendered_ids = re.findall(r"""\bid=["']([^"']+)["']""", HTML, re.I)
+duplicate_ids = sorted({value for value in rendered_ids if rendered_ids.count(value) > 1})
+if duplicate_ids:
+    errors.append(f"Rendered HTML contains duplicate IDs: {duplicate_ids}")
+
 if len(DATA["sale_comps"]) != 6:
     errors.append(f"Expected six sale comparables, got {len(DATA['sale_comps'])}")
 comp_ids = [comp.get("id") for comp in DATA["sale_comps"]]

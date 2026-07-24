@@ -144,6 +144,9 @@ async function inspectViewport(browser, width, height, options = {}) {
       h1Count: document.querySelectorAll('h1').length,
       landmarks: { main: Boolean(document.querySelector('main')), nav: Boolean(document.querySelector('nav')), footer: Boolean(document.querySelector('footer')) },
       brokenAnchors: hashLinks.filter(href => !document.querySelector(href)),
+      duplicateIds: Array.from(document.querySelectorAll('[id]'))
+        .map(element => element.id)
+        .filter((id, index, ids) => ids.indexOf(id) !== index),
       unresolved: /{{|}}|TODO|PLACEHOLDER/i.test(document.documentElement.innerHTML),
       noindex: document.querySelector('meta[name="robots"]')?.content.includes('noindex') || false,
       scrollBehavior: getComputedStyle(document.documentElement).scrollBehavior,
@@ -157,6 +160,7 @@ async function inspectViewport(browser, width, height, options = {}) {
   check(result.h1Count === 1, `${key}: expected one H1, found ${result.h1Count}`);
   check(Object.values(result.landmarks).every(Boolean), `${key}: missing landmark ${JSON.stringify(result.landmarks)}`);
   check(result.brokenAnchors.length === 0, `${key}: broken anchors ${result.brokenAnchors.join(', ')}`);
+  check(result.duplicateIds.length === 0, `${key}: duplicate IDs ${Array.from(new Set(result.duplicateIds)).join(', ')}`);
   check(!result.unresolved, `${key}: unresolved template or placeholder text`);
   check(result.noindex, `${key}: privacy noindex missing`);
   check(result.compCount === 6 && result.compSummaryCount === 6 && result.compPinCount === 6, `${key}: comp explorer counts cards=${result.compCount} summaries=${result.compSummaryCount} pins=${result.compPinCount}`);
@@ -326,7 +330,7 @@ async function inspectDelayedMapsKey(browser) {
     const requestUrl = new URL(route.request().url());
     if (requestUrl.hostname === 'maps.googleapis.com') {
       mapsRequests += 1;
-      if (mapsRequests === 1) {
+      if (mapsRequests <= 2) {
         await route.abort('failed');
         return;
       }
@@ -359,6 +363,10 @@ async function inspectDelayedMapsKey(browser) {
   check(await page.locator('[data-comp-map-type-controls]').isHidden(), 'delayed-maps-key: comparable map-type controls remained visible over the static fallback');
   check(await page.locator('[data-comp-map-type="roadmap"]').getAttribute('aria-pressed') === 'true', 'delayed-maps-key: comparable failure fallback did not reset to Roadmap');
   check(await page.locator('[data-comp-map-type="satellite"]').getAttribute('aria-pressed') === 'false', 'delayed-maps-key: comparable Satellite control remained active after failure');
+  for (let attempt = 0; attempt < 20 && mapsRequests < 2; attempt += 1) await page.waitForTimeout(100);
+  check(mapsRequests === 2, `delayed-maps-key: expected two bounded failed requests, found ${mapsRequests}`);
+  check(await page.evaluate(() => !window.__fakeMaps?.length), 'delayed-maps-key: map initialized despite two failed requests');
+  await page.locator('[data-location-view="satellite"]').click();
   await page.waitForFunction(() => window.__fakeMaps?.some(map => map.element.dataset.googleMap === 'location'));
   check(await page.evaluate(() => !window.__fakeMaps.some(map => map.element.dataset.googleMap === 'comps')), 'delayed-maps-key: hidden mobile comparable map initialized before becoming visible');
   await page.setViewportSize({ width: 1024, height: 768 });
@@ -397,7 +405,7 @@ async function inspectDelayedMapsKey(browser) {
     compMapTypeId: window.__fakeMaps.find(map => map.element.dataset.googleMap === 'comps')?.mapTypeId,
     rentCircleCount: window.__fakeCircles.length,
   }));
-  check(mapsRequests === 2, `delayed-maps-key: expected one failed request and one automatic retry, found ${mapsRequests}`);
+  check(mapsRequests === 3, `delayed-maps-key: user retry did not start a fresh bounded round (${mapsRequests} requests)`);
   check(result.activeView === 'satellite', `delayed-maps-key: active view reset to ${result.activeView}`);
   check(result.mapTypeId === 'satellite' && result.zoom === 19, `delayed-maps-key: Google map did not preserve Satellite (${result.mapTypeId}, zoom ${result.zoom})`);
   check(result.selectedComp === 'coronel', `delayed-maps-key: swipe selected ${result.selectedComp} instead of Coronel`);
@@ -418,8 +426,8 @@ async function inspectDelayedMapsKey(browser) {
   check(laterFailureState.controlsHidden, 'delayed-maps-key: later failure left live-map controls visible over the fallback');
   check(laterFailureState.roadmapPressed === 'true', 'delayed-maps-key: later failure did not restore Roadmap state');
   check(laterFailureState.satellitePressed === 'false', 'delayed-maps-key: later failure left Satellite active');
-  for (let attempt = 0; attempt < 20 && mapsRequests < 3; attempt += 1) await page.waitForTimeout(100);
-  check(mapsRequests === 3, `delayed-maps-key: retry budget was not restored after success (${mapsRequests} requests)`);
+  for (let attempt = 0; attempt < 20 && mapsRequests < 4; attempt += 1) await page.waitForTimeout(100);
+  check(mapsRequests === 4, `delayed-maps-key: retry budget was not restored after success (${mapsRequests} requests)`);
   await page.locator('[data-comp-view="map"]').click();
   await page.waitForTimeout(500);
   const laterRecoveryState = await page.evaluate(() => ({

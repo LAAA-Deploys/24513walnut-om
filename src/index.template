@@ -150,7 +150,7 @@
           </section>
           <details class="financial-notes">
             <summary>Notes to Operating Statement<span aria-hidden="true"></span></summary>
-            <ol>{{FINANCIAL_NOTES}}</ol>
+            <ol>{{FINANCIAL_DESKTOP_NOTES}}</ol>
           </details>
         </div>
         <div class="financial-mobile">
@@ -162,7 +162,7 @@
           <div class="financial-mobile-panels">{{FINANCIAL_MOBILE_ROWS}}</div>
           <details class="financial-notes">
             <summary>Notes to Operating Statement<span aria-hidden="true"></span></summary>
-            <ol>{{FINANCIAL_NOTES}}</ol>
+            <ol>{{FINANCIAL_MOBILE_NOTES}}</ol>
           </details>
         </div>
       </div>

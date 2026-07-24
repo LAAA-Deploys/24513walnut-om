@@ -242,7 +242,10 @@
   }
 
   locationButtons.forEach(function (button) {
-    button.addEventListener('click', function () { activateLocationView(button.dataset.locationView); });
+    button.addEventListener('click', function () {
+      activateLocationView(button.dataset.locationView);
+      if (!locationMap) requestGoogleMaps(true);
+    });
   });
 
   function handleGoogleMapsFailure() {
@@ -270,7 +273,7 @@
     if (googleMapsAttempts < 2 && !googleMapsRetryTimer) {
       googleMapsRetryTimer = window.setTimeout(function () {
         googleMapsRetryTimer = null;
-        requestGoogleMaps();
+        requestGoogleMaps(false);
       }, 1000);
     }
     var locationStatus = document.querySelector('[data-map-status="location"]');
@@ -439,12 +442,15 @@
     }).catch(handleGoogleMapsFailure);
   }
 
-  function requestGoogleMaps() {
+  function requestGoogleMaps(startNewRound) {
     if (googleMapsRequested) return true;
     var keyMeta = document.querySelector('meta[name="google-maps-browser-key"]');
     var key = String(window.LAAA_GOOGLE_MAPS_BROWSER_KEY || (keyMeta && keyMeta.content) || '').trim();
     if (!key) return false;
-    if (googleMapsAttempts >= 2) return false;
+    if (googleMapsAttempts >= 2) {
+      if (!startNewRound) return false;
+      googleMapsAttempts = 0;
+    }
     googleMapsAttempts += 1;
     googleMapsRequested = true;
     window.LAAAInitGoogleMaps = initGoogleMaps;
@@ -460,13 +466,14 @@
   if ('IntersectionObserver' in window && mapSections.length) {
     mapObserver = new IntersectionObserver(function (entries) {
       if (entries.some(function (entry) { return entry.isIntersecting; })) {
-        requestGoogleMaps();
+        requestGoogleMaps(true);
       }
     }, { rootMargin: '500px 0px' });
     mapSections.forEach(function (section) { mapObserver.observe(section); });
   } else {
-    requestGoogleMaps();
+    requestGoogleMaps(true);
   }
+  window.addEventListener('online', function () { requestGoogleMaps(true); }, { passive: true });
 
   var financialButtons = Array.from(document.querySelectorAll('[data-fin-basis]'));
   var financialValues = Array.from(document.querySelectorAll('[data-fin-value]'));
@@ -557,7 +564,10 @@
         candidate.setAttribute('aria-pressed', String(active));
       });
       if (compExplorer) compExplorer.dataset.mobileView = view;
-      if (view === 'map') refreshCompGoogleMap();
+      if (view === 'map') {
+        if (!compGoogleMap) requestGoogleMaps(true);
+        refreshCompGoogleMap();
+      }
     });
   });
   window.addEventListener('resize', refreshCompGoogleMap, { passive: true });
