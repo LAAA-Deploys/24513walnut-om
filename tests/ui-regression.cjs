@@ -122,6 +122,12 @@ async function inspectViewport(browser, width, height, options = {}) {
       subjectBaselineCount: document.querySelectorAll('.subject-baseline').length,
       rentBenchmarkCount: document.querySelectorAll('.rent-benchmark-card').length,
       rentMapFallback: Boolean(document.querySelector('[data-map-fallback="rents"]')),
+      streetViewFallback: {
+        src: document.querySelector('[data-location-panel="street"] img')?.getAttribute('src'),
+        alt: document.querySelector('[data-location-panel="street"] img')?.getAttribute('alt'),
+        href: document.querySelector('[data-location-panel="street"] a')?.getAttribute('href'),
+        caption: document.querySelector('[data-location-panel="street"] figcaption')?.textContent.trim(),
+      },
       mobileProfileDetailsClosed: Array.from(document.querySelectorAll('[data-profile-detail]')).every(detail => !detail.open),
       galleryCount: document.querySelectorAll('[data-gallery-link]').length,
       agentCount: document.querySelectorAll('.agent-card').length,
@@ -166,6 +172,13 @@ async function inspectViewport(browser, width, height, options = {}) {
   check(result.compCount === 6 && result.compSummaryCount === 6 && result.compPinCount === 6, `${key}: comp explorer counts cards=${result.compCount} summaries=${result.compSummaryCount} pins=${result.compPinCount}`);
   check(result.compSelectedCount === 6 && result.compMetricPanelCount === 3 && result.subjectBaselineCount === 1, `${key}: redesigned sale-comp structures missing selected=${result.compSelectedCount} metrics=${result.compMetricPanelCount} subject=${result.subjectBaselineCount}`);
   check(result.rentBenchmarkCount === 2 && result.rentMapFallback, `${key}: redesigned rent evidence missing cards=${result.rentBenchmarkCount} fallback=${result.rentMapFallback}`);
+  check(
+    result.streetViewFallback.src === 'assets/images/walnut-street-view.jpg' &&
+      result.streetViewFallback.alt?.includes('Street-level view') &&
+      result.streetViewFallback.href?.includes('map_action=pano') &&
+      result.streetViewFallback.caption?.includes('Walnut Street frontage'),
+    `${key}: Street View fallback is not a genuine street-level presentation ${JSON.stringify(result.streetViewFallback)}`,
+  );
   check(result.galleryCount === 12 && result.hasGalleryDialog, `${key}: gallery incomplete count=${result.galleryCount}`);
   check(result.agentCount === 2 && result.hasHeadshots, `${key}: Glen/Filip profiles or headshots missing`);
   check(result.overviewParagraphs === 3 && result.locationParagraphs === 3, `${key}: narrative paragraph contract failed`);
@@ -242,6 +255,12 @@ async function inspectViewport(browser, width, height, options = {}) {
 
     await page.locator('[data-location-view="transit"]').click();
     check(await page.locator('[data-location-panel="transit"]').isVisible(), `${key}: transit map fallback did not activate`);
+    await page.locator('[data-location-view="street"]').click();
+    check(await page.locator('[data-location-panel="street"]').isVisible(), `${key}: Street View fallback did not activate`);
+    check(
+      await page.locator('[data-location-panel="street"] img').getAttribute('src') === 'assets/images/walnut-street-view.jpg',
+      `${key}: Street View fallback displayed the wrong image`,
+    );
 
     await page.locator('[data-comp-view="map"]').click();
     check(await page.locator('.comp-map-panel').isVisible(), `${key}: mobile comp map mode did not activate`);
