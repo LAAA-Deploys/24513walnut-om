@@ -1,14 +1,64 @@
 {
   "files": [
     {
+      "path": ".gitattributes",
+      "sha256": "9707d50eb8ba2ec03cfc0b3a9e6b6253f3ea72adaf043c82cee92c2d9cb27305",
+      "bytes": 99
+    },
+    {
       "path": ".gitignore",
-      "sha256": "dbb53c15a3bef0ad78316ecd564c9915f3719d3fdbe341855181c679f1663c2f",
-      "bytes": 40
+      "sha256": "4ce4f1922c9717ca85e8228449a981ddda7de686a2ceb9896603e0c00a3e413f",
+      "bytes": 53
+    },
+    {
+      "path": ".laaa-marketing.json",
+      "sha256": "960805bbd45d369a5254f81db1d66d4ea041d3c07ca0c93bfcf73d88450755c7",
+      "bytes": 374
     },
     {
       "path": ".nojekyll",
       "sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
       "bytes": 1
+    },
+    {
+      "path": "assets/brand/LAAA_Team_Blue.png",
+      "sha256": "ebced402dee39f41c25da2b2cf7124d1932a45df95754675cc79e4658bf9a6d2",
+      "bytes": 31373
+    },
+    {
+      "path": "assets/brand/LAAA_Team_White.png",
+      "sha256": "40439c1b03b8132b2e09832258ca22bc04b0f18f3796537c43f45f0fef68e2f5",
+      "bytes": 28342
+    },
+    {
+      "path": "assets/images/comps/atwood.jpg",
+      "sha256": "9a83cdfe7def42cdb7fe65abe5993cf062bd15608f7b52bd3d097f795a208ebf",
+      "bytes": 112436
+    },
+    {
+      "path": "assets/images/comps/coronel.jpg",
+      "sha256": "53602da9d4f25dc83c9ba6de0b53b1a38275e70f2656b0c614cb916fcc7c31e3",
+      "bytes": 75073
+    },
+    {
+      "path": "assets/images/comps/harding.jpg",
+      "sha256": "ca78035a9db10b2622bd074b81a626aae32672ebaf5d5511404ab7ed9a528d4f",
+      "bytes": 174407
+    },
+    {
+      "path": "assets/images/comps/oro-vista.jpg",
+      "sha256": "572ab2304626322744776cd0bdd9cb6bf57d0b41ea701d7504c948421a7ce473",
+      "bytes": 114635
+    },
+    {
+      "path": "assets/images/comps/pinewood.jpg",
+      "sha256": "52d180801ca59dd41561a1546fa9c0d23ca1def2abd4ba01eff164c5b7633665",
+      "bytes": 118969
+    },
+    {
+      "path": "assets/images/comps/santol.jpg",
+      "sha256": "0b46cc5af38e71ddfcc1323abba7077023dbb81aec7d4f6d80a8d29ab86517c0",
+      "bytes": 344568
     },
     {
       "path": "assets/images/filip-niculete.jpg",
@@ -32,13 +82,23 @@
     },
     {
       "path": "assets/images/map-newhall.jpg",
-      "sha256": "b6548180e93452bc431ab242d2947f4a836134ebf125cdd46a429fd4a307d101",
-      "bytes": 104642
+      "sha256": "a3db96336cbe2273b1aa9129c4c1131cd14d31c5afd90b20856b8adde234dc0a",
+      "bytes": 94336
+    },
+    {
+      "path": "assets/images/map-sale-comps.jpg",
+      "sha256": "71bbe783c883f99b861406d71e08cd5ba702cc4c9a5d39be9e66d48cd62ca925",
+      "bytes": 150311
+    },
+    {
+      "path": "assets/images/map-subject-satellite.jpg",
+      "sha256": "96fecfc98ffbfdb6e30f5659d2631663f7dfc99a30a5e6c73e49d52c7d847991",
+      "bytes": 251103
     },
     {
       "path": "assets/images/map-transit.jpg",
-      "sha256": "f7344f6d27c726a8309d0db33b7134ddbc05dac2d3f8d6e8583776fd7635bf25",
-      "bytes": 99519
+      "sha256": "9223de003050cf8e1589f82b5ddf84433ead0dd79caae63701fb5bf2fe7cfef8",
+      "bytes": 97454
     },
     {
       "path": "assets/images/rear-buildings-aerial.jpg",
@@ -92,28 +152,38 @@
     },
     {
       "path": "assets/site.js",
-      "sha256": "451d8bc5b02d09adeb596fcfb40bd978bd9bf1e878014a83c9a91b25f700949a",
-      "bytes": 963
+      "sha256": "711a862056aad9cb5d643cf3ec9ea1ff2c78ebd91e26a66b43ce9bc3399c5e4e",
+      "bytes": 26506
     },
     {
       "path": "assets/styles.css",
-      "sha256": "4fa8a0914734869e0fc63323bd75e84a57c800cec1b66cb77608b51d6a72583f",
-      "bytes": 15185
+      "sha256": "bbeee9ab547ddd0a0fd403f9cf76aef8ec2a58bbeda7f8fd644b14ef56ce5f83",
+      "bytes": 71571
     },
     {
       "path": "data/site-data.json",
-      "sha256": "500f105c16aa2ea31a428b8e3d48d8166c77911983a3a7157cdf4e63b03be54b",
-      "bytes": 5787
+      "sha256": "568a7e6da60286a75f0dd480c9f7e4e381cf4345e81442dec15335fe45af4846",
+      "bytes": 23673
     },
     {
       "path": "index.html",
-      "sha256": "9e25570fc95880c48805f253be84d09372dbe95121d92af0ccaf42f69f470a43",
-      "bytes": 19684
+      "sha256": "adc8357e10d3b7bef796b5948730a664a4909a02e034e8ed005e6bb3e2b71822",
+      "bytes": 108066
+    },
+    {
+      "path": "package-lock.json",
+      "sha256": "d0443f7a6e68b5a17bdf4d07a541318abdb684d18563b78fc9228e6ce6eae0cd",
+      "bytes": 1739
+    },
+    {
+      "path": "package.json",
+      "sha256": "b987d428cbef299925f8a151c9456ca69080ed7a770312b0d1d0910e73ed6de7",
+      "bytes": 271
     },
     {
       "path": "README.md",
-      "sha256": "5ab9f6536e437d786f0c75633598255c299b6322b0f96267c6ffb0ecef53b2f3",
-      "bytes": 453
+      "sha256": "e99f4d1f62fbb2ef00563151219c8789c0b663c995be566aec08d372893701a6",
+      "bytes": 2306
     },
     {
       "path": "robots.txt",
@@ -122,8 +192,8 @@
     },
     {
       "path": "scripts/build_site.py",
-      "sha256": "bfb9d504aa61f760f8e7a1488db08846a7772fe041d79f66e884a4b13eb65bfb",
-      "bytes": 5853
+      "sha256": "435ab7c0ad579ca265173ca5df203436189d9af0adba0878e646c8c2b22427b4",
+      "bytes": 44643
     },
     {
       "path": "scripts/serve_local.py",
@@ -132,13 +202,18 @@
     },
     {
       "path": "scripts/validate_site.py",
-      "sha256": "f5bb26af1c41934ac80dcfa5b87064d45e491ebb7aeb2c13973a1975f083f1e0",
-      "bytes": 3386
+      "sha256": "43a4cf7814e9e493964d8c88f8d236641910dabe075d17bb554a9aa832464ef9",
+      "bytes": 19768
     },
     {
-      "path": "src/index.template.html",
-      "sha256": "c23e15a56fb6b5d4ad6e97d79ff09787449233d88ea29033121351aefdc41587",
-      "bytes": 13505
+      "path": "src/index.template",
+      "sha256": "c8c254933ae63afc5c9d473e21aad8a6d4fc5d6271bc8b6b146cd027366439f1",
+      "bytes": 29552
+    },
+    {
+      "path": "tests/ui-regression.cjs",
+      "sha256": "9fab47f24ccc36e2155c61cacf1dca824b0b2078d0ddc878e67208d48facf6a7",
+      "bytes": 33167
     }
   ]
 }

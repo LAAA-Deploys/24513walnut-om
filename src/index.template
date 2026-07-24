@@ -1,0 +1,272 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <title>{{TITLE}}</title>
+  <meta name="description" content="{{DESCRIPTION}}">
+  <meta name="robots" content="noindex, nofollow, noarchive">
+  <meta property="og:title" content="{{TITLE}}">
+  <meta property="og:description" content="{{DESCRIPTION}}">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="assets/images/hero-front-aerial.jpg">
+  <meta name="google-maps-browser-key" content="">
+  <meta name="google-maps-browser-map-id" content="">
+  <link rel="stylesheet" href="assets/styles.css?v=20260723-8">
+  <script defer src="assets/site.js?v=20260723-8"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to offering details</a>
+  <div class="preview-band">Confidential Offering Memorandum · July 2026</div>
+  <header class="site-header">
+    <a class="wordmark" href="#top" aria-label="24513 Walnut offering home">
+      <span class="brand-slot" data-laaa-brand-slot="header" data-logo-variant="blue" data-brand-context="light"><img src="assets/brand/LAAA_Team_Blue.png" alt="LAAA Team"></span>
+      <span class="site-descriptor">Offering Memorandum</span>
+    </a>
+    <button class="menu-toggle" data-laaa-menu-toggle type="button" aria-expanded="false" aria-controls="primary-nav"><span aria-hidden="true"></span><span aria-hidden="true"></span><span aria-hidden="true"></span><span class="sr-only menu-label" data-laaa-menu-label>Open navigation</span></button>
+    <nav id="primary-nav" data-laaa-menu aria-label="Primary navigation">
+      <a href="#overview">Overview</a><a href="#location">Location</a><a href="#property">Property</a><a href="#financials">Financials</a><a href="#comps">Comparables</a><a href="#contact">Agents</a>
+    </nav>
+  </header>
+  <div class="menu-backdrop" data-laaa-menu-backdrop hidden></div>
+
+  <main id="main">
+    <section class="hero" id="top" aria-labelledby="hero-title">
+      <div class="hero-visual"><img class="hero-image" src="assets/images/hero-front-aerial.jpg" alt="Aerial view of 24513–24519 Walnut Street in Old Town Newhall"><div class="hero-scrim"></div></div>
+      <div class="hero-shell">
+        <div class="hero-card" data-laaa-hero-content data-laaa-over-image>
+          <p class="kicker">Three-unit residential investment · Old Town Newhall</p>
+          <h1 id="hero-title">{{ADDRESS}}</h1>
+          <p class="hero-location">{{CITY_STATE_ZIP}}</p>
+          <div class="hero-price"><span>Offering price</span><strong>{{PRICE}}</strong></div>
+          <div class="hero-actions"><a class="button primary" href="#financials">Review financials</a><a class="button secondary" href="#contact">Contact the team</a></div>
+        </div>
+      </div>
+      <div class="hero-kpi-rail" data-laaa-hero-kpis aria-label="Offering highlights">
+        <div><span>Units</span><b>3</b></div><div><span>Building</span><b>2,364 SF</b></div><div><span>Lot</span><b>9,379 SF</b></div><div><span>Current NOI</span><b>{{CURRENT_NOI}}</b></div><div><span>Current cap</span><b>{{CURRENT_CAP}}</b></div><div><span>Pro Forma cap</span><b>{{PROFORMA_CAP}}</b></div>
+      </div>
+    </section>
+
+    <section class="section narrative-section" id="overview">
+      <div class="container editorial-grid">
+        <div class="section-marker"><span>01</span><p>Investment Overview</p></div>
+        <div class="editorial-copy"><p class="eyebrow">The Opportunity</p><h2>Three-Unit Residential Investment in Old Town Newhall</h2>{{INVESTMENT_OVERVIEW}}</div>
+      </div>
+    </section>
+
+    <section class="section location-section" id="location">
+      <div class="container editorial-grid">
+        <div class="section-marker"><span>02</span><p>Location Overview</p></div>
+        <div class="editorial-copy"><p class="eyebrow">Old Town Newhall</p><h2>Historic Main Street with Regional Rail Access</h2>{{LOCATION_OVERVIEW}}</div>
+      </div>
+      <div class="container location-studio">
+        <div class="map-frame" data-location-map>
+          <div class="map-toolbar" aria-label="Location map views">
+            <div role="group" aria-label="Location map layers"><button class="active" type="button" data-location-view="district" aria-pressed="true">Neighborhood</button><button type="button" data-location-view="satellite" aria-pressed="false">Satellite</button><button type="button" data-location-view="transit" aria-pressed="false">Transit</button><button type="button" data-location-view="street" aria-pressed="false">Street View</button></div>
+          </div>
+          <div class="google-map-canvas" data-google-map="location" hidden aria-label="Interactive map of 24513 Walnut Street and nearby Old Town Newhall destinations"></div>
+          <div class="map-fallback" data-map-fallback="location">
+            <figure data-location-panel="district"><img src="assets/images/map-newhall.jpg" alt="Map showing 24513 Walnut Street, Newhall Metrolink Station, The MAIN, Old Town Newhall Library, and William S. Hart Park"><figcaption>Old Town Newhall location overview · Google map data</figcaption></figure>
+            <figure data-location-panel="satellite" hidden><img src="assets/images/map-subject-satellite.jpg" alt="Satellite view of the subject property at 24513 Walnut Street"><figcaption>Subject property satellite view · Google map data</figcaption></figure>
+            <figure data-location-panel="transit" hidden><img src="assets/images/map-transit.jpg" alt="Map showing the subject property and Newhall Metrolink Station"><figcaption>Approximately 0.26 mile to Newhall Metrolink Station · Google map data</figcaption></figure>
+            <figure data-location-panel="street" hidden><a class="street-view-fallback" href="https://www.google.com/maps/@?api=1&map_action=pano&viewpoint=34.3810926,-118.5315719" target="_blank" rel="noopener"><img src="assets/images/map-subject-satellite.jpg" alt="Satellite view of the subject property"><span>Open Street View in Google Maps</span></a></figure>
+          </div>
+          <p class="map-status" data-map-status="location" aria-live="polite">Explore the property and nearby Old Town Newhall destinations.</p>
+        </div>
+        <aside class="location-evidence"><p class="eyebrow">Old Town Newhall at a Glance</p><h3>Connected to Main Street and Greater Los Angeles</h3><dl class="location-distance-list"><div><dt>Old Town Newhall Library</dt><dd>0.09 mi</dd></div><div><dt>Newhall Metrolink Station</dt><dd>0.26 mi</dd></div><div><dt>The MAIN</dt><dd>0.30 mi</dd></div><div><dt>William S. Hart Park</dt><dd>0.46 mi</dd></div><div><dt>Interstate 5</dt><dd>Approx. 1 mi</dd></div><div><dt>Henry Mayo Newhall Hospital</dt><dd>1.71 mi</dd></div></dl><div class="source-links">{{LOCATION_SOURCES}}</div><a class="button outline" href="https://www.google.com/maps/search/?api=1&query=24513%20Walnut%20Street%2C%20Newhall%2C%20CA%2091321&query_place_id=ChIJNzPctWGGwoAR-jc8Y6-l4Fo" target="_blank" rel="noopener">View Property in Google Maps</a></aside>
+      </div>
+    </section>
+
+    <section class="section highlight-section" id="highlights">
+      <div class="container section-heading"><div class="section-marker"><span>03</span><p>Investment Highlights</p></div><div><h2>Occupied Income with Defined Rent Upside</h2></div><p>Three residences, Old Town Newhall access, and a 9,379-square-foot COR-zoned lot.</p></div>
+      <div class="container highlight-ledger">{{HIGHLIGHTS}}</div>
+    </section>
+
+    <section class="section property-section" id="property">
+      <div class="container section-heading"><div class="section-marker"><span>04</span><p>Property Details</p></div><div><h2>Duplex and Detached Rear Residence on 9,379 SF</h2></div><p>Public records and MLS information indicate five bedrooms across three residences, with improvements dating to 1926 and 1954. Buyers should independently verify configuration, square footage, parking, permits, and legal status.</p></div>
+      <div class="container fact-grid"><div><span>APN</span><b>2831-005-003</b></div><div><span>Unit mix</span><b>2 × 2BR + 1 × 1BR</b></div><div><span>Bathrooms</span><b>3 total</b></div><div><span>Year built</span><b>1926 / 1954</b></div><div><span>Zoning</span><b>OTNSP — COR</b></div><div><span>Flood</span><b>Zone X</b></div></div>
+      <div class="container gallery-intro"><p><b>12-image property gallery</b><span>Select any image for the accessible full-screen viewer.</span></p></div>
+      <div class="container gallery" aria-label="Property photo gallery">{{GALLERY_ITEMS}}</div>
+      <p class="container media-note">Property images are archived listing photography. Aerial parcel lines, where shown, are illustrative and not a survey.</p>
+      <dialog class="lightbox" data-gallery-dialog aria-label="Property image viewer">
+        <button class="lightbox-close" type="button" data-gallery-close aria-label="Close image viewer">×</button><button class="lightbox-nav previous" type="button" data-gallery-previous aria-label="Previous image">‹</button>
+        <figure><img data-gallery-image src="assets/images/hero-front-aerial.jpg" alt="Aerial view of the Walnut Street frontage and existing residential improvements"><figcaption data-gallery-caption>Walnut Street frontage · archived listing photography</figcaption></figure>
+        <button class="lightbox-nav next" type="button" data-gallery-next aria-label="Next image">›</button>
+      </dialog>
+    </section>
+
+    <section class="section financial-section" id="financials">
+      <div class="container financial-title">
+        <div class="section-marker"><span>05</span><p>Financial Details</p></div>
+        <div class="financial-title-meta"><strong>24513–24519 Walnut Street</strong><small>As of July 2026</small></div>
+      </div>
+
+      <div class="container rent-roll-block">
+        <div class="subsection-heading"><div><p class="eyebrow">Rental Income</p><h3>Rent Roll</h3></div><p>Unit areas are assessor-reported and subject to walkthrough verification. Rent per square foot is calculated from the reported unit areas.</p></div>
+        <div class="table-region"><div class="table-shell" data-laaa-scroll-region tabindex="0" role="region" aria-label="Rent roll table">
+          <table class="rent-roll-table"><caption>Current and pro forma rent roll</caption><thead>
+            <tr class="rent-roll-groups"><th rowspan="2">Unit</th><th rowspan="2" class="desktop-unit-type">Unit Type</th><th rowspan="2" class="desktop-unit-sf">SF</th><th colspan="2">Scheduled</th><th colspan="2">Pro Forma</th><th rowspan="2">Upside</th></tr>
+            <tr class="rent-roll-columns"><th>Rent / Month</th><th class="desktop-rent-rate"><abbr title="Current Rent Per Square Foot">Rent / SF</abbr></th><th>Rent / Month</th><th class="desktop-rent-rate"><abbr title="Pro Forma Rent Per Square Foot">Rent / SF</abbr></th></tr>
+            <tr class="rent-roll-mobile-head"><th>Unit</th><th>Current</th><th>Pro Forma</th><th>Upside</th></tr>
+          </thead><tbody>{{UNIT_ROWS}}</tbody><tfoot><tr><th scope="row">Monthly Total</th><td class="desktop-unit-type"></td><td class="desktop-unit-sf"></td><td><strong>{{CURRENT_MONTHLY_RENT}}</strong></td><td class="desktop-rent-rate"></td><td><strong>{{PROFORMA_MONTHLY_RENT}}</strong></td><td class="desktop-rent-rate"></td><td><strong>{{MONTHLY_RENT_UPSIDE}}</strong><small>{{MONTHLY_RENT_UPSIDE_PERCENT}}</small></td></tr></tfoot></table>
+        </div><p class="table-scroll-cue" hidden>Scroll horizontally to review all columns.</p></div>
+      </div>
+
+      <div class="container financial-visuals" aria-label="Unit mix and average monthly rent">{{FINANCIAL_VISUALS}}</div>
+
+      <div class="container financial-detail-block">
+        <div class="subsection-heading"><div><p class="eyebrow">Financial Analysis</p><h3>Summary and Operating Data</h3></div><p>No seller T-12 was available. The analysis combines seller-provided expense information with approved broker estimates and illustrative financing.</p></div>
+        <div class="financial-desktop">
+          <div class="financial-overview-grid">
+            <div class="financial-summary-stack">
+              <section class="financial-ledger">
+                <h4>Summary</h4>
+                <table class="financial-mini-table financial-summary-table"><caption>Property financial summary</caption><tbody>{{FINANCIAL_SUMMARY_ROWS}}</tbody></table>
+              </section>
+              <section class="financial-ledger">
+                <h4>Returns</h4>
+                <table class="financial-mini-table"><caption>Current and pro forma returns</caption><thead><tr><th>Return</th><th>Current</th><th>Pro Forma</th></tr></thead><tbody>{{FINANCIAL_RETURNS_ROWS}}</tbody></table>
+              </section>
+              <section class="financial-ledger financial-ledger-financing">
+                <h4>Financing</h4>
+                <table class="financial-mini-table financial-financing-table"><caption>Illustrative financing assumptions</caption><tbody>{{FINANCIAL_FINANCING_ROWS}}</tbody></table>
+              </section>
+            </div>
+            <div class="financial-operating-stack">
+              <section class="financial-ledger financial-operating-ledger">
+                <h4>Operating Data</h4>
+                <table class="financial-table financial-operating-table"><caption>Current and pro forma operating data</caption><thead><tr><th>Income and Returns</th><th>Current</th><th>Pro Forma</th></tr></thead><tbody>{{FINANCIAL_OPERATING_ROWS}}</tbody></table>
+              </section>
+              <section class="financial-ledger financial-expense-summary-ledger">
+                <h4>Expense Summary</h4>
+                <table class="financial-mini-table"><caption>Current and pro forma expense summary</caption><thead><tr><th>Expense Summary</th><th>Current</th><th>Pro Forma</th></tr></thead><tbody>{{FINANCIAL_EXPENSE_SUMMARY_ROWS}}</tbody></table>
+              </section>
+            </div>
+          </div>
+          <section class="financial-ledger financial-expense-ledger">
+            <h4>Operating Statement</h4>
+            <div class="table-region"><div class="table-shell financial-expense-shell" data-laaa-scroll-region tabindex="0" role="region" aria-label="Detailed expense table">
+              <table class="financial-table financial-expense-table"><caption>Detailed operating statement</caption><thead><tr><th>Line Item</th><th>Current</th><th>Pro Forma</th><th>Notes</th><th>/ Unit</th><th><abbr title="Per Square Foot">/ SF</abbr></th></tr></thead><tbody>{{FINANCIAL_EXPENSE_ROWS}}</tbody></table>
+            </div><p class="table-scroll-cue" hidden>Scroll horizontally to review all columns.</p></div>
+          </section>
+          <details class="financial-notes">
+            <summary>Notes to Operating Statement<span aria-hidden="true"></span></summary>
+            <ol>{{FINANCIAL_DESKTOP_NOTES}}</ol>
+          </details>
+        </div>
+        <div class="financial-mobile">
+          <section class="financial-ledger">
+            <h4>Summary</h4>
+            <table class="financial-mini-table financial-summary-table"><caption>Property financial summary</caption><tbody>{{FINANCIAL_SUMMARY_ROWS}}</tbody></table>
+          </section>
+          <div class="basis-tabs" role="group" aria-label="Financial basis"><button class="active" type="button" data-fin-basis="total" aria-pressed="true">Total</button><button type="button" data-fin-basis="unit" aria-pressed="false">Per Unit</button><button type="button" data-fin-basis="sf" aria-pressed="false" aria-label="Per Square Foot">/ SF</button></div>
+          <div class="financial-mobile-panels">{{FINANCIAL_MOBILE_ROWS}}</div>
+          <details class="financial-notes">
+            <summary>Notes to Operating Statement<span aria-hidden="true"></span></summary>
+            <ol>{{FINANCIAL_MOBILE_NOTES}}</ol>
+          </details>
+        </div>
+      </div>
+      <details class="container financial-assumptions" open>
+        <summary>Underwriting Basis<span aria-hidden="true"></span></summary>
+        <p>Property taxes assume reassessment at 1.40% of the offering price. Insurance, water/sewer, and trash use seller-provided annual amounts. R&amp;M, landscaping, and G&amp;A are approved broker estimates. No vacancy, management fee, or replacement reserves are included. Illustrative financing assumes a 75% LTV new loan at 6.50% interest with 30-year amortization; terms remain subject to lender approval. Buyers should underwrite from their own inspection, leases, financing, and operating assumptions.</p>
+      </details>
+    </section>
+
+    <section class="section market-section" id="comps">
+      <div class="container section-heading"><div class="section-marker"><span>06</span><p>Sale and Rent Comparables</p></div><div><h2>Comparable Evidence for Walnut Street</h2></div><p>Six selected sales and the approved rent survey frame the offering through location, physical characteristics, rent rules, condition, and income.</p></div>
+
+      <div class="container comparison-thesis">
+        <div><p class="eyebrow">Sale Comparison</p><h3>How the Sales Frame Walnut</h3></div>
+        <div>{{SALE_COMPARABLE_CONCLUSION}}</div>
+      </div>
+
+      <div class="container">{{SUBJECT_BASELINE}}</div>
+
+      <div class="container comp-studio-heading"><div><p class="eyebrow">Interactive Sale Comparison</p><h3>Six Sales, One Consistent Frame of Reference</h3></div><p>Select any sale to connect its photograph, map position, transaction facts, and relationship to Walnut.</p></div>
+      <div class="container comp-view-tabs" role="group" aria-label="Comparable explorer view"><button class="active" type="button" data-comp-view="list" aria-pressed="true">List · 6</button><button type="button" data-comp-view="map" aria-pressed="false">Map</button></div>
+      <div class="container comp-explorer">
+        <div class="comp-list" data-comp-panel="list" aria-label="Sale comparable summaries">{{COMP_SUMMARY_ITEMS}}</div>
+        <div class="comp-map-panel" data-comp-panel="map">
+          <div class="comp-map-toolbar">
+            <span>Subject and Comparable Sales</span>
+            <div role="group" aria-label="Sale comparable map type" data-comp-map-type-controls hidden><button class="active" type="button" data-comp-map-type="roadmap" aria-pressed="true">Roadmap</button><button type="button" data-comp-map-type="satellite" aria-pressed="false">Satellite</button></div>
+          </div>
+          <div class="comp-map-canvas">
+            <div class="google-map-canvas" data-google-map="comps" hidden aria-label="Interactive map of the subject property and six sale comparables"></div>
+            <img data-map-fallback="comps" src="assets/images/map-sale-comps.jpg" alt="Regional map showing the Walnut subject and six numbered sale comparables">
+            <button class="map-pin pin-1 is-selected" style="--x:19.4%;--y:32%" type="button" data-comp-select="atwood" aria-label="Select comparable 1, 25252 Atwood Boulevard">1</button>
+            <button class="map-pin pin-2" style="--x:44.5%;--y:58%" type="button" data-comp-select="coronel" aria-label="Select comparable 2, 1237 Coronel Street">2</button>
+            <button class="map-pin pin-3" style="--x:73.5%;--y:65%" type="button" data-comp-select="oro-vista" aria-label="Select comparable 3, 10427 Oro Vista Avenue">3</button>
+            <button class="map-pin pin-4" style="--x:80.5%;--y:67%" type="button" data-comp-select="pinewood" aria-label="Select comparable 4, 10030 Pinewood Avenue">4</button>
+            <button class="map-pin pin-5" style="--x:59%;--y:55.5%" type="button" data-comp-select="santol" aria-label="Select comparable 5, 11344 Santol Drive">5</button>
+            <button class="map-pin pin-6" style="--x:51%;--y:43%" type="button" data-comp-select="harding" aria-label="Select comparable 6, 216 Harding Avenue">6</button>
+          </div>
+          <p class="map-caption"><b>S</b> identifies Walnut Street; numbered markers correspond to the six sales. Interactive Google Maps loads when available.</p>
+          {{SUBJECT_BASELINE_STRIP}}
+          <div class="comp-selected-stack" aria-live="polite">{{COMP_SELECTED_ANALYSES}}</div>
+          <div class="comp-stepper"><button type="button" data-comp-previous aria-label="Previous sale comparable">← Previous</button><span data-comp-position>1 of 6</span><button type="button" data-comp-next aria-label="Next sale comparable">Next →</button></div>
+        </div>
+      </div>
+
+      <div class="container comparison-lab">
+        <div class="comparison-lab-heading"><div><p class="eyebrow">All-Sale Comparison</p><h3>Walnut Across the Core Price Metrics</h3></div><p>Change the metric to compare the offering with every selected sale. Select a sale to update the studio above.</p></div>
+        <div class="comparison-metric-tabs" role="group" aria-label="Comparable price metric"><button class="active" type="button" data-comp-metric="price" aria-pressed="true">Price</button><button type="button" data-comp-metric="ppu" aria-pressed="false">Per Unit</button><button type="button" data-comp-metric="ppsf" aria-pressed="false">Per SF</button></div>
+        <div class="comparison-metric-panels">{{COMPARISON_METRIC_PANELS}}</div>
+        <p class="comparison-chart-note"><b>Metric context.</b> Harding’s smaller reported building area elevates its price per square foot, while Santol’s price per unit includes a non-conforming fourth dwelling. These figures are reference points, not stand-alone valuation conclusions.</p>
+      </div>
+
+      <div class="container comp-profiles-heading"><p class="eyebrow">Complete Sale Profiles</p><h3>The Transaction and Property Details Behind Each Sale</h3><p>Each profile separates the verified transaction facts from the physical comparison, analytical support, and material cautions.</p></div>
+      <div class="container comp-profiles">{{COMP_CARDS}}</div>
+
+      <div class="container rent-comparison-section">
+        <div class="rent-comparison-heading"><div><p class="eyebrow">Rent Comparables</p><h3>Selected Rents Remain Below Survey Benchmarks</h3></div><p>{{RENT_COMPARABLE_CONCLUSION}}</p></div>
+        <div class="rent-comparison-layout">
+          <div class="rent-survey-map" data-rent-map>
+            <div class="google-map-canvas" data-google-map="rents" hidden aria-label="Interactive map showing one-mile and two-mile rent survey radii around Walnut Street"></div>
+            <div class="rent-radius-fallback" data-map-fallback="rents" role="img" aria-label="Diagram showing a one-mile two-bedroom survey radius and two-mile one-bedroom survey radius centered on Walnut Street">
+              <span class="radius radius-two"><b>2 miles</b><small>1BR survey</small></span>
+              <span class="radius radius-one"><b>1 mile</b><small>2BR survey</small></span>
+              <span class="radius-subject"><b>S</b><small>Walnut Street</small></span>
+            </div>
+            <p>Survey radii are centered on Walnut Street. Individual rent-comparable addresses were not included in the source material.</p>
+          </div>
+          <div class="rent-benchmark-cards">{{RENT_BENCHMARK_CARDS}}</div>
+        </div>
+        <div class="atwood-rent-check"><div><p class="eyebrow">Condition-Adjusted Cross-Check</p><h4>Atwood Achieved Rents</h4></div><strong>$2,175–$3,450</strong><p>The closed Newhall triplex supports the direction of the selected rents, but its renovated residences and newer ADU represent materially superior condition.</p></div>
+        <details class="rent-evidence-details">
+          <summary>Review exact rent-survey figures</summary>
+          <div class="table-region"><div class="table-shell compact" data-laaa-scroll-region tabindex="0" role="region" aria-label="Rent comparable table"><table class="rent-evidence-table"><thead><tr><th>Unit Type / Survey</th><th>Median</th><th>25th percentile</th><th>Selected</th><th>Comparison</th></tr></thead><tbody>{{RENT_ROWS}}</tbody></table></div><p class="table-scroll-cue" hidden>Scroll horizontally to review all columns.</p></div>
+        </details>
+      </div>
+
+      <div class="container comparable-conclusion"><p class="eyebrow">Sale and Rent Conclusion</p><h3>Market Evidence Supports the Offering Position</h3><p>{{INTEGRATED_COMPARABLE_CONCLUSION}}</p></div>
+    </section>
+
+    <section class="section diligence-section" id="diligence">
+      <div class="container section-heading"><div class="section-marker"><span>07</span><p>Diligence and Disclosures</p></div><div><h2>Buyer Due Diligence</h2></div><p>Prospective purchasers should independently investigate and verify all matters material to an acquisition.</p></div>
+      <div class="container diligence-grid">
+        <article><b>Income and tenancy</b><p>Review leases, deposits, payment history, tenancy dates, concessions, and rent notices.</p></article>
+        <article><b>Unit and legal status</b><p>Confirm configuration, square footage, permitted use, legal status, and building records.</p></article>
+        <article><b>Physical condition</b><p>Inspect roofs, structure, electrical, plumbing, mechanical systems, drainage, and interiors.</p></article>
+        <article><b>Parking and access</b><p>Confirm garage, driveway, alley-access, and parking configurations.</p></article>
+        <article><b>Utilities and expenses</b><p>Verify metering, payment responsibilities, service levels, and operating costs.</p></article>
+        <article><b>Zoning and development</b><p>Confirm legal-nonconforming status, ADU eligibility, parking treatment, and development options.</p></article>
+        <article><b>Title and site</b><p>Review easements, setbacks, alley dedication, drainage, and utility capacity.</p></article>
+        <article><b>Tenant protections</b><p>Confirm applicable rent-cap, just-cause, relocation, notice, and tenant-protection requirements.</p></article>
+      </div>
+      <div class="container value-add"><div><p class="eyebrow">Zoning and Site Potential</p><h3>Independent ADU and Site-Planning Study</h3></div><div><p>The 2025 Old Town Newhall Specific Plan applies Corridor zoning with a baseline maximum of three stories and 35 feet. Stacked residential in COR is generally tied to a vertical mixed-use commercial-building form. Proximity to rail may affect minimum-parking treatment under AB 2097.</p><p>No additional unit count, building area, or entitlement is represented as approved. Buyers should confirm legal-nonconforming status, ADU eligibility, parking, setbacks, alley dedication, and any development path directly with the City of Santa Clarita and qualified counsel.</p><div class="source-links"><a href="https://filecenter.santa-clarita.com/Planning/OldTownNewhallSpecificPlanUpdate/2025%20OTNSP%20FINAL.pdf" target="_blank" rel="noopener">2025 Old Town Newhall Specific Plan<span aria-hidden="true">↗</span></a><a href="https://www.hcd.ca.gov/sites/default/files/docs/planning-and-community/min-parking-requirements-ab-2097.pdf" target="_blank" rel="noopener">HCD AB 2097 fact sheet<span aria-hidden="true">↗</span></a></div></div></div>
+    </section>
+
+    <section class="section contact-section" id="contact">
+      <div class="container contact-intro"><div class="section-marker"><span>08</span><p>Listing Agents</p></div><div><h2>Speak Directly with the LAAA Team</h2></div><p>All property tours are by appointment through Glen Scher or Filip Niculete. Contact the team for operating information and offering procedures. Please do not disturb occupants or enter without a confirmed appointment.</p></div>
+      <div class="container agent-grid">{{CONTACT_CARDS}}</div>
+    </section>
+  </main>
+
+  <script id="map-config" type="application/json">{{MAP_CONFIG_JSON}}</script>
+
+  <footer><div class="container"><div class="footer-brand"><span class="brand-slot" data-laaa-brand-slot="footer" data-logo-variant="white" data-brand-context="dark"><img src="assets/brand/LAAA_Team_White.png" alt="LAAA Team"></span><span class="footer-descriptor">Offering Memorandum</span></div><p>16830 Ventura Boulevard, Suite 100, Encino, California 91436</p><p class="disclosure">The information contained in this Offering Memorandum has been obtained from sources believed reliable, including public records, MLS information, seller-provided information, broker research, and third-party services, but has not been independently verified and is not guaranteed. Prospective purchasers must conduct their own investigation of the property and all matters material to an acquisition. Current rents and occupancy remain subject to lease verification. Seller operating statements were not available; selected expenses were provided by the seller, while remaining expenses, Pro Forma figures, and financing results are estimates presented for illustration only. Square footage, lot area, unit configuration, parking, zoning, legal status, development potential, photographs, and map boundaries are subject to independent verification. Financing terms remain subject to lender approval and change without notice. This material is confidential, is not an appraisal or offer to sell, and may be withdrawn or modified without notice. Marcus &amp; Millichap Real Estate Investment Services, Inc. · NYSE: MMI.</p></div></footer>
+  <div class="mobile-cta" aria-label="Quick contact"><a href="tel:+18182122808">Call Glen</a><a href="mailto:Glen.Scher@marcusmillichap.com?subject=24513%20Walnut%20Street%20Offering">Email</a></div>
+</body>
+</html>
